@@ -48,13 +48,17 @@ uv run python -m unittest discover tests
 │   ├── barrier_constriction.yaml   # Corridor constriction parameter sweep
 │   ├── resource_depletion.yaml     # Dynamic foraging & depletion wake
 │   └── scaleup.yaml                # 512x512 FPS scale-up rerun
-├── docs/                           # Documentation, citations & architectural notes
+├── docs/                           # Academic thesis documentation
 │   ├── LITERATURE_READING_LIST.md  # Core papers & literature review
 │   ├── THESIS_ARCHITECTURE.md      # Detailed mathematical specification
 │   └── REFACTORING_HISTORY.md      # PyTorch-to-JAX refactoring log
+├── .agents/                        # AI Assistant rules, memory, and skills
+│   ├── AGENTS.md                   # Core behavioral rules & physics constraints
+│   ├── CONTEXT_HANDOFF.md          # Active cross-session AI agent state memory
+│   └── skills/                     # Specialized agent workflow skills
 ├── results/                        # Categorized simulation outputs (MP4s, plots, NPZ)
 ├── tests/                          # Automated unit test suite
-├── CONTEXT_HANDOFF.md              # Active cross-session AI agent state memory
+├── Dockerfile                      # Container environment definition
 ├── run_experiment.py               # Main unified CLI runner
 └── pyproject.toml                  # Package configuration & dependencies
 ```
