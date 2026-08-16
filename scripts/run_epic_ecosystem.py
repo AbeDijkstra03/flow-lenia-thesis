@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
 """
-Epic 10-Minute Long-Duration Flow-Lenia Ecosystem Simulation.
+Epic 5-Minute Long-Duration Flow-Lenia Multi-Species Ecosystem Simulation.
 
-Executes a large-scale, high-resolution multi-species continuous CA simulation
-(e.g., 45,000 steps on 512x512 grid) and streams a broadcast-grade 10-minute (600s)
-dual-panel H.264 MP4 video directly to disk with chunked memory management.
-
-Features:
-- 8 interacting species lineages with distinct categorical colors
-- Growth Negotiation territorial competition (softmax(beta * G))
-- Periodic evolutionary mutation sweeps for spontaneous novelty
-- Dynamic substrate depletion and foraging trails
-- 1024x512 dual-panel HD output at 25 FPS
+Executes a high-density, multi-species continuous CA simulation (22,500 steps on 384x384 grid)
+with 10-12 active biological lineages, Moroz (2020) bilinear mass transport, Softmax Negotiation
+territorial competition, and dynamic substrate depletion.
+Streams a 5-minute (300s, 7,500 frames) HD broadcast MP4 video directly to disk.
 """
 
 import os
@@ -21,7 +15,7 @@ import json
 import argparse
 import numpy as np
 import imageio
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 import jax
 import jax.numpy as jnp
 from jax import random
@@ -32,8 +26,7 @@ from core.flow_lenia_jax import (
     initialize_multi_patch_state, run_flow_lenia_rollout
 )
 from core.visualization import (
-    colorize_multi_species_frame, render_physical_frame,
-    save_motion_heatmap
+    colorize_multi_species_frame, render_physical_frame
 )
 
 def render_dual_panel_frame(
@@ -41,17 +34,17 @@ def render_dual_panel_frame(
     gid_2d: Optional[np.ndarray],
     com_pos: Optional[Tuple[float, float]] = None
 ) -> np.ndarray:
-    """Render a side-by-side 1024x512 composite frame."""
+    """Render a side-by-side 768x384 HD composite frame."""
     left_rgb = colorize_multi_species_frame(mass_2d, gid_2d)
     right_rgb = render_physical_frame(mass_2d, com_pos=com_pos)
     return np.concatenate([left_rgb, right_rgb], axis=1)
 
-def run_epic_10min_ecosystem(
+def run_epic_ecosystem(
     grid_size: int = 384,
     total_steps: int = 22500,
     sample_interval: int = 3,
     fps: int = 25,
-    n_patches: int = 6,
+    n_patches: int = 10,
     seed: int = 42,
     output_dir: str = "results/epic_ecosystem"
 ):
@@ -77,15 +70,15 @@ def run_epic_10min_ecosystem(
     H, W = grid_size, grid_size
     K = 9
     
-    # 1. Generate multi-shell kernels with staggered radii
+    # 1. Precompute concentric ring kernels
     rng_key, subk = random.split(rng_key)
-    radii = jnp.sort(random.uniform(subk, (K,), minval=7.0, maxval=18.0))
+    radii = jnp.sort(random.uniform(subk, (K,), minval=7.0, maxval=16.0))
     print("\n[1/4] Precomputing Fourier-domain multi-shell kernels...")
     kernel_ffts = precompute_kernel_ffts(radii, H, W)
     
-    # 2. Configure heterogeneous multi-kernel species genomes for rich emergent morphology
+    # 2. Configure 10-12 heterogeneous species genomes with rich morphological diversity
     rng_key, k_mu, k_sigma = random.split(rng_key, 3)
-    mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.135, maxval=0.215)
+    mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.130, maxval=0.215)
     sigma_presets = random.uniform(k_sigma, (n_patches, K), minval=0.011, maxval=0.022)
     
     v_scale = 5.6
@@ -99,12 +92,12 @@ def run_epic_10min_ecosystem(
         v_scale=v_scale,
         alpha_diffusion=alpha_diff,
         beta=beta_negotiation,
-        depletion_rate=0.01,
-        regen_rate=0.005
+        depletion_rate=0.015,
+        regen_rate=0.006
     )
     
-    # 3. Seed 8 species in a wide circle with chordal velocities
-    print(f"[2/4] Seeding {n_patches} spatially separated species across the {grid_size}x{grid_size} domain...")
+    # 3. Seed densely packed multi-blob organisms
+    print(f"[2/4] Seeding {n_patches} active multi-blob species across {grid_size}x{grid_size} domain...")
     rng_key, subk_init = random.split(rng_key)
     state = initialize_multi_patch_state(
         subk_init, H, W, C=1, K=K, n_patches=n_patches, kernel_radii=radii,
@@ -112,22 +105,19 @@ def run_epic_10min_ecosystem(
     )
     
     # 4. Open streaming MP4 writer
-    video_path = os.path.join(output_dir, "epic_10min_ecosystem_rollout.mp4")
+    video_path = os.path.join(output_dir, "epic_ecosystem_rollout.mp4")
     print(f"[3/4] Initializing H.264 video stream: {video_path}")
     writer = imageio.get_writer(
         video_path,
         fps=fps,
         codec="libx264",
         pixelformat="yuv420p",
-        ffmpeg_params=["-crf", "18", "-preset", "medium"]
+        ffmpeg_params=["-crf", "18", "-preset", "fast"]
     )
     
-    # Run in manageable JAX rollout chunks (e.g. 1500 steps = 500 frames per chunk)
     chunk_steps = 1500
     num_chunks = total_steps // chunk_steps
-    
     chunk_sample_interval = sample_interval
-    frames_per_chunk = chunk_steps // chunk_sample_interval
     
     filmstrip_frames = []
     filmstrip_gids = []
@@ -136,46 +126,40 @@ def run_epic_10min_ecosystem(
     
     start_time = time.time()
     frames_written = 0
-    
     yy, xx = np.meshgrid(np.arange(H), np.arange(W), indexing='ij')
     
     print(f"\n[4/4] Launching GPU Simulation ({num_chunks} chunks x {chunk_steps} steps)...")
     
     for chunk_idx in range(num_chunks):
-        t_chunk_start = time.time()
         rng_key, subk_chunk = random.split(rng_key)
         
-        # Run JAX rollout for this chunk
         state, sampled_mass, sampled_gid = run_flow_lenia_rollout(
             state, kernel_ffts, params, subk_chunk,
             num_steps=chunk_steps,
             sample_interval=chunk_sample_interval,
             mixing_rule='negotiation',
             enable_mutation=True,
+            mutation_interval=200,
             enable_depletion=True
         )
         
-        sampled_mass_np = np.array(sampled_mass) # (F, 1, H, W)
-        sampled_gid_np = np.array(sampled_gid)   # (F, H, W)
+        sampled_mass_np = np.array(sampled_mass)
+        sampled_gid_np = np.array(sampled_gid)
         
         if sampled_mass_np.ndim == 4:
             sampled_mass_np = sampled_mass_np[:, 0, :, :]
             
         n_f = sampled_mass_np.shape[0]
         
-        # Accumulate motion heatmap diffs
         if prev_frame_for_diff is not None:
-            first_diff = np.abs(sampled_mass_np[0] - prev_frame_for_diff)
-            accumulated_diffs += first_diff
+            accumulated_diffs += np.abs(sampled_mass_np[0] - prev_frame_for_diff)
         accumulated_diffs += np.sum(np.abs(np.diff(sampled_mass_np, axis=0)), axis=0)
         prev_frame_for_diff = sampled_mass_np[-1]
         
-        # Save selected frames for high-res composite filmstrip (12 key milestones)
         if chunk_idx % max(1, num_chunks // 12) == 0 or chunk_idx == num_chunks - 1:
             filmstrip_frames.append(sampled_mass_np[0])
             filmstrip_gids.append(sampled_gid_np[0])
             
-        # Stream frames directly to MP4
         for f_i in range(n_f):
             m_2d = sampled_mass_np[f_i]
             g_2d = sampled_gid_np[f_i]
@@ -192,24 +176,22 @@ def run_epic_10min_ecosystem(
         fps_sim = ((chunk_idx + 1) * chunk_steps) / elapsed
         pct = ((chunk_idx + 1) / num_chunks) * 100.0
         
-        print(f"  Chunk {chunk_idx + 1:02d}/{num_chunks:02d} ({pct:5.1f}%) | Steps: {(chunk_idx+1)*chunk_steps:5d}/{total_steps} | Video: {frames_written:5d}/{total_frames} frames ({frames_written/fps:5.1f}s) | GPU Speed: {fps_sim:.0f} steps/s")
+        print(f"  Chunk {chunk_idx + 1:02d}/{num_chunks:02d} ({pct:5.1f}%) | Steps: {(chunk_idx+1)*chunk_steps:5d}/{total_steps} | Video: {frames_written:5d}/{total_frames} frames ({frames_written/fps:5.1f}s) | Speed: {fps_sim:.0f} steps/s")
         
     writer.close()
     total_time = time.time() - start_time
     
     print("\n" + "=" * 70)
-    print("🎉 SIMULATION & VIDEO RENDERING COMPLETE 🎉")
+    print("🎉 5-MINUTE ECOSYSTEM SIMULATION COMPLETE 🎉")
     print(f"Total Compute Time  : {total_time:.2f} seconds ({total_time/60.0:.2f} minutes)")
     print(f"Final MP4 Video     : {video_path}")
     print(f"Video File Size     : {os.path.getsize(video_path) / (1024 * 1024):.2f} MB")
     print("=" * 70)
     
-    # Generate High-Res 12-Frame Composite Filmstrip PNG
+    # 12-Frame Composite Filmstrip
     print("\nGenerating 12-Frame Milestone Composite Filmstrip...")
-    filmstrip_path = os.path.join(output_dir, "epic_10min_filmstrip.png")
+    filmstrip_path = os.path.join(output_dir, "epic_ecosystem_filmstrip.png")
     num_sub = len(filmstrip_frames)
-    
-    # 2 rows of 6 frames
     cols = 6
     rows = int(np.ceil(num_sub / cols))
     
@@ -235,8 +217,8 @@ def run_epic_10min_ecosystem(
     composite_img.save(filmstrip_path)
     print(f"Composite Filmstrip : {filmstrip_path}")
     
-    # Generate Motion Heatmap
-    heatmap_path = os.path.join(output_dir, "epic_10min_motion_heatmap.png")
+    # Motion Heatmap
+    heatmap_path = os.path.join(output_dir, "epic_ecosystem_motion_heatmap.png")
     norm_diffs = accumulated_diffs / (np.max(accumulated_diffs) + 1e-8)
     import matplotlib.cm as cm
     magma_rgba = cm.magma(norm_diffs)
@@ -244,8 +226,8 @@ def run_epic_10min_ecosystem(
     Image.fromarray(magma_rgb).save(heatmap_path)
     print(f"Motion Heatmap      : {heatmap_path}")
     
-    # Save Metadata JSON
-    meta_path = os.path.join(output_dir, "epic_10min_metadata.json")
+    # Metadata JSON
+    meta_path = os.path.join(output_dir, "epic_ecosystem_metadata.json")
     meta = {
         "grid_size": grid_size,
         "total_steps": total_steps,
@@ -270,17 +252,17 @@ def run_epic_10min_ecosystem(
     print(f"Simulation Metadata : {meta_path}\n")
 
 def main():
-    parser = argparse.ArgumentParser(description="Epic 5-Minute Long Ecosystem Simulation")
+    parser = argparse.ArgumentParser(description="Epic 5-Minute Long Multi-Species Ecosystem Simulation")
     parser.add_argument("--grid_size", type=int, default=384, help="Grid size resolution (default: 384)")
     parser.add_argument("--steps", type=int, default=22500, help="Total simulation steps (default: 22,500 -> 5 min)")
     parser.add_argument("--sample_interval", type=int, default=3, help="Sample every N steps (default: 3)")
     parser.add_argument("--fps", type=int, default=25, help="Video FPS (default: 25 -> 5 minutes)")
-    parser.add_argument("--patches", type=int, default=6, help="Number of species patches (default: 6)")
+    parser.add_argument("--patches", type=int, default=10, help="Number of species patches (default: 10)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
     parser.add_argument("--output_dir", type=str, default="results/epic_ecosystem", help="Output directory")
     args = parser.parse_args()
     
-    run_epic_10min_ecosystem(
+    run_epic_ecosystem(
         grid_size=args.grid_size,
         total_steps=args.steps,
         sample_interval=args.sample_interval,

@@ -10,7 +10,7 @@ from core.flow_lenia_jax import (
 )
 from core.visualization import save_rollout_mp4, extract_trajectory_filmstrip
 
-def run_method_1_gene_mutation(rng_key, grid_size=384, steps=4000, n_patches=6):
+def run_method_1_gene_mutation(rng_key, grid_size=384, steps=3600, n_patches=6):
     """Method 1: Gene-wise mixing + periodic spatial parameter mutation sweeps."""
     print("\n=== Method 1: Gene Mutation Sweep ===")
     H, W = grid_size, grid_size
@@ -29,11 +29,11 @@ def run_method_1_gene_mutation(rng_key, grid_size=384, steps=4000, n_patches=6):
     
     rng_key, subk = random.split(rng_key)
     final_state, sampled_mass, _ = run_flow_lenia_rollout(
-        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=20, mixing_rule='gene_wise', enable_mutation=True
+        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='gene_wise', enable_mutation=True, mutation_interval=100
     )
     return np.array(sampled_mass)
 
-def run_method_2_negotiation_competition(rng_key, grid_size=384, steps=4000, n_patches=6):
+def run_method_2_negotiation_competition(rng_key, grid_size=384, steps=3600, n_patches=6):
     """Method 2: Negotiation Rule (growth affinity territorial competition)."""
     print("\n=== Method 2: Negotiation Competition Rule ===")
     H, W = grid_size, grid_size
@@ -52,11 +52,11 @@ def run_method_2_negotiation_competition(rng_key, grid_size=384, steps=4000, n_p
     
     rng_key, subk = random.split(rng_key)
     final_state, sampled_mass, _ = run_flow_lenia_rollout(
-        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=20, mixing_rule='negotiation', enable_mutation=True
+        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='negotiation', enable_mutation=True, mutation_interval=100
     )
     return np.array(sampled_mass)
 
-def run_method_3_resource_depletion(rng_key, grid_size=384, steps=4000, n_patches=6):
+def run_method_3_resource_depletion(rng_key, grid_size=384, steps=3600, n_patches=6):
     """Method 3: Dynamic Resource Depletion Wake (forces continuous migration)."""
     print("\n=== Method 3: Resource Depletion Foraging Wake ===")
     H, W = grid_size, grid_size
@@ -71,11 +71,11 @@ def run_method_3_resource_depletion(rng_key, grid_size=384, steps=4000, n_patche
     
     rng_key, subk = random.split(rng_key)
     state = initialize_multi_patch_state(subk, H, W, 1, K, n_patches, radii, mu_presets, sigma_presets)
-    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K), depletion_rate=0.04, regen_rate=0.01)
+    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K), depletion_rate=0.015, regen_rate=0.005)
     
     rng_key, subk = random.split(rng_key)
     final_state, sampled_mass, _ = run_flow_lenia_rollout(
-        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=20, mixing_rule='gene_wise', enable_mutation=True, enable_depletion=True
+        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='gene_wise', enable_mutation=True, enable_depletion=True, mutation_interval=100
     )
     return np.array(sampled_mass)
 

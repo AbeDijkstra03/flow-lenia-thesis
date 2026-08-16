@@ -38,7 +38,7 @@ from experiments.run_imgep_search import main as run_imgep_main
 from experiments.run_scaleup import main as run_scaleup_main
 from experiments.run_barrier_constriction import main as run_constriction_main
 from experiments.run_resource_depletion import main as run_depletion_main
-from scripts.run_epic_10min_ecosystem import main as run_epic_main
+from scripts.run_epic_ecosystem import main as run_epic_main
 from scripts.run_hero_ecosystem import main as run_hero_main
 from scripts.run_showcase_methods import main as run_showcase_main
 from scripts.spawn_orbium import main as run_orbium_main
@@ -143,10 +143,10 @@ def main():
         out_dir = args.output_dir or "results/epic_ecosystem"
         sys.argv = [
             sys.argv[0],
-            "--grid_size", str(args.grid_size if args.grid_size >= 384 else 512),
-            "--steps", str(args.steps if args.steps >= 10000 else 45000),
+            "--grid_size", str(args.grid_size if args.grid_size >= 256 else 384),
+            "--steps", str(args.steps if args.steps >= 10000 else 22500),
             "--sample_interval", str(args.sample_interval if args.sample_interval <= 5 else 3),
-            "--patches", str(args.patches if args.patches >= 6 else 8),
+            "--patches", str(args.patches if args.patches >= 8 else 10),
             "--seed", str(args.seed),
             "--output_dir", out_dir
         ]
@@ -156,10 +156,11 @@ def main():
         out_dir = args.output_dir or "results/scaleup"
         sys.argv = [
             sys.argv[0],
-            "--k_reruns", "3",
-            "--scale_grid_size", str(args.scale_grid_size),
-            "--scale_steps", str(args.scale_steps),
-            "--sample_interval", str(args.sample_interval * 5),
+            "--k_reruns", "2",
+            "--search_trials", "12",
+            "--scale_grid_size", str(args.scale_grid_size if args.scale_grid_size >= 384 else 512),
+            "--scale_steps", "3600",
+            "--sample_interval", "3",
             "--seed", str(args.seed),
             "--output_dir", out_dir
         ]

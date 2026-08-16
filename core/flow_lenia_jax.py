@@ -435,22 +435,30 @@ def initialize_multi_patch_state(
             dy_dir = jnp.sin(dir_angle)
             dx_dir = jnp.cos(dir_angle)
         
-        # Asymmetric Crescent Glider Soliton (Dense Forward Nucleus + Trailing Crescent Tail)
-        hy = cy + 5.0 * dy_dir
-        hx = cx + 5.0 * dx_dir
-        d_head = (yy - hy)**2 + (xx - hx)**2
-        head = 0.95 * jnp.exp(-d_head / (2.0 * (5.5**2)))
+        # Multi-Blob Asymmetric Cluster Seeding (Large fleshy cellular organisms with directional momentum)
+        n_blobs = int(random.randint(subk_blobs, (), 2, 4))
+        patch_density = jnp.zeros((H, W), dtype=jnp.float32)
+        patch_mask = jnp.zeros((H, W), dtype=jnp.bool_)
         
-        ty = cy - 4.0 * dy_dir
-        tx = cx - 4.0 * dx_dir
-        d_tail = (yy - ty)**2 + (xx - tx)**2
-        tail_dist = jnp.sqrt(d_tail) + 1e-8
-        rel_dot = ((yy - ty) * dy_dir + (xx - tx) * dx_dir) / tail_dist
-        tail = 0.75 * jnp.exp(-((tail_dist - 11.0)**2) / (2.0 * (3.8**2))) * (rel_dot < 0.25)
-        
-        patch_density = jnp.clip(head + tail, 0.0, 1.0)
-        patch_mask = patch_density > 0.05
-        
+        for b in range(n_blobs):
+            rng_key, subk_b1, subk_b2, subk_b3 = random.split(rng_key, 4)
+            off_y = random.uniform(subk_b1, (), minval=-8.0, maxval=8.0)
+            off_x = random.uniform(subk_b2, (), minval=-8.0, maxval=8.0)
+            r_blob = random.uniform(subk_b3, (), minval=9.0, maxval=15.0)
+            amp = random.uniform(subk_b3, (), minval=0.80, maxval=0.98)
+            
+            d_sq = (yy - (cy + off_y))**2 + (xx - (cx + off_x))**2
+            b_mask = d_sq <= (r_blob * 1.6)**2
+            
+            rel_y = (yy - cy) / (r_blob + 1e-8)
+            rel_x = (xx - cx) / (r_blob + 1e-8)
+            density_slope = jnp.clip(1.0 + 1.2 * (rel_y * dy_dir + rel_x * dx_dir), 0.1, 2.5)
+            
+            b_dens = amp * jnp.exp(-d_sq / (2.0 * (r_blob / 2.0)**2)) * density_slope * b_mask
+            patch_density = patch_density + b_dens
+            patch_mask = patch_mask | b_mask
+            
+        patch_density = jnp.clip(patch_density, 0.0, 1.0)
         mass = mass.at[0].add(patch_density)
         
         if mu_presets is not None and i < len(mu_presets):

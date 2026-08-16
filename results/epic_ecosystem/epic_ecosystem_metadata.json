@@ -1,0 +1,18 @@
+{
+  "grid_size": 384,
+  "total_steps": 22500,
+  "sample_interval": 3,
+  "total_frames": 7500,
+  "fps": 25,
+  "video_duration_sec": 300.0,
+  "video_duration_min": 5.0,
+  "n_patches": 10,
+  "seed": 42,
+  "v_scale": 5.6,
+  "alpha_diffusion": 0.05,
+  "beta_negotiation": 3.0,
+  "total_compute_seconds": 41.55478882789612,
+  "video_file": "epic_ecosystem_rollout.mp4",
+  "filmstrip_file": "epic_ecosystem_filmstrip.png",
+  "heatmap_file": "epic_ecosystem_motion_heatmap.png"
+}
