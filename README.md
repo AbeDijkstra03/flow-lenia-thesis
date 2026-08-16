@@ -92,17 +92,16 @@ docker run --rm -v $(pwd)/results:/app/results flow-lenia:latest python run_expe
 
 ## 3. How to Run the Experiments
 
-All experiments can be launched from the unified CLI runner [run_experiment.py](file:///home/abedijkstra/Documents/Scriptie/run_experiment.py):
+### Available Experiment Commands
 
-| Experiment / Objective | CLI Command | Scientific Goal & Hypothesis | Key Outputs |
+| Mode | Command | Output Duration | What Happens? |
 | :--- | :--- | :--- | :--- |
-| **Exp 1: Open IMGEP vs. Random Search** | `uv run python run_experiment.py --mode imgep --trials 50 --steps 2000` | **Goal**: Map 3D behavioral space. **Hypothesis**: IMGEP curiosity exploration discovers higher motility and algorithmic complexity than uniform random search. | `summary.json`, elite MP4s, filmstrips in `results/baseline_imgep/` |
-| **Exp 2: Barrier Constriction Sweep** | `uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32` | **Goal**: Soft-bodied elasticity & transmission. **Hypothesis**: Solitons undergo reversible deformation and transmit with 100% mass preservation when $W > W_{\text{crit}}$. | `transmission_curve.png`, MP4s in `results/barrier_constriction/` |
-| **Exp 3: Reactive Resource Depletion** | `uv run python run_experiment.py --mode depletion --steps 2500` | **Goal**: Niche construction. **Hypothesis**: Dynamic substrate depletion forces continuous cyclic migration and prevents stationary collapse. | `depletion_comparison_metrics.png`, MP4s in `results/resource_depletion/` |
-| **Exp 4: Long Multi-Species Ecosystem** | `uv run python run_experiment.py --mode hero --patches 6 --grid_size 384 --steps 4000` | **Goal**: Multi-species macro-dynamics. **Hypothesis**: Multi-species patches form stable territorial boundaries and dividing solitons. | Multi-species color MP4 & filmstrip in `results/hero_ecosystems/` |
-| **Exp 5: Resolution Invariance Scale-Up** | `uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 10000` | **Goal**: Spatial scale invariance. **Hypothesis**: Discovered solitons maintain morphology across 10,000 steps on $512 \times 512$ grids. | `scaleup_report.json`, MP4s in `results/scaleup/` |
-| **Mechanism Showcase** | `uv run python run_experiment.py --mode showcase` | Visual comparison of Gene Mutation, Negotiation Rule ($\text{softmax}(\beta G)$), and Resource Depletion. | 3 comparison MP4s in `results/showcase/` |
-| **Orbium Verification** | `uv run python run_experiment.py --mode orbium` | Verifies physics engine by simulating classic *Orbium unicaudatus* glider. | Verification MP4 in `results/spawned_orbium.mp4` |
+| **Barrier Constriction** | `uv run python run_experiment.py --mode barrier_constriction` | **1 min per width** (4x 60s) | Sweeps corridor widths $W \in [8, 16, 24, 32]$ px, measuring soliton elasticity and transmission $T(W)$. |
+| **Resource Depletion** | `uv run python run_experiment.py --mode depletion` | **1 min** (2x 60s) | Compares static food baseline vs. dynamic nutrient depletion trails. |
+| **Showcase Methods** | `uv run python run_experiment.py --mode showcase` | **1 min each** (3x 60s) | Demonstrates Gene Mutation, Softmax Negotiation Competition, and Dynamic Foraging Depletion. |
+| **Scaled-Up Reruns** | `uv run python run_experiment.py --mode scaleup` | **1 min each** (2x 60s) | Re-evaluates top IMGEP candidates on massive $512 \times 512$ grids with proportional seeding. |
+| **Hero Ecosystem** | `uv run python run_experiment.py --mode hero --steps 4500` | **1 min** (60s) | Multi-species ecosystem with 6 lineages on $384 \times 384$ arena. |
+| **Epic Ecosystem Master** | `uv run python run_experiment.py --mode epic --steps 22500` | **5.0 minutes** (300s) | Master broadcast simulation (22,500 steps, 7,500 frames) with 10 densely seeded multi-blob species. |
 
 ---
 
