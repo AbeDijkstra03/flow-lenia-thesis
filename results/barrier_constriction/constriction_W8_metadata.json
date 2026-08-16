@@ -10,11 +10,11 @@
   "metrics": {
     "passage_width": 8,
     "transmission_coeff": 0.0,
-    "mass_preservation": 0.9999978275043465,
-    "solid_core_ratio": 0.9748837231710011,
-    "com_shift": 11.146471714874872,
+    "mass_preservation": 0.9999980781769219,
+    "solid_core_ratio": 0.9691615320336113,
+    "com_shift": 18.319135964248197,
     "right_chamber_mass": 0.0,
-    "total_mass": 730.4551391701563
+    "total_mass": 730.455322275625
   },
   "video_file": "constriction_W8_rollout.mp4",
   "filmstrip_file": "constriction_W8_trajectory_filmstrip.png",

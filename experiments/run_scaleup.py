@@ -83,7 +83,9 @@ def main():
         params = FlowLeniaParams(
             mu=mu_presets[0],
             sigma=sigma_presets[0],
-            weights=jnp.full((K,), 1.0 / K)
+            weights=jnp.full((K,), 1.0 / K),
+            v_scale=float(cfg.get("v_scale", 5.4)),
+            alpha_diffusion=float(cfg.get("alpha_diffusion", 0.055))
         )
         
         rng_key, subk = random.split(rng_key)
@@ -92,7 +94,9 @@ def main():
             num_steps=args.scale_steps,
             sample_interval=args.sample_interval,
             wall_mask=wall_mask,
-            enable_mutation=True
+            mixing_rule='gene_wise',
+            enable_mutation=True,
+            mutation_interval=60
         )
         
         final_mass_np = np.array(final_state.mass)

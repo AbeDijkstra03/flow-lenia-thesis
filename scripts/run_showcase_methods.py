@@ -25,11 +25,11 @@ def run_method_1_gene_mutation(rng_key, grid_size=384, steps=3600, n_patches=6):
     
     rng_key, subk = random.split(rng_key)
     state = initialize_multi_patch_state(subk, H, W, 1, K, n_patches, radii, mu_presets, sigma_presets)
-    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K))
+    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K), v_scale=5.4, alpha_diffusion=0.055)
     
     rng_key, subk = random.split(rng_key)
     final_state, sampled_mass, _ = run_flow_lenia_rollout(
-        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='gene_wise', enable_mutation=True, mutation_interval=100
+        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='gene_wise', enable_mutation=True, mutation_interval=60
     )
     return np.array(sampled_mass)
 
@@ -48,11 +48,11 @@ def run_method_2_negotiation_competition(rng_key, grid_size=384, steps=3600, n_p
     
     rng_key, subk = random.split(rng_key)
     state = initialize_multi_patch_state(subk, H, W, 1, K, n_patches, radii, mu_presets, sigma_presets)
-    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K), beta=3.0)
+    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K), beta=3.0, v_scale=5.4, alpha_diffusion=0.055)
     
     rng_key, subk = random.split(rng_key)
     final_state, sampled_mass, _ = run_flow_lenia_rollout(
-        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='negotiation', enable_mutation=True, mutation_interval=100
+        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='negotiation', enable_mutation=True, mutation_interval=60
     )
     return np.array(sampled_mass)
 
@@ -71,11 +71,11 @@ def run_method_3_resource_depletion(rng_key, grid_size=384, steps=3600, n_patche
     
     rng_key, subk = random.split(rng_key)
     state = initialize_multi_patch_state(subk, H, W, 1, K, n_patches, radii, mu_presets, sigma_presets)
-    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K), depletion_rate=0.015, regen_rate=0.005)
+    params = FlowLeniaParams(mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K), depletion_rate=0.015, regen_rate=0.005, v_scale=5.4, alpha_diffusion=0.055)
     
     rng_key, subk = random.split(rng_key)
     final_state, sampled_mass, _ = run_flow_lenia_rollout(
-        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='gene_wise', enable_mutation=True, enable_depletion=True, mutation_interval=100
+        state, kernel_ffts, params, subk, num_steps=steps, sample_interval=3, mixing_rule='gene_wise', enable_mutation=True, enable_depletion=True, mutation_interval=60
     )
     return np.array(sampled_mass)
 

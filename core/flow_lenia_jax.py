@@ -22,8 +22,8 @@ class FlowLeniaParams(NamedTuple):
     beta: float = 2.0
     depletion_rate: float = 0.04
     regen_rate: float = 0.01
-    v_scale: float = 3.5
-    alpha_diffusion: float = 0.05
+    v_scale: float = 5.4
+    alpha_diffusion: float = 0.055
 
 class FlowLeniaState(NamedTuple):
     """

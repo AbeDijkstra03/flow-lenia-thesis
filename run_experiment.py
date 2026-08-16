@@ -120,8 +120,8 @@ def main():
             "--widths"
         ] + width_strs + [
             "--grid_size", str(args.grid_size),
-            "--steps", str(args.steps),
-            "--sample_interval", str(max(10, args.sample_interval // 2)),
+            "--steps", str(args.steps if args.steps >= 3000 else 3600),
+            "--sample_interval", "3",
             "--seed", str(args.seed),
             "--output_dir", out_dir
         ]
@@ -132,8 +132,8 @@ def main():
         sys.argv = [
             sys.argv[0],
             "--grid_size", str(args.grid_size),
-            "--steps", str(args.steps),
-            "--sample_interval", str(max(10, args.sample_interval // 2)),
+            "--steps", str(args.steps if args.steps >= 3000 else 3600),
+            "--sample_interval", "3",
             "--seed", str(args.seed),
             "--output_dir", out_dir
         ]
@@ -145,7 +145,7 @@ def main():
             sys.argv[0],
             "--grid_size", str(args.grid_size if args.grid_size >= 256 else 384),
             "--steps", str(args.steps if args.steps >= 10000 else 22500),
-            "--sample_interval", str(args.sample_interval if args.sample_interval <= 5 else 3),
+            "--sample_interval", "3",
             "--patches", str(args.patches if args.patches >= 8 else 10),
             "--seed", str(args.seed),
             "--output_dir", out_dir
@@ -157,7 +157,7 @@ def main():
         sys.argv = [
             sys.argv[0],
             "--k_reruns", "2",
-            "--search_trials", "12",
+            "--search_trials", "15",
             "--scale_grid_size", str(args.scale_grid_size if args.scale_grid_size >= 384 else 512),
             "--scale_steps", "3600",
             "--sample_interval", "3",
@@ -172,8 +172,8 @@ def main():
             sys.argv[0],
             "--patches", str(args.patches),
             "--grid_size", str(args.grid_size),
-            "--steps", str(args.steps),
-            "--sample_interval", str(max(10, args.sample_interval // 2)),
+            "--steps", str(args.steps if args.steps >= 3000 else 3600),
+            "--sample_interval", "3",
             "--seed", str(args.seed),
             "--output_dir", out_dir
         ]

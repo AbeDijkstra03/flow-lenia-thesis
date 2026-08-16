@@ -9,12 +9,12 @@
   },
   "metrics": {
     "passage_width": 24,
-    "transmission_coeff": 0.008384665950051811,
-    "mass_preservation": 0.9999979442027699,
-    "solid_core_ratio": 0.9747099873149667,
-    "com_shift": 6.62223627787932,
-    "right_chamber_mass": 6.721224784851074,
-    "total_mass": 801.609130869375
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9999980964839013,
+    "solid_core_ratio": 0.9754161950574872,
+    "com_shift": 12.448779684875126,
+    "right_chamber_mass": 0.0,
+    "total_mass": 801.6091919045313
   },
   "video_file": "constriction_W24_rollout.mp4",
   "filmstrip_file": "constriction_W24_trajectory_filmstrip.png",
