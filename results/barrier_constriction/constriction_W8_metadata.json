@@ -1,0 +1,23 @@
+{
+  "prefix": "constriction_W8",
+  "config": {
+    "passage_width": 8,
+    "grid_size": 256,
+    "steps": 2000,
+    "v_scale": 5.4,
+    "alpha_diffusion": 0.06
+  },
+  "metrics": {
+    "passage_width": 8,
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9944597593902067,
+    "solid_core_ratio": 0.9505368421416239,
+    "com_shift": 3.705255940794912,
+    "right_chamber_mass": 0.0,
+    "total_mass": 551.3765869240625
+  },
+  "video_file": "constriction_W8_rollout.mp4",
+  "filmstrip_file": "constriction_W8_trajectory_filmstrip.png",
+  "heatmap_file": "constriction_W8_motion_heatmap.png",
+  "data_file": "constriction_W8_data.npz"
+}

@@ -1,0 +1,23 @@
+{
+  "prefix": "constriction_W16",
+  "config": {
+    "passage_width": 16,
+    "grid_size": 256,
+    "steps": 2000,
+    "v_scale": 5.4,
+    "alpha_diffusion": 0.06
+  },
+  "metrics": {
+    "passage_width": 16,
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9998187764396803,
+    "solid_core_ratio": 0.963400673050632,
+    "com_shift": 2.7237788587510825,
+    "right_chamber_mass": 0.0,
+    "total_mass": 814.2222900490625
+  },
+  "video_file": "constriction_W16_rollout.mp4",
+  "filmstrip_file": "constriction_W16_trajectory_filmstrip.png",
+  "heatmap_file": "constriction_W16_motion_heatmap.png",
+  "data_file": "constriction_W16_data.npz"
+}

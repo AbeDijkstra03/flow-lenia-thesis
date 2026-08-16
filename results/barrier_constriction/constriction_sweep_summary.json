@@ -1,0 +1,38 @@
+[
+  {
+    "passage_width": 8,
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9944597593902067,
+    "solid_core_ratio": 0.9505368421416239,
+    "com_shift": 3.705255940794912,
+    "right_chamber_mass": 0.0,
+    "total_mass": 551.3765869240625
+  },
+  {
+    "passage_width": 16,
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9998187764396803,
+    "solid_core_ratio": 0.963400673050632,
+    "com_shift": 2.7237788587510825,
+    "right_chamber_mass": 0.0,
+    "total_mass": 814.2222900490625
+  },
+  {
+    "passage_width": 24,
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9999999143382226,
+    "solid_core_ratio": 0.9579571103301557,
+    "com_shift": 3.1834902437596924,
+    "right_chamber_mass": 0.0,
+    "total_mass": 712.5132446389063
+  },
+  {
+    "passage_width": 32,
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9994954610981662,
+    "solid_core_ratio": 0.9683613518904708,
+    "com_shift": 11.103726240760132,
+    "right_chamber_mass": 0.0,
+    "total_mass": 939.3584594826563
+  }
+]

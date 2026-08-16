@@ -1,0 +1,23 @@
+{
+  "prefix": "constriction_W24",
+  "config": {
+    "passage_width": 24,
+    "grid_size": 256,
+    "steps": 2000,
+    "v_scale": 5.4,
+    "alpha_diffusion": 0.06
+  },
+  "metrics": {
+    "passage_width": 24,
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9999999143382226,
+    "solid_core_ratio": 0.9579571103301557,
+    "com_shift": 3.1834902437596924,
+    "right_chamber_mass": 0.0,
+    "total_mass": 712.5132446389063
+  },
+  "video_file": "constriction_W24_rollout.mp4",
+  "filmstrip_file": "constriction_W24_trajectory_filmstrip.png",
+  "heatmap_file": "constriction_W24_motion_heatmap.png",
+  "data_file": "constriction_W24_data.npz"
+}

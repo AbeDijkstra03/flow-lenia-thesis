@@ -1,0 +1,42 @@
+{
+  "prefix": "hero_ecosystem_seed42",
+  "config": {
+    "grid_size": 384,
+    "steps": 3000,
+    "patches": 6,
+    "seed": 42,
+    "radii": [
+      6.950132846832275,
+      6.996563911437988,
+      7.635248184204102,
+      7.823677062988281,
+      8.363672256469727,
+      8.859195709228516,
+      9.86855697631836,
+      12.548977851867676,
+      13.090807914733887
+    ]
+  },
+  "metrics": {
+    "ea_raw": 0.0013910983689129353,
+    "complexity_raw": 4394.0,
+    "entropy_raw": 6.792016220092774,
+    "com_displacement": 6.256485741159618,
+    "corridor_coverage": 0.017130533854166668,
+    "ea_norm": 0.00046369945630431175,
+    "complexity_norm": 0.029798719618055556,
+    "entropy_norm": 0.3955763475683318,
+    "com_norm": 0.011520842432215909,
+    "total_mass": 1376.450927744375,
+    "watertight_score": 9.042516997820973,
+    "watertight_valid": 1.0,
+    "solid_core_ratio": 0.9595337085910708,
+    "mass_preservation_ratio": 0.9993439097656924,
+    "grid_size": 384,
+    "horizon": 3000
+  },
+  "video_file": "hero_ecosystem_seed42_rollout.mp4",
+  "filmstrip_file": "hero_ecosystem_seed42_trajectory_filmstrip.png",
+  "heatmap_file": "hero_ecosystem_seed42_motion_heatmap.png",
+  "data_file": "hero_ecosystem_seed42_data.npz"
+}

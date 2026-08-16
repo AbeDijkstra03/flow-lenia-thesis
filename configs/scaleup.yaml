@@ -1,0 +1,23 @@
+# Scaled-Up High Resolution Reruns Configuration (512x512, FPS Selection)
+experiment:
+  name: "scaleup"
+  k_reruns: 3
+  search_trials: 30
+  seed: 42
+  output_dir: "results/scaleup"
+
+simulation:
+  scale_grid_size: 512
+  scale_steps: 10000
+  sample_interval: 250
+  dt: 0.05
+
+physics:
+  v_scale: 5.2
+  alpha_diffusion: 0.06
+  beta: 2.0
+  n_kernels: 9
+
+biology:
+  mixing_rule: "gene_wise"
+  enable_mutation: true

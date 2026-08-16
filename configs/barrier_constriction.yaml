@@ -1,0 +1,21 @@
+# Corridor Passage Constriction & Morphological Plasticity Experiment Configuration
+experiment:
+  name: "barrier_constriction"
+  env: "wall"
+  seed: 42
+  output_dir: "results/barrier_constriction"
+
+simulation:
+  grid_size: 256
+  steps: 2000
+  sample_interval: 25
+
+constriction:
+  widths: [8, 16, 24, 32]
+  wall_thickness: 8
+
+physics:
+  v_scale: 5.4
+  alpha_diffusion: 0.06
+  beta: 2.0
+  n_kernels: 9

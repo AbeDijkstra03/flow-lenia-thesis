@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+results/
+scratch/
+.git/
+.system_generated/
+.tempmediaStorage/
+*.log
+*.npz
