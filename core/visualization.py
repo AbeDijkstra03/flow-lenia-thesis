@@ -38,16 +38,13 @@ def colorize_frame_plasma_log(
     wall_mask: Optional[np.ndarray] = None
 ) -> np.ndarray:
     """
-    Apply soft logarithmic contrast scaling and perceptually uniform Plasma colormap.
+    Apply fixed logarithmic contrast scaling and perceptually uniform Plasma colormap.
     frame_2d: (H, W) array of float density values.
     Returns: (H, W, 3) uint8 RGB array.
     """
-    log_f = np.log1p(np.maximum(0.0, frame_2d))
-    f_max = float(np.max(log_f))
-    if f_max > 1e-6:
-        norm_f = np.clip(log_f / f_max, 0.0, 1.0)
-    else:
-        norm_f = np.zeros_like(frame_2d)
+    # Fixed absolute physical reference scaling (zero frame-to-frame flicker)
+    log_f = np.log1p(np.maximum(0.0, frame_2d) * 1.8)
+    norm_f = np.clip(log_f / np.log1p(1.8), 0.0, 1.0)
         
     plasma_rgba = cm.plasma(norm_f)
     plasma_rgb = (plasma_rgba[:, :, :3] * 255.0).astype(np.uint8)
@@ -74,10 +71,9 @@ def colorize_multi_species_frame(
     gid_safe = np.clip(genome_id_map, 0, len(SPECIES_PALETTE) - 1)
     species_colors = SPECIES_PALETTE[gid_safe] # (H, W, 3)
     
-    # Soft log density intensity
-    log_f = np.log1p(np.maximum(0.0, mass_2d))
-    f_max = float(np.max(log_f)) + 1e-8
-    intensity = np.clip((log_f / f_max), 0.0, 1.0)[:, :, None]
+    # Fixed absolute physical reference intensity (zero frame-to-frame flicker)
+    log_f = np.log1p(np.maximum(0.0, mass_2d) * 1.8)
+    intensity = np.clip(log_f / np.log1p(1.8), 0.0, 1.0)[:, :, None]
     
     rgb = np.clip(species_colors * intensity, 0, 255).astype(np.uint8)
     

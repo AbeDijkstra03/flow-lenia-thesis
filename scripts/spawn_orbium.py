@@ -110,17 +110,18 @@ def main():
     )
     
     rng_key = random.PRNGKey(42)
-    print("Simulating Orbium glider for 300 steps...")
+    print("Simulating classic Orbium glider for 1200 steps...")
     final_state, sampled_mass, _ = run_flow_lenia_rollout(
         state, kernel_ffts, params, rng_key,
-        num_steps=300, sample_interval=2,
-        mixing_rule='constant', enable_mutation=False
+        num_steps=1200, sample_interval=3,
+        mixing_rule='gene_wise', enable_mutation=False
     )
     
     sampled_mass_np = np.array(sampled_mass)
-    os.makedirs("results", exist_ok=True)
-    video_path = "results/spawned_orbium.mp4"
-    filmstrip_path = "results/spawned_orbium_filmstrip.png"
+    out_dir = "results/orbium"
+    os.makedirs(out_dir, exist_ok=True)
+    video_path = os.path.join(out_dir, "orbium_rollout.mp4")
+    filmstrip_path = os.path.join(out_dir, "orbium_filmstrip.png")
     
     save_rollout_mp4(sampled_mass_np, video_path, fps=20, dual_panel=True)
     extract_trajectory_filmstrip(sampled_mass_np, filmstrip_path, num_frames=6, dual_panel=True)
