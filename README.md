@@ -82,6 +82,16 @@ docker run --rm -v $(pwd)/results:/app/results flow-lenia:latest python run_expe
 │   ├── CONTEXT_HANDOFF.md          # Active cross-session AI agent state memory
 │   └── skills/                     # Specialized agent workflow skills
 ├── results/                        # Categorized simulation outputs (MP4s, plots, JSON)
+│   ├── baseline_imgep/             # IMGEP vs Random Search benchmark & elite videos
+│   ├── wall_obstacles/             # IMGEP search in wall obstacle environments
+│   ├── barrier_constriction/       # Corridor constriction sweep (W=8, 16, 24, 32)
+│   ├── hero_ecosystems/            # 1-minute Hero Ecosystem run (384x384)
+│   ├── epic_ecosystem/             # 5-minute Master Epic Ecosystem broadcast video
+│   ├── orbium/                     # Classic Orbium unicaudatus glider verification
+│   ├── resource_depletion/         # Static vs dynamic nutrient depletion study
+│   ├── scaleup/                    # 512x512 scaled-up FPS reruns
+│   ├── showcase/                   # 3 Physical mechanism showcase videos
+│   └── agentic_loop/               # Multi-generation AI Scientist discovery state
 ├── tests/                          # Automated unit test suite
 ├── Dockerfile                      # Container environment definition
 ├── run_experiment.py               # Main unified CLI runner
