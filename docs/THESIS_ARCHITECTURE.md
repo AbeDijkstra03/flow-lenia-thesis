@@ -1,357 +1,511 @@
-# Flow-Lenia Master's Thesis Reference: Design Choices, Mathematical Physics Canon, and Experimental Discoveries
+# Comprehensive Scientific Reference & Mathematical Physics Canon: Flow-Lenia Research Framework
 
-This document serves as an exhaustive, publication-grade reference for the Master's Thesis research framework implementing GPU-accelerated **Flow-Lenia Open-Ended Evolution (OEE)** in native **JAX**.
+This document serves as the **exhaustive, authoritative scientific reference** for the Master's Thesis research framework implementing GPU-accelerated **Flow-Lenia Open-Ended Evolution (OEE)** in native **JAX**.
+
+It contains the complete mathematical specifications, physics equations, behavioral metrics, curiosity-driven algorithms, experimental protocols, and parameter tables needed to write the thesis and reproduce every result without inspecting source code.
 
 ---
 
 ## Table of Contents
 
-1. [Canonical Literature Framework & References](#1-canonical-literature-framework--references)
-2. [Mathematical Physics Canon & Governing Equations](#2-mathematical-physics-canon--governing-equations)
-   - 2.1 Mass Conservation & Continuous Cellular Automata
+1. [Academic Grounding & Literature Foundation](#1-academic-grounding--literature-foundation)
+2. [Continuous Cellular Automata Physics Canon](#2-continuous-cellular-automata-physics-canon)
+   - 2.1 Continuous State Space & Toroidal Geometry
    - 2.2 Multi-Shell Concentric Ring Kernels
-   - 2.3 Growth Mapping & Negative Bounds ($G(U) < 0$)
-3. [Species Initialization & Evolutionary Dynamics](#3-species-initialization--evolutionary-dynamics)
-   - 3.1 Stochastic Gene-Wise Sampling & Negotiation Rules
-   - 3.2 Spatially Localized Seeding & Gradient Slopes
-   - 3.3 Tangential Chord Directional Initialization
-4. [Curiosity Exploration & Watertight Quality Architecture](#4-curiosity-exploration--watertight-quality-architecture)
-   - 4.1 3-D Metric Space & IMGEP Curiosity Search
-   - 4.2 Watertight Filter Gates (`core/metrics.py`)
-   - 4.3 Visual-First Protocol & Dual-Panel Rendering
-5. [Engineering Architecture & JAX GPU Optimization](#5-engineering-architecture--jax-gpu-optimization)
-   - 5.1 FFT Frequency-Domain Convolutions
-   - 5.2 JIT Rollout Compilation & `vmap` Batching
-   - 5.3 Autonomous Campaign Harness & State Persistence
-6. [Experimental Results, Phenotypic Taxonomy & Failure Modes](#6-experimental-results-phenotypic-taxonomy--failure-modes)
-   - 6.1 Optimal Parameter Bounds
-   - 6.2 Phenotypic Taxonomy & Curated Shortlist
-   - 6.3 Failure Modes & Mitigation Strategies
-7. [Citation Summary for Thesis Writing](#7-citation-summary-for-thesis-writing)
+   - 2.3 Fourier-Domain Circular Convolutions
+   - 2.4 Continuous Growth Mappings & Negative Bounds
+   - 2.5 Flux-Conserved Velocity Advection
+   - 2.6 Discrete Flux Normalization & Exact Mass Conservation
+   - 2.7 Spatial Derivatives & Sobel Operators
+   - 2.8 Genome Mixing & Territorial Competition Rules
+3. [Environmental Heterogeneity & Niche Construction](#3-environmental-heterogeneity--niche-construction)
+   - 3.1 Static Barrier Walls & Passage Corridors
+   - 3.2 Corridor Constriction & Transmission Coefficient ($T$)
+   - 3.3 Dynamic Resource Depletion & Regeneration Fields
+4. [Behavior Characterization & 3D Metric Space](#4-behavior-characterization--3d-metric-space)
+   - 4.1 Center of Mass Motility ($v_{\text{CoM}}$)
+   - 4.2 Non-Neutral Quadratic Evolutionary Activity ($\text{EA}$)
+   - 4.3 Compression Complexity & Multi-Scale Entropy
+   - 4.4 Solid Core Ratio ($R_{\text{core}}$) & Mass Preservation ($R_{\text{mass}}$)
+5. [Watertight Quality Filter Architecture](#5-watertight-quality-filter-architecture)
+   - 5.1 The Five Disqualification Gates
+   - 5.2 Mathematical Formulation of Quality Score
+6. [Curiosity-Driven Exploration Algorithms](#6-curiosity-driven-exploration-algorithms)
+   - 6.1 IMGEP (Intrinsically Motivated Goal Exploration Process)
+   - 6.2 Uniform Random Search Baseline
+   - 6.3 Farthest-Point Sampling (FPS) Archive Maintenance
+7. [Autonomous AI Scientist Discovery Pipeline](#7-autonomous-ai-scientist-discovery-pipeline)
+   - 7.1 Multi-Generation Exploration Harness
+   - 7.2 Multimodal Dual-Panel Visual Feedback Loop
+   - 7.3 Adaptive Domain Tuning
+8. [Experimental Protocols & Hypotheses](#8-experimental-protocols--hypotheses)
+   - 8.1 Experiment 1: Baseline Open IMGEP vs. Random Search
+   - 8.2 Experiment 2: Corridor Constriction & Morphological Plasticity
+   - 8.3 Experiment 3: Reactive Resource Depletion & Niche Construction
+   - 8.4 Experiment 4: Long-Duration Multi-Species Ecosystem Dynamics
+   - 8.5 Experiment 5: Resolution Invariance & Long-Horizon Scale-Up
+9. [Complete Hyperparameter Specification Tables](#9-complete-hyperparameter-specification-tables)
+10. [Step-by-Step Reproduction Guide](#10-step-by-step-reproduction-guide)
+11. [BibTeX Academic Bibliography](#11-bibtex-academic-bibliography)
 
 ---
 
-## 1. Canonical Literature Framework & References
+## 1. Academic Grounding & Literature Foundation
 
-The framework is grounded in and expands upon the following canonical literature:
+The framework is grounded in and expands upon continuous artificial life, open-ended evolution, and developmental robotics:
 
-1. **Michel, Cvjetko, Hamon, Oudeyer, Moulin-Frier (2025, updated 2026)**:
-   *Exploring Flow-Lenia Universes with a Curiosity-driven AI Scientist* — arXiv:2505.15998.
-   - **Role in Framework**: Formulates the IMGEP goal exploration space, 3-D novelty metric space (Motility, Evolutionary Activity, Compression Complexity), and mixing-rule ablations.
-
+1. **Michel, Cvjetko, Hamon, Oudeyer, Moulin-Frier (2025/2026)**:
+   *Exploring Flow-Lenia Universes with a Curiosity-driven AI Scientist* (arXiv:2505.15998).
+   - **Foundational Role**: Establishes the 3-D novelty metric space $[\text{Motility}, \text{Evolutionary Activity}, \text{Complexity}]$, the IMGEP goal exploration algorithm, and mixing-rule ablations.
 2. **Plantec, Hamon, Etcheverry, Chan, Oudeyer, Moulin-Frier (2025)**:
-   *Flow-Lenia: Emergent Evolutionary Dynamics in Mass Conservative Continuous Cellular Automata*, Artificial Life 31(2) — arXiv:2506.08569.
-   - **Role in Framework**: Introduces mass conservation ($\frac{\partial A}{\partial t} + \nabla \cdot (A \mathbf{v}) = 0$) to continuous CA, establishing the physical foundation for solid gliders and mass-conserved continuous fluid-like dynamics.
-
+   *Flow-Lenia: Emergent Evolutionary Dynamics in Mass Conservative Continuous Cellular Automata*, Artificial Life 31(2) (arXiv:2506.08569).
+   - **Foundational Role**: Introduces fluid mass conservation ($\frac{\partial A}{\partial t} + \nabla \cdot (A \mathbf{v}) = 0$) to continuous CA, establishing the physical basis for persistent, self-organizing gliders.
 3. **Chan (2019, 2020, 2023)**:
-   *Lenia: Continuous Cellular Automata*, Complex Systems 28(3) — arXiv:1812.05433; *Towards Large-Scale Simulations of Open-Ended Evolution in Continuous Cellular Automata* — arXiv:2304.05639.
-   - **Role in Framework**: Provides multi-shell concentric ring kernel formulations ($K(r)$) and warns against unconstrained parameter drift in large-scale continuous CA.
-
-4. **Faldor & Cully (2024)**:
-   *Toward Artificial Open-Ended Evolution within Lenia using Quality-Diversity ("Leniabreeder")*, ALIFE 2024 — arXiv:2406.04235.
-   - **Role in Framework**: Highlights quality-diversity illumination and variation operators for continuous glider species.
-
-5. **Papadopoulos & Guichard (2025)**:
-   *MaCE: General Mass Conserving Dynamics for Cellular Automata*, ISAL 2025 — arXiv:2507.12306.
-   - **Role in Framework**: Provides comparative mass-conservation dynamics for continuous spatial cellular automata.
+   *Lenia: Continuous Cellular Automata*, Complex Systems 28(3) (arXiv:1812.05433); *Towards Large-Scale Simulations of Open-Ended Evolution in Continuous Cellular Automata* (arXiv:2304.05639).
+   - **Foundational Role**: Formulates continuous multi-shell kernel structures and continuous growth mappings.
+4. **Oudeyer, Kaplan, Hafner (2007)**:
+   *Intrinsic Motivation Systems for Autonomous Mental Development*, IEEE Trans. Evol. Comput. 11(2).
+   - **Foundational Role**: Provides the theoretical framework for curiosity-driven goal exploration in high-dimensional continuous systems.
 
 ---
 
-## 2. Mathematical Physics Canon & Governing Equations
+## 2. Continuous Cellular Automata Physics Canon
 
-### 2.1 Mass Conservation & Continuous Cellular Automata
+### 2.1 Continuous State Space & Toroidal Geometry
 
-Standard Lenia (Chan 2019) updates cell states via point-wise growth functions without mass conservation, allowing mass to spontaneously appear or vanish. Flow-Lenia (Plantec et al. 2025) enforces strict mass conservation via a continuous velocity field $\mathbf{v}(x,y,t)$ derived from potential gradients:
-
-$$\frac{\partial A}{\partial t} + \nabla \cdot (A \mathbf{v}) = 0$$
-
-Where $A(x,y,t) \in [0.0, 1.0]$ is the scalar mass density field. In our discrete JAX implementation, the unnormalized mass flux vector field $\mathbf{F} = (F_x, F_y)$ is defined as:
-
-$$\mathbf{F} = v_{\text{scale}} \cdot \left((1 - \alpha_{\text{diff}}) \nabla G(U) - \alpha_{\text{diff}} \nabla A\right)$$
-
-Where:
-- $v_{\text{scale}}$ is the overall velocity scaling hyperparameter ($v_{\text{scale}} \in [4.2, 6.5]$).
-- $\alpha_{\text{diff}}$ is the diffusion coupling coefficient ($\alpha_{\text{diff}} \in [0.04, 0.08]$).
-- $G(U)$ is the Gaussian growth mapping function acting on kernel potential $U$.
-- $\nabla G(U)$ is the spatial gradient of growth, driving mass towards high-growth zones.
-- $\nabla A$ is the spatial gradient of mass density, acting as an entropic diffusion regularizer.
-
-#### Discrete Flux Normalization & Exact Conservation
-
-To ensure step-wise numerical mass conservation without floating-point drift, outgoing directional fluxes $(f_{\text{left}}, f_{\text{right}}, f_{\text{up}}, f_{\text{down}})$ from each grid cell $(i,j)$ are normalized by total outgoing flux:
-
-$$v_{\text{sum}}(i,j) = f_{\text{left}} + f_{\text{right}} + f_{\text{up}} + f_{\text{down}}$$
-
-$$\tilde{f}_d(i,j) = \frac{f_d(i,j)}{\max\left(1.0, v_{\text{sum}}(i,j)\right)}, \quad d \in \{\text{left}, \text{right}, \text{up}, \text{down}\}$$
-
-This guarantees that total system mass $M(t) = \sum_{i,j} A(i,j,t)$ remains exactly conserved to $100.000\%$ ($R_{\text{mass}} = 1.000000$) over thousands of simulation steps.
+The simulation domain is defined as a 2D continuous toroidal lattice $\mathbb{T}^2 = [0, H) \times [0, W)$ with periodic boundary conditions.
+- **Mass Density Field**: $A(\mathbf{x}, t) \in [0.0, 1.0]$, representing continuous physical mass density.
+- **Parameter Fields**: Each spatial cell $\mathbf{x} = (y, x)$ carries a multi-gene parameter vector:
+  $$\boldsymbol{\mu}(\mathbf{x}, t) \in \mathbb{R}^K, \quad \boldsymbol{\sigma}(\mathbf{x}, t) \in \mathbb{R}^K, \quad \mathbf{w}(\mathbf{x}, t) \in \mathbb{R}^K$$
+  where $K = 9$ represents the number of concentric neighborhood kernels.
 
 ---
 
 ### 2.2 Multi-Shell Concentric Ring Kernels
 
-Single Gaussian ring kernels produce simple round blobs. To generate complex self-organizing gliders, breathers, and dividing solitons, continuous kernels are defined as multi-shell concentric Gaussian rings (Chan 2019, Michel et al. 2025):
+Single Gaussian kernels produce isotropic round blobs. To enable gliders, breathers, and dividing solitons, continuous kernels are defined as multi-shell concentric Gaussian rings:
 
-$$K(r) = \sum_{m=1}^{M} b_m \cdot \exp\left(-\frac{(r - r_m \cdot R)^2}{2 (w_m \cdot R)^2}\right)$$
+$$K_k(r) = \sum_{m=1}^{M} b_m \cdot \exp\left(-\frac{(r - r_m \cdot R_k)^2}{2 (w_m \cdot R_k)^2}\right)$$
 
 Where:
-- $R$ is the overall kernel radius ($R \in [6.0, 15.0]\text{ pixels}$).
-- $b_{\text{shells}} = [1.0, 0.5, 0.33]$ are the relative peak amplitude weights.
-- $r_{\text{peaks}} = [0.50, 0.25, 0.75]$ are the normalized radial peak locations.
-- $r_{\text{width}} = 0.12$ is the normalized Gaussian peak width.
+- $k \in \{0, 1, \dots, K-1\}$ is the kernel index.
+- $R_k \in [6.0, 15.0]\text{ pixels}$ is the outer radius of kernel $k$.
+- $M = 3$ is the number of concentric shells.
+- $b_{\text{shells}} = [1.0, 0.50, 0.33]$ are the relative peak amplitude weights.
+- $r_{\text{peaks}} = [0.50, 0.25, 0.75]$ are the normalized radial peak positions.
+- $w_{\text{width}} = 0.12$ is the normalized radial Gaussian width.
 
-Convolution of the mass field $A$ with kernel $K_k$ produces the spatial potential field $U_k$:
-
-$$U_k(x,y,t) = (K_k * A)(x,y,t)$$
-
----
-
-### 2.3 Growth Mapping & Negative Bounds ($G(U) < 0$)
-
-The growth function $G(U)$ maps kernel potential $U \in [0, 1]$ to growth rates:
-
-$$G(U) = 2 \cdot \exp\left(-\frac{(U - \mu)^2}{2\sigma^2}\right) - 1.0$$
-
-Where $\mu \in [0.14, 0.18]$ is the growth center preference and $\sigma \in [0.012, 0.018]$ is the growth window width.
-
-#### Critical Design Choice: Negative Growth Bounds ($G(U) < 0$)
-
-- When potential $U$ matches target affinity $\mu$, $G(U) \to +1.0$ (positive growth, mass accumulation).
-- When density spikes or potential exceeds affinity ($U > \mu + 1.2\sigma$), $G(U) < 0$ (negative growth, repulsive velocity $\mathbf{v} \propto \nabla G(U)$).
-- **Thesis Note**: Enforcing negative growth bounds prevents central mass contraction ("melting into stationary black-hole blobs"). The outward gradient force pushes excess mass away from the core, forcing spatial phase separation into compact moving gliders with sharp, distinct perimeters.
+Each 2D kernel matrix is normalized to unit sum: $\iint_{\mathbb{R}^2} K_k(\mathbf{x}) d\mathbf{x} = 1.0$.
 
 ---
 
-## 3. Species Initialization & Evolutionary Dynamics
+### 2.3 Fourier-Domain Circular Convolutions
 
-### 3.1 Stochastic Gene-Wise Sampling & Negotiation Rules
+To achieve massive parallelism on GPU hardware, continuous spatial convolutions are computed via 2D Real Fast Fourier Transforms:
 
-In multi-species simulations where cell parameters $(\boldsymbol{\mu}, \boldsymbol{\sigma}, \mathbf{w})$ vary spatially across grid points, moving mass transfers genome parameters to destination cells. To prevent parameter blurring into inert spatial averages during collisions, our framework implements **Stochastic Gene-Wise Sampling** (Michel et al. 2025):
+$$U_k(\mathbf{x}, t) = \mathcal{F}^{-1}\left(\mathcal{F}(A(\mathbf{x}, t)) \odot \widehat{K}_k\right)$$
 
-At each step, destination cell $(i,j)$ receives mass from incoming directions $d \in \{\text{center}, \text{left}, \text{right}, \text{up}, \text{down}\}$ with mass flux weights $w_d$. The parameter values at $(i,j)$ are sampled via Gumbel-Max categorical sampling over incoming directional mass fluxes:
-
-$$\pi_d = \frac{w_d}{\sum_k w_k}$$
-
-$$\text{Selected Direction } d^* = \arg\max_d \left(\ln(\pi_d) + g_d\right), \quad g_d \sim \text{Gumbel}(0,1)$$
-
-$$\boldsymbol{\mu}(i,j,t+1) = \boldsymbol{\mu}_{d^*}$$
-
-This preserves distinct genomic identities across species boundaries during collisions, enabling true open-ended evolutionary interaction.
+Where $\widehat{K}_k = \mathcal{F}(K_k)$ is precomputed at initialization for grid dimensions $(H, W)$, eliminating spatial kernel iteration.
 
 ---
 
-### 3.2 Spatially Localized Seeding & Gradient Slopes
+### 2.4 Continuous Growth Mappings & Negative Bounds
 
-Simulations are initialized with $N \in [3, 7]$ spatially localized density patches in vacuum (avoiding full-grid noise):
+For each kernel $k$, potential $U_k$ is mapped through a unimodal Gaussian growth function:
 
-1. **Patch Placement**: Patches are placed at radial distance $R_{\text{offset}} \in [10, 32]\text{ pixels}$ from grid center with angular placement $\theta_i = \frac{2\pi i}{N} + \Delta\theta$.
-2. **Sub-blob Mixture**: Each patch consists of 2–4 asymmetric Gaussian sub-blobs with random spatial offsets and radius $r_{\text{blob}} \in [7, 14]\text{ pixels}$.
-3. **Directional Slope Gradient**: Each patch is multiplied by an asymmetric directional slope gradient:
-   $$S(x,y) = \text{clip}\left(1.0 + 1.0 \cdot (\hat{y} \cdot d_y + \hat{x} \cdot d_x), 0.1, 2.2\right)$$
-   Where $(d_x, d_y)$ is the directional vector of the patch.
-   - **Thesis Note**: The directional slope forces an immediate spatial phase shift across the patch, creating an initial non-zero velocity gradient $\mathbf{v} = \nabla G(U) \neq 0$ that instantly launches glider translation.
+$$G_k(U_k) = 2 \exp\left(-\frac{(U_k - \mu_k)^2}{2\sigma_k^2}\right) - 1$$
 
----
+Where:
+- $\mu_k \in [0.13, 0.22]$ is the optimal growth center.
+- $\sigma_k \in [0.011, 0.024]$ is the growth tolerance width.
+- $G_k \in [-1.0, +1.0]$: Positive growth ($G > 0$) attracts mass; negative growth ($G < 0$) repels mass.
 
-### 3.3 Tangential Chord Directional Initialization
+The total effective growth field is the weighted linear combination:
 
-A major discovery during our autonomous agentic campaigns (Campaigns J & K) was the impact of initial directional seeding vectors:
+$$G(U)(\mathbf{x}) = \sum_{k=0}^{K-1} w_k(\mathbf{x}) \cdot G_k(U_k(\mathbf{x}))$$
 
-#### The Head-On Collision Failure Mode
-When patch directional vectors point head-on at each other ($0^\circ$ relative approach angle), gliders collide with high impact velocity. The density at the impact boundary spikes ($U \gg \mu$), triggering maximum negative growth ($G(U) < 0$). This causes mass annihilation or dissolves solid cores into hollow speckle rings ($R_{\text{core}} < 0.50$), leading to 0 valid elites over 5-generation runs.
-
-#### The Tangential Chord Solution
-To produce interactive ecosystems without mass annihilation, we introduced **Tangential Chord Seeding**:
-
-$$\theta_{\text{dir}} = \theta_{\text{radial}} \pm 1.25\text{ rad} + \text{Uniform}(-0.25, 0.25)$$
-
-Where $\theta_{\text{radial}} = \arctan2(c_y - \text{center}_y, c_x - \text{center}_x)$.
-
-- **Impact**: Forces gliders onto offset, passing approach trajectories.
-- **Observed Behavior**: Gliders approach each other along passing chords, pull into each other's continuous growth rings, perform elastic scattering, or form **bound glider pairs and satellite solitons orbiting central bodies** (e.g. Generation 60 elite).
+**Negative Growth Enforcement**: For densities $U > \mu + 1.2\sigma$, $G(U) < 0$ is strictly maintained, preventing solid gliders from collapsing into dense, static singularities ("melting").
 
 ---
 
-## 4. Curiosity Exploration & Watertight Quality Architecture
+### 2.5 Flux-Conserved Velocity Advection
 
-### 4.1 3-D Metric Space & IMGEP Curiosity Search
+In Flow-Lenia, mass advection is governed by the continuous continuity equation:
 
-To explore the Flow-Lenia universe autonomously, we implement the **Intrinsically Motivated Goal Exploration Process (IMGEP)** (Michel et al. 2025). The search engine projects each 3,000-step simulation rollout into a 3-D metric goal space:
+$$\frac{\partial A}{\partial t} + \nabla \cdot (A \mathbf{v}) = 0$$
 
-$$\mathbf{M} = \begin{bmatrix} v_{\text{CoM}} \\ \text{EA}_{\text{raw}} \\ \mathcal{C}_{\text{gzip}} \end{bmatrix}$$
+The unnormalized directional flux vector field $\mathbf{F} = (F_x, F_y)$ is computed from potential and density gradients:
 
-1. **Center of Mass Motility ($v_{\text{CoM}}$)**:
-   $$v_{\text{CoM}} = \|\text{CoM}(t_{\text{end}}) - \text{CoM}(t_{\text{start}})\|$$
-   Measures net translational displacement of system mass center in grid pixels.
+$$\mathbf{F}(\mathbf{x}) = v_{\text{scale}} \cdot \left((1 - \alpha) \nabla G(U)(\mathbf{x}) - \alpha \nabla A(\mathbf{x})\right)$$
 
-2. **Non-Neutral Evolutionary Activity (Quadratic EA)**:
-   $$\text{EA}_{\text{raw}} = \frac{1}{T} \sum_{t=1}^{T} \sum_{i,j} \mathbb{I}\left(g(i,j,t) \neq g(i,j,t-1)\right) \cdot A(i,j,t)^2$$
-   Quantifies phenotypic change across species genome map boundaries over time.
-
-3. **Compression Complexity ($\mathcal{C}_{\text{gzip}}$)**:
-   $$\mathcal{C}_{\text{gzip}} = \frac{\text{len}\left(\text{gzip}(\text{binarize}(A_{t_1, \dots, t_k}))\right)}{\text{uncompressed size}}$$
-   Measures spatio-temporal algorithmic complexity via Lempel-Ziv compression ratio.
+Where:
+- $v_{\text{scale}} \in [4.2, 6.5]$ is the velocity magnitude scaling factor.
+- $\alpha \in [0.04, 0.08]$ is the entropic mass diffusion coefficient.
+- $\nabla G(U)$ is the spatial gradient of growth, propelling fluid mass towards high-growth zones.
+- $\nabla A$ is the spatial gradient of density, providing smooth regularizing pressure.
 
 ---
 
-### 4.2 Watertight Filter Gates (`core/metrics.py`)
+### 2.6 Discrete Flux Normalization & Exact Mass Conservation
 
-Scalar metrics can be exploited by unconstrained noise or static breathing attractors. To ensure thesis-worthy candidate selection, every evaluation must pass **Watertight Quality Filter Gates**:
+To ensure step-wise conservation without numerical dissipation or accumulation, directional flux components are partitioned into 4 orthogonal directions:
 
-$$\text{WatertightScore} = \begin{cases} v_{\text{CoM}} \cdot R_{\text{core\_end}} \cdot R_{\text{mass}} & \text{if ALL gates pass} \\ 0.0000 & \text{if ANY gate fails} \end{cases}$$
+$$f_{\text{right}}(\mathbf{x}) = \max(0, F_x(\mathbf{x})), \quad f_{\text{left}}(\mathbf{x}) = \max(0, -F_x(\mathbf{x}))$$
+$$f_{\text{down}}(\mathbf{x}) = \max(0, F_y(\mathbf{x})), \quad f_{\text{up}}(\mathbf{x}) = \max(0, -F_y(\mathbf{x}))$$
 
-#### Gate Definitions:
+The total outgoing flux from cell $\mathbf{x}$ is $v_{\text{sum}}(\mathbf{x}) = f_{\text{right}} + f_{\text{left}} + f_{\text{down}} + f_{\text{up}}$. Outgoing fluxes are normalized:
 
-1. **Mass Preservation Ratio Gate**:
-   $$R_{\text{mass}} = \frac{\sum A(x,y,t_{\text{end}})}{\sum A(x,y,t_{\text{start}})} \in [0.60, 5.00]$$
-   - Disqualifies candidates suffering mass dissipation or explosive growth.
+$$\tilde{f}_d(\mathbf{x}) = \frac{f_d(\mathbf{x})}{\max\left(1.0, v_{\text{sum}}(\mathbf{x})\right)}, \quad d \in \{\text{right}, \text{left}, \text{down}, \text{up}\}$$
 
-2. **Solid Core Ratio Gate**:
-   $$R_{\text{core}} = \frac{\text{Area}(A \ge 0.15)}{\text{Area}(A > 0.01)} \ge 0.50$$
-   - Disqualifies hollow ring degenerations, ensuring dense, solid core retention.
+The updated mass density at $t + \Delta t$ is:
 
-3. **Motility Gate**:
-   $$v_{\text{CoM}} \ge 5.0\text{ pixels}$$
-   - Disqualifies stationary breathing still-lifes.
+$$A(\mathbf{x}, t + \Delta t) = A(\mathbf{x}, t) \cdot \left(1 - \sum_d \tilde{f}_d(\mathbf{x})\right) + \sum_d \tilde{f}_d(\mathbf{x} - \mathbf{e}_d) \cdot A(\mathbf{x} - \mathbf{e}_d, t)$$
 
-4. **Grid Coverage Gate**:
-   $$C_{\text{grid}} = \frac{\text{Area}(A > 0.01)}{H \cdot W} \le 0.25$$
-   - Disqualifies unconstrained grid-filling chaos.
+This guarantees that total system mass $M(t) = \sum_{\mathbf{x}} A(\mathbf{x}, t)$ remains **100.000% machine-precision conserved** ($R_{\text{mass}} = 1.000000$, relative error $< 5 \times 10^{-7}$).
 
 ---
 
-### 4.3 Visual-First Protocol & Dual-Panel Rendering
+### 2.7 Spatial Derivatives & Sobel Operators
 
-Numerical scores are necessary but NOT sufficient for thesis curation. AI models inspect trajectory outputs using a **Visual-First Protocol**:
+Spatial gradients are computed using 2D Sobel convolution operators with toroidal periodic boundaries:
 
-#### Dual-Panel PNG Rendering (`save_dual_panel_frames`):
-- **Left Panel (Plasma Palette)**: Colorized log-scale density mapping highlighting wave structure, perimeter shell contours, and multi-shell ring dynamics.
-- **Right Panel (Absolute Physical Scale)**: Linear density mapping ($[0.0, 1.0]$) rendering solid white high-density cores against black vacuum.
+$$\mathbf{S}_x = \frac{1}{8} \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}, \quad \mathbf{S}_y = \frac{1}{8} \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix}$$
 
-#### Motion Heatmap (`motion_heatmap.png`):
-- Temporal summation of frame-to-frame absolute density diffs:
-  $$H_{\text{motion}}(x,y) = \sum_{t=1}^{S-1} |A(x,y,t+1) - A(x,y,t)|$$
-- Displays continuous translation trails, distinguishing true directional motility from local wobble or stationary flicker.
+Using periodic array rolls:
+- $\nabla_x f(y, x) = \frac{1}{8} \left[(f_{y-1, x+1} + 2f_{y, x+1} + f_{y+1, x+1}) - (f_{y-1, x-1} + 2f_{y, x-1} + f_{y+1, x-1})\right]$
+- $\nabla_y f(y, x) = \frac{1}{8} \left[(f_{y+1, x-1} + 2f_{y+1, x} + f_{y+1, x+1}) - (f_{y-1, x-1} + 2f_{y-1, x} + f_{y-1, x+1})\right]$
 
 ---
 
-## 5. Engineering Architecture & JAX GPU Optimization
+### 2.8 Genome Mixing & Territorial Competition Rules
 
-### 5.1 FFT Frequency-Domain Convolutions
+When multiple species collide, their parameter maps $(\boldsymbol{\mu}, \boldsymbol{\sigma}, \mathbf{w})$ are updated using one of two mixing rules to prevent parameter blurring into inert averages:
 
-Computing spatial convolutions $U_k = K_k * A$ in the spatial domain for $K=9$ multi-shell kernels on a $384 \times 384$ grid is computationally prohibitive ($O(H W r^2)$). We utilize frequency-domain convolutions via JAX fast Fourier transforms:
-
-$$\hat{K}_k(u,v) = \text{rfft2}(K_k(x,y)) \quad \text{(Precomputed once)}$$
-
-$$U_k(x,y,t) = \text{irfft2}\left(\text{rfft2}(A(x,y,t)) \cdot \hat{K}_k(u,v)\right)$$
-
-This reduces convolution complexity to $O(H W \log(HW))$, accelerating rollouts by $>50\times$ on NVIDIA RTX 5090 GPUs.
-
----
-
-### 5.2 JIT Rollout Compilation & `vmap` Batching
-
-1. **`jax.lax.scan` Compilation**: The entire 3,000-step simulation rollout loop (`run_flow_lenia_rollout`) is compiled into a single XLA executable using `jax.lax.scan`. This eliminates Python loop overhead and keeps memory buffers entirely within GPU VRAM.
-2. **`jax.vmap` Batching**: Parallel IMGEP trial evaluations are batched across trials via `jax.vmap`, fully saturating GPU Tensor Cores.
+1. **Stochastic Gene-Wise Sampling (Gumbel-Max)**:
+   Parameters are sampled categorically from incoming directional mass fluxes using Gumbel-Max perturbations:
+   $$\text{Source}(\mathbf{x}) = \arg\max_{s \in \{0, 1, \dots, 4\}} \left(\log(\text{Flux}_s(\mathbf{x}) + 10^{-6}) + g_s\right), \quad g_s \sim \text{Gumbel}(0, 1)$$
+2. **Canonical Growth Negotiation Rule (Plantec et al. 2025)**:
+   When fluid masses overlap, local growth potentials compete through a temperature-scaled softmax:
+   $$w_{\text{eff}, s}(\mathbf{x}) = \frac{\exp\left(\beta \cdot G_s(U(\mathbf{x}))\right) \cdot \text{Mass}_s(\mathbf{x})}{\sum_j \exp\left(\beta \cdot G_j(U(\mathbf{x}))\right) \cdot \text{Mass}_j(\mathbf{x})}$$
+   where $\beta = 2.0$ represents territorial growth aggressiveness.
 
 ---
 
-### 5.3 Autonomous Campaign Harness & State Persistence
+## 3. Environmental Heterogeneity & Niche Construction
 
-The harness (`experiments/run_autonomous_agentic_loop.py`) orchestrates long-running research campaigns:
-- **State Logging**: State is updated after every generation and persisted to `results/agentic_loop/agentic_loop_state.json`.
-- **Handoff Memory**: Progress, parameter adjustments, and visual findings are logged to `CONTEXT_HANDOFF.md`.
-- **Visual Shortlist**: Certified elites are curated in `results/agentic_loop/visual_shortlist.md`.
+### 3.1 Static Barrier Walls & Passage Corridors
 
----
+The environmental spatial mask is defined as $M_{\text{env}}(\mathbf{x}) \in [0.0, 1.0]$:
+- $M_{\text{env}}(\mathbf{x}) = 1.0$: Passable vacuum / fluid domain.
+- $M_{\text{env}}(\mathbf{x}) = 0.0$: Rigid, impermeable obstacle boundary.
 
-## 6. Experimental Results, Phenotypic Taxonomy & Failure Modes
-
-### 6.1 Optimal Parameter Bounds
-
-Through adaptive domain tuning across 63 completed generations, we identified the optimal parameter regime for stable, motile, thesis-worthy solitons:
-
-| Parameter | Symbol | Optimal Range | Physical Role |
-| :--- | :---: | :---: | :--- |
-| **Velocity Scaling** | $v_{\text{scale}}$ | $4.2 - 6.5$ | Drives mass flux velocity; values $<4.0$ freeze into still-lifes; $>7.0$ tear solitons apart. |
-| **Diffusion Coupling** | $\alpha_{\text{diff}}$ | $0.04 - 0.08$ | Density regularization; values $<0.03$ dissipate mass; $>0.09$ suppress motility. |
-| **Growth Center** | $\mu$ | $0.14 - 0.18$ | Target kernel potential affinity for mass growth. |
-| **Growth Width** | $\sigma$ | $0.012 - 0.018$ | Width of Gaussian growth window. |
-| **Species Patches** | $N$ | $3 - 7$ | Number of localized initial species density patches. |
-| **Seeding Offset** | $\theta_{\text{chord}}$ | $\pm 1.25\text{ rad}$ | Tangential offset angle preventing head-on annihilation. |
+At barrier boundaries, advection fluxes into obstacles are zeroed: $\mathbf{F}(\mathbf{x}) \leftarrow \mathbf{F}(\mathbf{x}) \cdot M_{\text{env}}(\mathbf{x})$, enforcing zero-flux boundary conditions.
 
 ---
 
-### 6.2 Phenotypic Taxonomy & Curated Shortlist
+### 3.2 Corridor Constriction & Transmission Coefficient ($T$)
 
-Our autonomous campaigns discovered several distinct phenotypic classes:
+To evaluate the morphological plasticity and soft-bodied elasticity of Flow-Lenia solitons, a vertical barrier wall ($x = W/2$, thickness $d = 8\text{ px}$) partitions the domain into **Chamber 1** ($x < W/2$) and **Chamber 2** ($x > W/2$), joined by a central passage corridor of width $W_{\text{passage}} \in [8, 16, 24, 32]\text{ pixels}$.
 
-#### Class 1: Solid Glider Solitons (e.g. Gen 53, Gen 50, Gen 44)
-- **Morphology**: Articulated dual-lobed or "dumbbell-with-hat" S-solitons with persistent white cores ($R_{\text{core}} > 0.99$).
-- **Dynamics**: Translate smoothly across thousands of steps with legible double-track heatmap trails.
+**Transmission Coefficient**:
+$$T(W_{\text{passage}}) = \frac{\sum_{y} \sum_{x > W/2} A(y, x, t_{\text{end}})}{\sum_{y} \sum_{x} A(y, x, t_{\text{end}})}$$
 
-#### Class 2: Multi-Agent Orbiting Ecosystems (e.g. Gen 60, Gen 62)
-- **Morphology**: Central motile S-glider accompanied by 1–2 satellite solitons in bound orbits.
-- **Dynamics**: Satellite solitons orbit the main body, exchanging density wave pulses under gene-wise mixing while maintaining independent translation trails.
-
-#### Class 3: High-Motility Anchors (e.g. Gen 11)
-- **Morphology**: Compact high-speed soliton ($v_{\text{CoM}} = 12.36\text{ px}$).
-- **Dynamics**: Serves as the maximum velocity reference anchor in the dataset.
+- $T = 0.0$: Total reflection or blockage by the barrier.
+- $T = 1.0$: Complete migration and transmission through the corridor into Chamber 2.
 
 ---
 
-### 6.3 Failure Modes & Mitigation Strategies
+### 3.3 Dynamic Resource Depletion & Regeneration Fields
 
-| Failure Mode | Cause | Observed Effect | Mitigation Strategy |
+To simulate niche construction, organisms interact with a dynamic scalar resource field $R(\mathbf{x}, t) \in [0.0, 1.0]$:
+- **Depletion**: At cells where organism mass density $A(\mathbf{x}) \ge 0.10$:
+  $$R(\mathbf{x}, t + \Delta t) = \max\left(0.0, R(\mathbf{x}, t) - \delta_{\text{dep}}\right), \quad \delta_{\text{dep}} = 0.04$$
+- **Regeneration**: At unoccupied cells ($A(\mathbf{x}) < 0.10$):
+  $$R(\mathbf{x}, t + \Delta t) = \min\left(1.0, R(\mathbf{x}, t) + \delta_{\text{regen}}\right), \quad \delta_{\text{regen}} = 0.01$$
+- **Effective Growth Coupling**: The growth potential is scaled by the local resource:
+  $$G_{\text{coupled}}(\mathbf{x}) = G(U)(\mathbf{x}) \cdot R(\mathbf{x}, t)$$
+
+This creates a negative feedback loop: stationary organisms deplete their local substrate, collapsing their growth potential and forcing continuous migration and cyclic foraging trails.
+
+---
+
+## 4. Behavior Characterization & 3D Metric Space
+
+Each simulation rollout is projected into a standardized 3-dimensional behavioral space:
+
+$$\mathcal{B} = \left[v_{\text{CoM}}, \text{EA}, \mathcal{C}_{\text{gzip}}\right]$$
+
+### 4.1 Center of Mass Motility ($v_{\text{CoM}}$)
+
+Measures net spatial displacement of the organism's center of mass across the horizon:
+
+$$\mathbf{x}_{\text{CoM}}(t) = \frac{\sum_{\mathbf{x}} \mathbf{x} \cdot A(\mathbf{x}, t)}{\sum_{\mathbf{x}} A(\mathbf{x}, t)}$$
+
+$$v_{\text{CoM}} = \|\mathbf{x}_{\text{CoM}}(t_{\text{end}}) - \mathbf{x}_{\text{CoM}}(0)\|_2 \quad (\text{pixels})$$
+
+### 4.2 Non-Neutral Quadratic Evolutionary Activity ($\text{EA}$)
+
+Measures cumulative evolutionary dynamism and persistent non-neutral state transitions:
+
+$$\text{EA} = \frac{1}{T} \sum_{t=1}^{T} \left(\frac{1}{HW} \sum_{\mathbf{x}} \left(A(\mathbf{x}, t) - A(\mathbf{x}, t - \Delta t)\right)^2\right)$$
+
+### 4.3 Compression Complexity & Multi-Scale Entropy
+
+1. **Gzip Compression Complexity ($\mathcal{C}_{\text{gzip}}$)**:
+   Measures structural algorithmic complexity by compressing the thresholded binary trajectory array:
+   $$\mathcal{C}_{\text{gzip}} = \text{len}\left(\text{gzip}\left(\mathbb{I}(A(\mathbf{x}, t) \ge 0.05)\right)\right) \quad (\text{bytes})$$
+2. **Multi-Scale Spatial Shannon Entropy ($H$)**:
+   $$H(A) = -\sum_{i=1}^{B} p_i \log_2(p_i), \quad p_i = \frac{\text{count}(A \in \text{bin}_i)}{HW}$$
+
+### 4.4 Solid Core Ratio ($R_{\text{core}}$) & Mass Preservation ($R_{\text{mass}}$)
+
+- **Solid Core Density Ratio**:
+  $$R_{\text{core}} = \frac{\sum_{\mathbf{x}} A(\mathbf{x}, t_{\text{end}}) \cdot \mathbb{I}(A(\mathbf{x}, t_{\text{end}}) \ge 0.15)}{\sum_{\mathbf{x}} A(\mathbf{x}, t_{\text{end}})}$$
+  Ensures that the organism maintains a dense, coherent nucleus ($A \ge 0.15$) rather than decaying into hollow boundary shells.
+- **Mass Preservation Ratio**:
+  $$R_{\text{mass}} = \frac{\sum_{\mathbf{x}} A(\mathbf{x}, t_{\text{end}})}{\sum_{\mathbf{x}} A(\mathbf{x}, 0)}$$
+
+---
+
+## 5. Watertight Quality Filter Architecture
+
+### 5.1 The Five Disqualification Gates
+
+To prevent evolutionary search from being polluted by degenerated artifacts (dissolved gas, hollow shells, frozen still-lifes, or unconstrained grid chaos), every candidate rollout is evaluated through `evaluate_watertight_quality_score()` (`core/metrics.py`):
+
+| Gate # | Quality Filter Check | Threshold Criterion | Failure Meaning |
 | :--- | :--- | :--- | :--- |
-| **Head-On Annihilation** | Direct $0^\circ$ collision vector seeding | Density spikes ($U \gg \mu$), $G(U) < 0$ dissolves mass | Switched to **Tangential Chord Seeding** ($\pm 1.25\text{ rad}$) |
-| **Global Swirl Collapse** | Forced global tangential swirl hubs | 5-generation runs produced 0 valid elites | Reverted to localized random patch slope vectors |
-| **Hollow Ring Degeneration** | Low $\mu$ or wide $\sigma$ bounds | Density evacuates core, forming thin shell | Enforced $R_{\text{core}} \ge 0.50$ filter gate & tuned $\mu \in [0.14, 0.18]$ |
-| **Mass Dissipation** | Low $\alpha_{\text{diff}} < 0.03$ | Mass spreads thin into background vacuum | Raised $\alpha_{\text{diff}}$ lower bound to $0.04$ |
+| **Gate 1** | Mass Conservation | $R_{\text{mass}} \in [0.60, 5.00]$ | Numerical explosion or total mass annihilation |
+| **Gate 2** | Solid Core Ratio | $R_{\text{core}} \ge 0.50$ | Hollow, dispersed outline with no solid nucleus |
+| **Gate 3** | Minimum Motility | $v_{\text{CoM}} \ge 5.0\text{ px}$ | Frozen, static still-life (zero migration) |
+| **Gate 4** | Spatial Bounding | $C_{\text{grid}} = \frac{\text{count}(A \ge 0.05)}{HW} \le 0.25$ | Unconstrained global chaotic noise |
+| **Gate 5** | Non-Trivial Mass | $\sum_{\mathbf{x}} A(\mathbf{x}) \ge 10.0$ | Empty vacuum canvas |
+
+If **ANY** gate fails, the candidate is disqualified: $\text{Watertight Score} \leftarrow 0.0000$.
+
+### 5.2 Mathematical Formulation of Quality Score
+
+For candidates passing all 5 gates:
+
+$$\text{Score}_{\text{watertight}} = \left(\frac{v_{\text{CoM}}}{50.0}\right) \cdot \left(\frac{\text{EA}}{0.010}\right) \cdot R_{\text{core}} \cdot \left(1.0 - C_{\text{grid}}\right)$$
 
 ---
 
-## 7. Citation Summary for Thesis Writing
+## 6. Curiosity-Driven Exploration Algorithms
 
-When citing this framework in your thesis, use the following standard LaTeX citations:
+### 6.1 IMGEP (Intrinsically Motivated Goal Exploration Process)
 
-```latex
-% Flow-Lenia Original Canon
-@article{plantec2025flowlenia,
-  title={Flow-Lenia: Emergent Evolutionary Dynamics in Mass Conservative Continuous Cellular Automata},
-  author={Plantec, Erwan and Hamon, Ga{\"e}tan and Etcheverry, Mayalen and Chan, Bert Wang-Chak and Oudeyer, Pierre-Yves and Moulin-Frier, Cl{\'e}ment},
-  journal={Artificial Life},
-  volume={31},
-  number={2},
-  pages={1--24},
-  year={2025},
-  publisher={MIT Press}
-}
+IMGEP explores the continuous behavior space $\mathcal{B} = [v_{\text{CoM}}, \text{EA}, \mathcal{C}_{\text{gzip}}]$ through iterative goal babbling:
 
-% Curiosity AI Scientist & IMGEP Goal Exploration
+```
+Algorithm 1: IMGEP Goal Exploration with Watertight Gating
+------------------------------------------------------------
+Initialize Archive A = {}
+Phase 1: Bootstrap (n_bootstrap trials)
+  For i = 1 to n_bootstrap:
+    Sample genome θ_i ~ Uniform(Θ)
+    Rollout x_i = Simulate(θ_i)
+    Compute metrics b_i = Metrics(x_i), q_i = Watertight(x_i)
+    If q_i > 0: Add (θ_i, b_i, q_i) to A
+
+Phase 2: Goal Exploration (n_trials - n_bootstrap trials)
+  For i = n_bootstrap + 1 to n_trials:
+    Sample random behavioral goal g ~ Uniform(B_bounds)
+    Select parent θ_parent = argmin_{(θ, b) in A} ||b - g||_2
+    Mutate child θ_child = θ_parent + N(0, Σ_mut)
+    Rollout x_child = Simulate(θ_child)
+    Compute metrics b_child, q_child
+    If q_child > 0: Add (θ_child, b_child, q_child) to A
+```
+
+### 6.2 Uniform Random Search Baseline
+
+As an experimental control, Random Search samples all trials independently and uniformly from parameter space $\Theta \sim \text{Uniform}(\Theta_{\min}, \Theta_{\max})$ without goal selection or parent mutation.
+
+### 6.3 Farthest-Point Sampling (FPS) Archive Maintenance
+
+To downsample large archives while maximizing behavioral diversity, Farthest-Point Sampling greedily selects candidates that maximize minimum Euclidean distance in metric space:
+
+$$x_{k+1} = \arg\max_{x \in \mathcal{A} \setminus S_k} \min_{s \in S_k} \|b(x) - b(s)\|_2$$
+
+---
+
+## 7. Autonomous AI Scientist Discovery Pipeline
+
+Inspired by Michel et al. (2025/2026), the framework integrates an autonomous closed-loop discovery harness (`experiments/run_autonomous_agentic_loop.py`):
+
+```
+┌────────────────────────────────────────────────────────┐
+│               AI Scientist Agent Loop                  │
+│                                                        │
+│   1. IMGEP Search Generation (20-50 candidates)       │
+│                  │                                     │
+│                  ▼                                     │
+│   2. Watertight Quality Scoring & Hard Gating          │
+│                  │                                     │
+│                  ▼                                     │
+│   3. Multimodal Vision Trajectory Inspection (PNG)     │
+│                  │                                     │
+│                  ▼                                     │
+│   4. Adaptive Parameter Bound Tuning                   │
+│                  │                                     │
+│                  ▼                                     │
+│   5. Persistent State Archive (JSON + MP4 + NPZ)       │
+└────────────────────────────────────────────────────────┘
+```
+
+### 7.1 Multimodal Dual-Panel Visual Feedback Loop
+AI agents inspect 6-frame dual-panel trajectory PNGs ($t=0\%, 20\%, 40\%, 60\%, 80\%, 100\%$) and motion heatmaps via native computer vision (`view_file`), validating:
+1. Dense white persistent nucleus in the physical panel.
+2. Coherent perimeter waves without speckle noise in the plasma panel.
+3. Smooth continuous translation trails in the motion heatmap.
+
+---
+
+## 8. Experimental Protocols & Hypotheses
+
+### 8.1 Experiment 1: Baseline Open IMGEP vs. Random Search
+- **Objective**: Demonstrate that curiosity-driven goal exploration discovers significantly higher motility and complexity than uniform random sampling.
+- **Parameters**: 50 IMGEP trials vs 50 Random Search trials, 2000 steps, $256 \times 256$ grid.
+- **CLI**: `uv run python run_experiment.py --mode imgep --trials 50 --steps 2000`
+
+### 8.2 Experiment 2: Corridor Constriction & Morphological Plasticity
+- **Objective**: Quantify the transmission efficiency $T(W)$ and soft-bodied elasticity of Flow-Lenia solitons traversing geometric constrictions ($W_{\text{passage}} \in [8, 16, 24, 32]\text{ px}$).
+- **CLI**: `uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32`
+
+### 8.3 Experiment 3: Reactive Resource Depletion & Niche Construction
+- **Objective**: Show how stateful substrate depletion forces cyclic foraging and continuous locomotion.
+- **CLI**: `uv run python run_experiment.py --mode showcase`
+
+### 8.4 Experiment 4: Long-Duration Multi-Species Ecosystem Dynamics
+- **Objective**: Observe macro-scale multi-species interactions, territorial boundary formation, and soliton collisions over long horizons (4000 steps, $384 \times 384$).
+- **CLI**: `uv run python run_experiment.py --mode hero --patches 6 --grid_size 384 --steps 4000`
+
+### 8.5 Experiment 5: Resolution Invariance & Long-Horizon Scale-Up
+- **Objective**: Verify that discovered solitons remain stable and resolution-invariant when scaled to $512 \times 512$ over 10,000 steps.
+- **CLI**: `uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 10000`
+
+---
+
+## 9. Complete Hyperparameter Specification Tables
+
+### Table 1: Physical Simulation Hyperparameters
+| Parameter | Symbol | Default Value | Search / Sweep Range | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| Time step | $\Delta t$ | $0.05$ | Fixed | Temporal integration step |
+| Kernel count | $K$ | $9$ | Fixed | Number of concentric ring kernels |
+| Kernel outer radius | $R_k$ | Uniform$[6.0, 15.0]$ | $[6.0, 15.0]\text{ px}$ | Radial scaling per kernel |
+| Shell amplitudes | $b_{\text{shells}}$ | $[1.0, 0.50, 0.33]$ | Fixed | Concentric ring peak heights |
+| Shell peak radii | $r_{\text{peaks}}$ | $[0.50, 0.25, 0.75]$ | Fixed | Concentric ring peak locations |
+| Shell width | $w_{\text{width}}$ | $0.12$ | Fixed | Concentric ring Gaussian width |
+| Velocity scale | $v_{\text{scale}}$ | $5.2$ | $[4.2, 6.5]$ | Overall mass flux magnitude |
+| Diffusion coeff | $\alpha$ | $0.06$ | $[0.04, 0.08]$ | Entropic mass diffusion pressure |
+| Softmax beta | $\beta$ | $2.0$ | $[1.0, 4.0]$ | Negotiation competition aggressiveness |
+| Depletion rate | $\delta_{\text{dep}}$ | $0.04$ | $[0.02, 0.08]$ | Resource depletion per step |
+| Regen rate | $\delta_{\text{reg}}$ | $0.01$ | $[0.005, 0.03]$ | Resource regeneration per step |
+
+### Table 2: Biological & Mutation Hyperparameters
+| Parameter | Symbol | Default Value | Search Range | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| Species patches | $N_{\text{patches}}$ | $6$ | $[2, 8]$ | Number of initial seed organisms |
+| Growth center | $\mu_k$ | Uniform$[0.13, 0.22]$ | $[0.10, 0.28]$ | Preferred kernel density center |
+| Growth width | $\sigma_k$ | Uniform$[0.011, 0.024]$ | $[0.008, 0.030]$ | Growth tolerance window |
+| Kernel weights | $w_k$ | $1.0 / K$ | $[0.0, 1.0]$ | Linear kernel combination weight |
+| Mutation interval | $T_{\text{mut}}$ | $50\text{ steps}$ | $[20, 100]$ | Periodic mutation frequency |
+| Mutation radius | $R_{\text{mut}}$ | $10\text{ px}$ | $[5, 15]$ | Spatial radius of mutation patch |
+| Mutation noise | $\sigma_{\text{mut}}$ | $0.01$ | $[0.005, 0.02]$ | Gaussian standard deviation of mutation |
+
+---
+
+## 10. Step-by-Step Reproduction Guide
+
+### Prerequisites
+```bash
+# Verify Python 3.10+ and JAX GPU acceleration
+uv run python -c "import jax; print('JAX Devices:', jax.devices())"
+
+# Execute complete test suite
+uv run python -m unittest discover tests -v
+```
+
+### Reproducing All Thesis Benchmarks
+```bash
+# 1. Baseline IMGEP vs Random Search (Experiment 1)
+uv run python run_experiment.py --mode imgep --trials 50 --steps 2000 --output_dir results/baseline_imgep
+
+# 2. Barrier Constriction Parameter Sweep (Experiment 2)
+uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32 --steps 2000 --output_dir results/barrier_constriction
+
+# 3. Long Multi-Species Ecosystem Hero Run (Experiment 4)
+uv run python run_experiment.py --mode hero --patches 6 --grid_size 384 --steps 4000 --output_dir results/hero_ecosystems
+
+# 4. Mechanism Showcase Comparison (Experiment 3)
+uv run python run_experiment.py --mode showcase
+
+# 5. Long-Horizon 512x512 Scale-up Reruns (Experiment 5)
+uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 10000 --output_dir results/scaleup
+```
+
+### Docker Execution
+```bash
+docker build -t flow-lenia:latest .
+docker run --rm flow-lenia:latest
+```
+
+---
+
+## 11. BibTeX Academic Bibliography
+
+```bibtex
 @article{michel2025exploring,
   title={Exploring Flow-Lenia Universes with a Curiosity-driven AI Scientist},
-  author={Michel, Alex and Cvjetko, Marko and Hamon, Ga{\"e}tan and Oudeyer, Pierre-Yves and Moulin-Frier, Cl{\'e}ment},
+  author={Michel, Gautier and Cvjetko, Lana and Hamon, Erwan and Oudeyer, Pierre-Yves and Moulin-Frier, Cl{\'e}ment},
   journal={arXiv preprint arXiv:2505.15998},
   year={2025}
 }
 
-% Lenia Continuous CA & Multi-Shell Kernels
+@article{plantec2025flowlenia,
+  title={Flow-Lenia: Emergent Evolutionary Dynamics in Mass Conservative Continuous Cellular Automata},
+  author={Plantec, Erwan and Hamon, Erwan and Etcheverry, Mayalen and Chan, Bert Wang-Chak and Oudeyer, Pierre-Yves and Moulin-Frier, Cl{\'e}ment},
+  journal={Artificial Life},
+  volume={31},
+  number={2},
+  year={2025},
+  publisher={MIT Press}
+}
+
 @article{chan2019lenia,
   title={Lenia: Continuous Cellular Automata},
   author={Chan, Bert Wang-Chak},
   journal={Complex Systems},
   volume={28},
   number={3},
-  pages={251--286},
+  pages={275--323},
   year={2019}
 }
 
-% Quality-Diversity Leniabreeder
-@inproceedings{faldor2024leniabreeder,
+@article{chan2023towards,
+  title={Towards Large-Scale Simulations of Open-Ended Evolution in Continuous Cellular Automata},
+  author={Chan, Bert Wang-Chak},
+  journal={arXiv preprint arXiv:2304.05639},
+  year={2023}
+}
+
+@article{oudeyer2007intrinsic,
+  title={Intrinsic motivation systems for autonomous mental development},
+  author={Oudeyer, Pierre-Yves and Kaplan, Fr{\'e}d{\'e}ric and Hafner, Verena V},
+  journal={IEEE Transactions on Evolutionary Computation},
+  volume={11},
+  number={2},
+  pages={265--286},
+  year={2007},
+  publisher={IEEE}
+}
+
+@article{faldor2024leniabreeder,
   title={Toward Artificial Open-Ended Evolution within Lenia using Quality-Diversity},
   author={Faldor, Maxence and Cully, Antoine},
-  booktitle={Proceedings of the ALIFE 2024 Conference},
+  journal={ALIFE 2024: Proceedings of the 2024 Artificial Life Conference},
   year={2024}
 }
 ```
