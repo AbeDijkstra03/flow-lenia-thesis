@@ -107,29 +107,62 @@ def compute_sobel_gradients(field: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarra
     
     return grad_x, grad_y
 
+def moroz_reintegration_tracking(
+    mass: jnp.ndarray,
+    vx: jnp.ndarray,
+    vy: jnp.ndarray
+) -> Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray, jnp.ndarray, jnp.ndarray, jnp.ndarray]:
+    """
+    Moroz (2020) / Plantec (2025) Bilinear Reintegration Tracking:
+    Continuous 2D semi-Lagrangian transport with 9-neighbor bilinear splatting.
+    Preserves exact mass conservation without artificial axis-aligned damping drag.
+    """
+    vx = jnp.clip(vx, -1.0, 1.0)
+    vy = jnp.clip(vy, -1.0, 1.0)
+    
+    fx_pos = jnp.maximum(0.0, vx)
+    fx_neg = jnp.maximum(0.0, -vx)
+    fx_zero = 1.0 - fx_pos - fx_neg
+    
+    fy_pos = jnp.maximum(0.0, vy)
+    fy_neg = jnp.maximum(0.0, -vy)
+    fy_zero = 1.0 - fy_pos - fy_neg
+    
+    # 9-neighbor outgoing mass parcels from cell (y, x)
+    m_00 = mass * fy_zero * fx_zero
+    m_0R = mass * fy_zero * fx_pos
+    m_0L = mass * fy_zero * fx_neg
+    m_D0 = mass * fy_pos * fx_zero
+    m_U0 = mass * fy_neg * fx_zero
+    m_DR = mass * fy_pos * fx_pos
+    m_DL = mass * fy_pos * fx_neg
+    m_UR = mass * fy_neg * fx_pos
+    m_UL = mass * fy_neg * fx_neg
+    
+    # Incoming mass from 9 neighbors
+    new_mass = (
+        m_00
+        + jnp.roll(m_0R, shift=1, axis=1)
+        + jnp.roll(m_0L, shift=-1, axis=1)
+        + jnp.roll(m_D0, shift=1, axis=0)
+        + jnp.roll(m_U0, shift=-1, axis=0)
+        + jnp.roll(m_DR, shift=(1, 1), axis=(0, 1))
+        + jnp.roll(m_DL, shift=(1, -1), axis=(0, 1))
+        + jnp.roll(m_UR, shift=(-1, 1), axis=(0, 1))
+        + jnp.roll(m_UL, shift=(-1, -1), axis=(0, 1))
+    )
+    
+    retained_center = m_00
+    f_in_left = jnp.roll(m_0R, shift=1, axis=1)
+    f_in_right = jnp.roll(m_0L, shift=-1, axis=1)
+    f_in_up = jnp.roll(m_D0, shift=1, axis=0)
+    f_in_down = jnp.roll(m_U0, shift=-1, axis=0)
+    
+    return new_mass, retained_center, f_in_left, f_in_right, f_in_up, f_in_down
+
 def compute_advection_fluxes(mass: jnp.ndarray, vx: jnp.ndarray, vy: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray, jnp.ndarray, jnp.ndarray]:
-    vx_pos = jnp.maximum(vx, 0.0)
-    vx_neg = jnp.maximum(-vx, 0.0)
-    vy_pos = jnp.maximum(vy, 0.0)
-    vy_neg = jnp.maximum(-vy, 0.0)
-    
-    v_sum = vx_pos + vx_neg + vy_pos + vy_neg
-    scale = jnp.where(v_sum > 1.0, 1.0 / (v_sum + 1e-8), 1.0)
-    
-    flux_out_right = mass * (vx_pos * scale)
-    flux_out_left = mass * (vx_neg * scale)
-    flux_out_down = mass * (vy_pos * scale)
-    flux_out_up = mass * (vy_neg * scale)
-    
-    flux_in_from_left = jnp.roll(flux_out_right, shift=1, axis=1)
-    flux_in_from_right = jnp.roll(flux_out_left, shift=-1, axis=1)
-    flux_in_from_up = jnp.roll(flux_out_down, shift=1, axis=0)
-    flux_in_from_down = jnp.roll(flux_out_up, shift=-1, axis=0)
-    
-    total_outgoing = flux_out_right + flux_out_left + flux_out_down + flux_out_up
-    retained_center = mass - total_outgoing
-    
-    return retained_center, flux_in_from_left, flux_in_from_right, flux_in_from_up, flux_in_from_down
+    _, retained_center, f_in_left, f_in_right, f_in_up, f_in_down = moroz_reintegration_tracking(mass, vx, vy)
+    return retained_center, f_in_left, f_in_right, f_in_up, f_in_down
 
 def stochastic_gene_wise_mixing(
     rng_key: jnp.ndarray,
@@ -245,7 +278,7 @@ def flow_lenia_step_single(
     
     U_stack = jax.vmap(_conv_k)(kernel_ffts)
     
-    effective_mu = state.mu_map * new_resource[None, :, :]
+    effective_mu = state.mu_map
     sigma_map = state.sigma_map
     weights_map = state.weights_map
     
@@ -257,6 +290,9 @@ def flow_lenia_step_single(
         G = jnp.sum(weights_map * G_k, axis=0) - repulsion_term
     else:
         G = jnp.sum(weights_map * G_k, axis=0)
+        
+    if enable_depletion:
+        G = G * (0.5 + 0.5 * new_resource)
         
     gx, gy = compute_sobel_gradients(G)
     ax, ay = compute_sobel_gradients(mass_primary)
@@ -271,9 +307,7 @@ def flow_lenia_step_single(
         vx = vx * wall_mask
         vy = vy * wall_mask
     
-    retained_center, f_left, f_right, f_up, f_down = compute_advection_fluxes(mass_primary, vx, vy)
-    
-    new_mass_primary = retained_center + f_left + f_right + f_up + f_down
+    new_mass_primary, retained_center, f_left, f_right, f_up, f_down = moroz_reintegration_tracking(mass_primary, vx, vy)
     
     target_tot = target_mass_total if target_mass_total is not None else jnp.sum(mass_primary)
     curr_mass_sum = jnp.sum(new_mass_primary)
@@ -386,47 +420,37 @@ def initialize_multi_patch_state(
             dx_dir = random.uniform(subk_angle, (), minval=0.80, maxval=1.00)
         else:
             base_angle = (2.0 * jnp.pi * i) / float(n_patches)
-            angle_jitter = random.uniform(subk_pos, (), minval=-0.35, maxval=0.35)
+            angle_jitter = random.uniform(subk_pos, (), minval=-0.25, maxval=0.25)
             angle = base_angle + angle_jitter
             min_dim = float(min(H, W))
             if n_patches > 1:
-                radius_offset = min_dim * random.uniform(subk_pos, (), minval=0.20, maxval=0.32)
+                radius_offset = min_dim * random.uniform(subk_pos, (), minval=0.15, maxval=0.23)
             else:
                 radius_offset = 0.0
             cy = int(center_y + radius_offset * jnp.sin(angle))
             cx = int(center_x + radius_offset * jnp.cos(angle))
             
-            radial_angle = jnp.arctan2((cy - center_y), (cx - center_x))
-            chord_sign = jnp.where(random.bernoulli(subk_angle, 0.5), 1.0, -1.0)
-            chord_offset = chord_sign * 1.25 + random.uniform(subk_angle, (), minval=-0.25, maxval=0.25)
-            dir_angle = radial_angle + chord_offset
+            # Direct swimming vector inward towards the central arena with slight rotational drift
+            dir_angle = angle + jnp.pi + random.uniform(subk_angle, (), minval=-0.30, maxval=0.30)
             dy_dir = jnp.sin(dir_angle)
             dx_dir = jnp.cos(dir_angle)
         
-        n_blobs = int(random.randint(subk_blobs, (), 2, 4))
-        patch_density = jnp.zeros((H, W), dtype=jnp.float32)
-        patch_mask = jnp.zeros((H, W), dtype=jnp.bool_)
+        # Asymmetric Crescent Glider Soliton (Dense Forward Nucleus + Trailing Crescent Tail)
+        hy = cy + 5.0 * dy_dir
+        hx = cx + 5.0 * dx_dir
+        d_head = (yy - hy)**2 + (xx - hx)**2
+        head = 0.95 * jnp.exp(-d_head / (2.0 * (5.5**2)))
         
-        for b in range(n_blobs):
-            rng_key, subk_b1, subk_b2, subk_b3 = random.split(rng_key, 4)
-            off_y = random.uniform(subk_b1, (), minval=-8.0, maxval=8.0)
-            off_x = random.uniform(subk_b2, (), minval=-8.0, maxval=8.0)
-            r_blob = random.uniform(subk_b3, (), minval=7.0, maxval=14.0)
-            amp = random.uniform(subk_b3, (), minval=0.6, maxval=0.95)
-            
-            d_sq = (yy - (cy + off_y))**2 + (xx - (cx + off_x))**2
-            b_mask = d_sq <= (r_blob * 1.5)**2
-            
-            rel_y = (yy - cy) / (r_blob + 1e-8)
-            rel_x = (xx - cx) / (r_blob + 1e-8)
-            density_slope = 1.0 + 1.0 * (rel_y * dy_dir + rel_x * dx_dir)
-            density_slope = jnp.clip(density_slope, 0.1, 2.2)
-            
-            b_dens = amp * jnp.exp(-d_sq / (2.0 * (r_blob / 2.2)**2)) * density_slope * b_mask
-            
-            patch_density = patch_density + b_dens
-            patch_mask = patch_mask | b_mask
-            
+        ty = cy - 4.0 * dy_dir
+        tx = cx - 4.0 * dx_dir
+        d_tail = (yy - ty)**2 + (xx - tx)**2
+        tail_dist = jnp.sqrt(d_tail) + 1e-8
+        rel_dot = ((yy - ty) * dy_dir + (xx - tx) * dx_dir) / tail_dist
+        tail = 0.75 * jnp.exp(-((tail_dist - 11.0)**2) / (2.0 * (3.8**2))) * (rel_dot < 0.25)
+        
+        patch_density = jnp.clip(head + tail, 0.0, 1.0)
+        patch_mask = patch_density > 0.05
+        
         mass = mass.at[0].add(patch_density)
         
         if mu_presets is not None and i < len(mu_presets):

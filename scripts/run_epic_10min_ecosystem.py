@@ -77,20 +77,29 @@ def run_epic_10min_ecosystem(
     H, W = grid_size, grid_size
     K = 9
     
-    # 1. Generate multi-shell kernels
+    # 1. Generate multi-shell kernels with staggered radii
     rng_key, subk = random.split(rng_key)
-    radii = jnp.sort(random.uniform(subk, (K,), minval=7.0, maxval=16.0))
+    radii = jnp.linspace(8.0, 22.0, K)
     print("\n[1/4] Precomputing Fourier-domain multi-shell kernels...")
     kernel_ffts = precompute_kernel_ffts(radii, H, W)
     
-    # 2. Configure 8 distinct species genomes
+    # 2. Configure 8 distinct species genomes with active motility
     rng_key, k_mu, k_sigma = random.split(rng_key, 3)
-    mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.135, maxval=0.195)
-    sigma_presets = random.uniform(k_sigma, (n_patches, K), minval=0.012, maxval=0.018)
+    mu_presets = jnp.array([
+        [0.150] * K,
+        [0.156] * K,
+        [0.144] * K,
+        [0.152] * K,
+        [0.148] * K,
+        [0.158] * K,
+        [0.142] * K,
+        [0.154] * K,
+    ], dtype=jnp.float32)
+    sigma_presets = jnp.full((n_patches, K), 0.015, dtype=jnp.float32)
     
-    v_scale = 5.4
-    alpha_diff = 0.055
-    beta_negotiation = 2.5
+    v_scale = 5.6
+    alpha_diff = 0.045
+    beta_negotiation = 2.8
     
     params = FlowLeniaParams(
         mu=mu_presets[0],
@@ -99,8 +108,8 @@ def run_epic_10min_ecosystem(
         v_scale=v_scale,
         alpha_diffusion=alpha_diff,
         beta=beta_negotiation,
-        depletion_rate=0.02,
-        regen_rate=0.008
+        depletion_rate=0.01,
+        regen_rate=0.005
     )
     
     # 3. Seed 8 species in a wide circle with chordal velocities
