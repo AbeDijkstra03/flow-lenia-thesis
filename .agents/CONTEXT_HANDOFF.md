@@ -9,12 +9,26 @@ This document maintains state persistence across conversation turns and model se
 - **Canonical Literature**:
   - Full reading list preserved in [docs/LITERATURE_READING_LIST.md](file:///home/abedijkstra/Documents/Scriptie/docs/LITERATURE_READING_LIST.md).
   - Primary references: Michel et al. (2025/2026, arXiv:2505.15998), Plantec et al. (2025, arXiv:2506.08569).
-- **Core Physics Formulation**:
-  $$\mathbf{F} = v_{\text{scale}} \cdot \left((1 - \alpha) \nabla G(U) - \alpha \nabla A\right)$$
-  - Mass conservation: Outgoing fluxes normalized by `1.0 / max(1.0, v_sum)`. Step-0 mass total conserved to $100.000\%$.
-  - Kernels: Multi-shell concentric rings ($b = [1.0, 0.5, 0.33]$, $r = [0.5, 0.25, 0.75]$, $r_w = 0.12$).
-  - Spatial Derivatives: Sobel gradient operator with positive coordinate indexing ($x+1 \to \text{roll}(-1, 1)$, $y+1 \to \text{roll}(-1, 0)$).
-  - Mixing Rules: Stochastic Gene-Wise Sampling & Growth Negotiation Rule ($\text{softmax}(\beta G)$).
+- **Agent Context Handoff Memory (Flow-Lenia Research Framework)**
+
+## Current Status & State of the Codebase
+- **Date**: 2026-08-16
+- **Physics Engine**: Native JAX on NVIDIA RTX 5090 Blackwell GPU. Exact machine-precision mass conservation via Moroz (2020) bilinear flux tracking ($0.00\text{e}+00$ relative error).
+- **Smoothness & Stability**: Velocity transport regularized with $C^\infty$ smooth hyperbolic tangent $\mathbf{v} \leftarrow \tanh(\mathbf{v})$ ($v_{\text{scale}} \approx 5.4$, $\alpha \approx 0.055$). Fixed absolute physical intensity scaling in `core/visualization.py` eliminates all frame-to-frame brightness jitter and strobing.
+- **Gene-Wise Gumbel-Max Mixing**: Unlocked thriving multicellular colonies with porous lattices, dividing daughter gliders, and active locomotion across all runs.
+
+## Standardized Experiment Outputs (`results/`)
+All experiments are standardized to 1-minute HD videos (or 5-minute broadcast for the master ecosystem), composite filmstrips, motion heatmaps, and JSON metadata:
+1. `results/epic_ecosystem/`: 5-minute broadcast ecosystem (22,500 steps, 7,500 frames, 64.65 MB MP4).
+2. `results/hero_ecosystems/`: 1-minute hero run on $384 \times 384$ arena with 6 species.
+3. `results/baseline_imgep/`: Top-3 IMGEP curiosity search elites from 40 goal exploration trials.
+4. `results/wall_obstacles/`: Top-3 IMGEP elites navigating around DodgerBlue barrier walls.
+5. `results/barrier_constriction/`: Constriction sweep ($W=8, 16, 24, 32$ px) with motile gliders.
+6. `results/orbium/`: Classic *Orbium unicaudatus* glider physics verification video.
+7. `results/resource_depletion/`: Static nutrient baseline vs dynamic foraging depletion comparison.
+8. `results/showcase/`: 3 physical mechanism showcases (Gene Mutation, Negotiation Rule, Depletion).
+9. `results/scaleup/`: Scaled-up runs on $512 \times 512$ canvas with FPS selection from IMGEP archive.
+10. `results/agentic_loop/`: Multi-generation autonomous AI Scientist discovery state.
 
 ---
 
