@@ -38,6 +38,7 @@ from experiments.run_imgep_search import main as run_imgep_main
 from experiments.run_scaleup import main as run_scaleup_main
 from experiments.run_barrier_constriction import main as run_constriction_main
 from experiments.run_resource_depletion import main as run_depletion_main
+from scripts.run_epic_10min_ecosystem import main as run_epic_main
 from scripts.run_hero_ecosystem import main as run_hero_main
 from scripts.run_showcase_methods import main as run_showcase_main
 from scripts.spawn_orbium import main as run_orbium_main
@@ -50,7 +51,7 @@ def main():
     )
     parser.add_argument(
         "--mode", type=str,
-        choices=["imgep", "wall_obstacle", "barrier_constriction", "depletion", "scaleup", "hero", "showcase", "orbium"],
+        choices=["imgep", "wall_obstacle", "barrier_constriction", "depletion", "epic", "scaleup", "hero", "showcase", "orbium"],
         default="imgep",
         help="Experiment execution mode (default: imgep)"
     )
@@ -137,6 +138,19 @@ def main():
             "--output_dir", out_dir
         ]
         run_depletion_main()
+        
+    elif args.mode == "epic":
+        out_dir = args.output_dir or "results/epic_ecosystem"
+        sys.argv = [
+            sys.argv[0],
+            "--grid_size", str(args.grid_size if args.grid_size >= 384 else 512),
+            "--steps", str(args.steps if args.steps >= 10000 else 45000),
+            "--sample_interval", str(args.sample_interval if args.sample_interval <= 5 else 3),
+            "--patches", str(args.patches if args.patches >= 6 else 8),
+            "--seed", str(args.seed),
+            "--output_dir", out_dir
+        ]
+        run_epic_main()
         
     elif args.mode == "scaleup":
         out_dir = args.output_dir or "results/scaleup"
