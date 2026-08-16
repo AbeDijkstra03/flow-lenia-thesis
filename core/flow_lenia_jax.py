@@ -410,10 +410,10 @@ def initialize_multi_patch_state(
         rng_key, subk_pos, subk_blobs, subk_angle, subk_p1, subk_p2 = random.split(rng_key, 6)
         
         if is_corridor_test:
-            cy = int(H * 0.50 + random.uniform(subk_pos, (), minval=-10.0, maxval=10.0))
-            cx = int(W * 0.22 + random.uniform(subk_pos, (), minval=-10.0, maxval=10.0))
-            dy_dir = random.uniform(subk_angle, (), minval=-0.20, maxval=0.20)
-            dx_dir = random.uniform(subk_angle, (), minval=0.85, maxval=1.00)
+            cy = int(H * 0.50 + random.uniform(subk_pos, (), minval=-4.0, maxval=4.0))
+            cx = int(W // 2 - 35 + random.uniform(subk_pos, (), minval=-4.0, maxval=4.0))
+            dy_dir = random.uniform(subk_angle, (), minval=-0.05, maxval=0.05)
+            dx_dir = 1.0
         else:
             base_angle = (2.0 * jnp.pi * i) / float(n_patches)
             angle_jitter = random.uniform(subk_pos, (), minval=-0.25, maxval=0.25)

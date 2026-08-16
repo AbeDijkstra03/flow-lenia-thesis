@@ -434,20 +434,29 @@ uv run python -m unittest discover tests -v
 
 ### Reproducing All Thesis Benchmarks
 ```bash
-# 1. Baseline IMGEP vs Random Search (Experiment 1)
-uv run python run_experiment.py --mode imgep --trials 50 --steps 2000 --output_dir results/baseline_imgep
+# 1. Baseline IMGEP vs Random Search (Experiment 1: results/baseline_imgep/elite_1/ .. elite_3/)
+uv run python run_experiment.py --mode imgep --trials 40 --steps 2500 --output_dir results/baseline_imgep
 
-# 2. Barrier Constriction Parameter Sweep (Experiment 2)
-uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32 --steps 2000 --output_dir results/barrier_constriction
+# 2. Wall Obstacles IMGEP Exploration (Experiment 2: results/wall_obstacles/elite_1/ .. elite_3/)
+uv run python run_experiment.py --mode wall_obstacle --trials 40 --steps 2500 --output_dir results/wall_obstacles
 
-# 3. Long Multi-Species Ecosystem Hero Run (Experiment 4)
-uv run python run_experiment.py --mode hero --patches 6 --grid_size 384 --steps 4000 --output_dir results/hero_ecosystems
+# 3. Barrier Constriction Parameter Sweep (Experiment 3: results/barrier_constriction/width_08/ .. width_32/)
+uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32 --steps 3600 --output_dir results/barrier_constriction
 
-# 4. Mechanism Showcase Comparison (Experiment 3)
+# 4. Resource Depletion & Niche Construction (Experiment 4: results/resource_depletion/static_baseline/ & dynamic_depletion/)
+uv run python run_experiment.py --mode depletion --grid_size 256 --steps 3600 --output_dir results/resource_depletion
+
+# 5. Mechanism Showcase Comparison (Experiment 5: results/showcase/method_1_gene_mutation/ & method_2_negotiation_rule/)
 uv run python run_experiment.py --mode showcase
 
-# 5. Long-Horizon 512x512 Scale-up Reruns (Experiment 5)
-uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 10000 --output_dir results/scaleup
+# 6. Long-Horizon 512x512 Scale-up Reruns (Experiment 6: results/scaleup/rerun_1/ & rerun_2/)
+uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 3600 --output_dir results/scaleup
+
+# 7. Classic Orbium Unicaudatus Physics Verification (results/orbium/)
+uv run python run_experiment.py --mode orbium
+
+# 8. Master Epic Ecosystem Simulation (results/epic_ecosystem/)
+uv run python run_experiment.py --mode epic --grid_size 384 --steps 22500 --sample_interval 3 --patches 8 --output_dir results/epic_ecosystem
 ```
 
 ### Docker Execution

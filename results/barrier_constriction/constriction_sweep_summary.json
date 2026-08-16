@@ -1,38 +1,38 @@
 [
   {
     "passage_width": 8,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9999980781769219,
-    "solid_core_ratio": 0.9691615320336113,
-    "com_shift": 18.319135964248197,
-    "right_chamber_mass": 0.0,
-    "total_mass": 730.455322275625
+    "transmission_coeff": 3.917125114949767e-45,
+    "mass_preservation": 0.8587096738371202,
+    "solid_core_ratio": 0.9690887611390085,
+    "com_shift": 26.800429362989373,
+    "right_chamber_mass": 2.291122989171076e-42,
+    "total_mass": 584.8991088967188
   },
   {
     "passage_width": 16,
     "transmission_coeff": 0.0,
-    "mass_preservation": 0.9999977342167261,
-    "solid_core_ratio": 0.9745866216661705,
-    "com_shift": 6.1016335255615335,
+    "mass_preservation": 0.9430928276083355,
+    "solid_core_ratio": 0.9771297314715199,
+    "com_shift": 12.317169877393038,
     "right_chamber_mass": 0.0,
-    "total_mass": 619.5673828225
+    "total_mass": 518.3096923928125
   },
   {
     "passage_width": 24,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9999980964839013,
-    "solid_core_ratio": 0.9754161950574872,
-    "com_shift": 12.448779684875126,
-    "right_chamber_mass": 0.0,
-    "total_mass": 801.6091919045313
+    "transmission_coeff": 1.6279997727076716e-10,
+    "mass_preservation": 0.8787855464504,
+    "solid_core_ratio": 0.9691131801438659,
+    "com_shift": 7.123851998823539,
+    "right_chamber_mass": 1.1027522361928277e-07,
+    "total_mass": 677.3663330178125
   },
   {
     "passage_width": 32,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9999982063911896,
-    "solid_core_ratio": 0.9741959276148398,
-    "com_shift": 3.3872386837073445,
-    "right_chamber_mass": 0.0,
-    "total_mass": 782.6712646584375
+    "transmission_coeff": 3.689689777384907e-05,
+    "mass_preservation": 0.8510092755318629,
+    "solid_core_ratio": 0.9772242879000343,
+    "com_shift": 15.674226218833661,
+    "right_chamber_mass": 0.023040657863020897,
+    "total_mass": 624.4605712990625
   }
 ]

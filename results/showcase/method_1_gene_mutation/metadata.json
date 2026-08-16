@@ -1,0 +1,19 @@
+{
+  "prefix": "method_1_gene_mutation",
+  "config": {
+    "grid_size": 384,
+    "steps": 3600,
+    "patches": 6,
+    "v_scale": 5.4,
+    "alpha_diffusion": 0.055
+  },
+  "metrics": {
+    "method": "gene_mutation",
+    "mixing_rule": "gene_wise",
+    "mutation_interval": 60
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

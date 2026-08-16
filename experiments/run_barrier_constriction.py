@@ -137,10 +137,14 @@ def run_constriction_sweep(
         cy_end, cx_end = compute_center_of_mass(final_mass)
         com_shift = float(np.sqrt((cy_end - cy0)**2 + (cx_end - cx0)**2))
         
-        print(f"Transmission Coeff T: {transmission_coeff:.4f} ({transmission_coeff*100:.1f}%)")
-        print(f"Mass Preservation: {mass_preservation:.6f} | Solid Core Ratio: {solid_core_ratio:.4f} | CoM Shift: {com_shift:.2f} px")
+        v_scale = 4.5
+        alpha_diff = 0.038
+        params = FlowLeniaParams(
+            mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K),
+            v_scale=v_scale, alpha_diffusion=alpha_diff
+        )
         
-        prefix = f"constriction_W{p_width}"
+        prefix = f"width_{p_width:02d}"
         config_dict = {
             "passage_width": p_width,
             "grid_size": grid_size,

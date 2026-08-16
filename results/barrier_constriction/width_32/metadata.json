@@ -1,0 +1,23 @@
+{
+  "prefix": "width_32",
+  "config": {
+    "passage_width": 32,
+    "grid_size": 256,
+    "steps": 3600,
+    "v_scale": 4.5,
+    "alpha_diffusion": 0.038
+  },
+  "metrics": {
+    "passage_width": 32,
+    "transmission_coeff": 3.689689777384907e-05,
+    "mass_preservation": 0.8510092755318629,
+    "solid_core_ratio": 0.9772242879000343,
+    "com_shift": 15.674226218833661,
+    "right_chamber_mass": 0.023040657863020897,
+    "total_mass": 624.4605712990625
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

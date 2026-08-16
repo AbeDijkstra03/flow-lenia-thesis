@@ -90,7 +90,7 @@ def main():
     print(f"\n[Visualization] Saving SOTA MP4 videos, filmstrips, & heatmaps for top 3 IMGEP elites...")
     for r_rank, top_idx in enumerate(top_indices):
         trial = imgep_archive.trials[top_idx]
-        prefix = f"elite_{r_rank+1}_trial{top_idx}"
+        prefix = f"elite_{r_rank+1}"
         save_experiment_artifacts(
             sampled_mass_frames=imgep_rollouts[top_idx],
             metrics=trial["metrics"],
@@ -100,7 +100,7 @@ def main():
             fps=20,
             wall_mask=wall_mask
         )
-        print(f"Saved artifacts for: {prefix} (MP4 + Filmstrip + Heatmap + NPZ)")
+        print(f"Saved artifacts for: {prefix} (MP4 + Filmstrip + Heatmap + NPZ in {args.output_dir}/{prefix}/)")
         
     print(f"\nAll search experiment artifacts successfully saved to: {args.output_dir}/")
 

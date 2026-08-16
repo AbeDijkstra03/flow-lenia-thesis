@@ -238,26 +238,35 @@ def save_experiment_artifacts(
     metrics: Dict[str, Any],
     config: Dict[str, Any],
     output_dir: str,
-    prefix: str,
+    prefix: str = "",
     fps: int = 20,
     wall_mask: Optional[np.ndarray] = None,
-    genome_id_maps: Optional[np.ndarray] = None
+    genome_id_maps: Optional[np.ndarray] = None,
+    use_subfolder: bool = True
 ) -> Dict[str, str]:
     """
     One-shot comprehensive scientific artifact generator:
-    - Broadcast MP4 video (dual panel)
-    - Trajectory filmstrip PNG (6 frames)
-    - Cumulative motion heatmap PNG
-    - Compressed NumPy data (.npz)
-    - Metadata & metric JSON
+    Saves clean per-simulation package containing:
+    - rollout.mp4 (Broadcast dual-panel video)
+    - trajectory_filmstrip.png (6-frame composite LaTeX figure)
+    - motion_heatmap.png (Cumulative motion trajectory)
+    - data.npz (Raw simulation arrays)
+    - metadata.json (Full hyperparameter & metric logs)
     """
-    os.makedirs(output_dir, exist_ok=True)
+    if use_subfolder and prefix:
+        target_dir = os.path.join(output_dir, prefix)
+        file_prefix = ""
+    else:
+        target_dir = output_dir
+        file_prefix = f"{prefix}_" if prefix else ""
+        
+    os.makedirs(target_dir, exist_ok=True)
     
-    video_path = os.path.join(output_dir, f"{prefix}_rollout.mp4")
-    filmstrip_path = os.path.join(output_dir, f"{prefix}_trajectory_filmstrip.png")
-    heatmap_path = os.path.join(output_dir, f"{prefix}_motion_heatmap.png")
-    data_path = os.path.join(output_dir, f"{prefix}_data.npz")
-    meta_path = os.path.join(output_dir, f"{prefix}_metadata.json")
+    video_path = os.path.join(target_dir, f"{file_prefix}rollout.mp4")
+    filmstrip_path = os.path.join(target_dir, f"{file_prefix}trajectory_filmstrip.png")
+    heatmap_path = os.path.join(target_dir, f"{file_prefix}motion_heatmap.png")
+    data_path = os.path.join(target_dir, f"{file_prefix}data.npz")
+    meta_path = os.path.join(target_dir, f"{file_prefix}metadata.json")
     
     save_rollout_mp4(
         sampled_mass_frames, video_path, fps=fps, dual_panel=True,

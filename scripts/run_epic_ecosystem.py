@@ -29,40 +29,41 @@ from core.visualization import (
     colorize_multi_species_frame, render_physical_frame
 )
 
-def render_dual_panel_frame(
+def render_composite_frame(
     mass_2d: np.ndarray,
-    gid_2d: Optional[np.ndarray],
-    com_pos: Optional[Tuple[float, float]] = None
+    gid_2d: np.ndarray,
+    com_pos: Optional[Tuple[float, float]] = None,
+    wall_mask: Optional[np.ndarray] = None
 ) -> np.ndarray:
-    """Render a side-by-side 768x384 HD composite frame."""
-    left_rgb = colorize_multi_species_frame(mass_2d, gid_2d)
-    right_rgb = render_physical_frame(mass_2d, com_pos=com_pos)
+    """Render a side-by-side 768x384 HD composite frame with obstacle walls."""
+    left_rgb = colorize_multi_species_frame(mass_2d, gid_2d, wall_mask=wall_mask)
+    right_rgb = render_physical_frame(mass_2d, wall_mask=wall_mask, com_pos=com_pos)
     return np.concatenate([left_rgb, right_rgb], axis=1)
 
-def create_arena_pillars_mask(H: int = 256, W: int = 256) -> jnp.ndarray:
-    """Create an arena mask with 4 circular obstacle pillars to enrich navigation dynamics."""
+def create_arena_pillars_mask(H: int = 384, W: int = 384) -> jnp.ndarray:
+    """Create an arena mask with 4 circular DodgerBlue obstacle pillars."""
     mask = np.ones((H, W), dtype=np.float32)
     yy, xx = np.meshgrid(np.arange(H), np.arange(W), indexing='ij')
     
-    pillar_radius = 12.0
+    pillar_radius = 16.0
     offsets = [
-        (H // 3, W // 3),
-        (H // 3, 2 * W // 3),
-        (2 * H // 3, W // 3),
-        (2 * H // 3, 2 * W // 3),
+        (H // 4, W // 4),
+        (H // 4, 3 * W // 4),
+        (3 * H // 4, W // 4),
+        (3 * H // 4, 3 * W // 4),
     ]
     for py, px in offsets:
         d_sq = (yy - py)**2 + (xx - px)**2
         mask[d_sq <= pillar_radius**2] = 0.0
         
-    return jnp.array(mask, dtype=jnp.float32)
+    return jnp.array(mask, dtype=np.float32)
 
 def run_epic_ecosystem(
     grid_size: int = 384,
-    total_steps: int = 3600,
+    total_steps: int = 22500,
     sample_interval: int = 3,
     fps: int = 20,
-    n_patches: int = 6,
+    n_patches: int = 8,
     seed: int = 42,
     output_dir: str = "results/epic_ecosystem"
 ):
@@ -88,13 +89,15 @@ def run_epic_ecosystem(
     H, W = grid_size, grid_size
     K = 9
     
+    wall_mask = create_arena_pillars_mask(H, W)
+    
     # 1. Precompute concentric ring kernels in canonical range
     rng_key, subk = random.split(rng_key)
     radii = jnp.sort(random.uniform(subk, (K,), minval=6.0, maxval=15.0))
     print("\n[1/4] Precomputing Fourier-domain multi-shell kernels...")
     kernel_ffts = precompute_kernel_ffts(radii, H, W)
     
-    # 2. Configure 6 diverse species genomes in the fertile biological parameter regime
+    # 2. Configure diverse species genomes in the fertile biological parameter regime
     rng_key, k_mu, k_sigma = random.split(rng_key, 3)
     mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.130, maxval=0.220)
     sigma_presets = random.uniform(k_sigma, (n_patches, K), minval=0.011, maxval=0.024)
@@ -115,11 +118,11 @@ def run_epic_ecosystem(
     rng_key, subk_init = random.split(rng_key)
     state = initialize_multi_patch_state(
         subk_init, H, W, C=1, K=K, n_patches=n_patches, kernel_radii=radii,
-        mu_presets=mu_presets, sigma_presets=sigma_presets
+        mu_presets=mu_presets, sigma_presets=sigma_presets, wall_mask=wall_mask
     )
     
     # 4. Open streaming MP4 writer
-    video_path = os.path.join(output_dir, "epic_ecosystem_rollout.mp4")
+    video_path = os.path.join(output_dir, "rollout.mp4")
     print(f"[3/4] Initializing H.264 video stream: {video_path}")
     writer = imageio.get_writer(
         video_path,
@@ -151,6 +154,7 @@ def run_epic_ecosystem(
             state, kernel_ffts, params, subk_chunk,
             num_steps=chunk_steps,
             sample_interval=chunk_sample_interval,
+            wall_mask=wall_mask,
             mixing_rule='gene_wise',
             enable_mutation=True,
             mutation_interval=50,
@@ -182,7 +186,12 @@ def run_epic_ecosystem(
             cy = float(np.sum(m_2d * yy) / tot_m)
             cx = float(np.sum(m_2d * xx) / tot_m)
             
-            dual_frame = render_dual_panel_frame(m_2d, g_2d, com_pos=(cy, cx))
+            dual_frame = render_composite_frame(
+                m_2d,
+                g_2d,
+                com_pos=(cy, cx),
+                wall_mask=wall_mask
+            )
             writer.append_data(dual_frame)
             frames_written += 1
             
@@ -204,7 +213,7 @@ def run_epic_ecosystem(
     
     # 12-Frame Composite Filmstrip
     print("\nGenerating 12-Frame Milestone Composite Filmstrip...")
-    filmstrip_path = os.path.join(output_dir, "epic_ecosystem_filmstrip.png")
+    filmstrip_path = os.path.join(output_dir, "trajectory_filmstrip.png")
     num_sub = len(filmstrip_frames)
     cols = 6
     rows = int(np.ceil(num_sub / cols))
@@ -217,7 +226,9 @@ def run_epic_ecosystem(
     for idx in range(num_sub):
         r = idx // cols
         c = idx % cols
-        dual_cell = render_dual_panel_frame(filmstrip_frames[idx], filmstrip_gids[idx])
+        dual_cell = render_composite_frame(
+            filmstrip_frames[idx], filmstrip_gids[idx], wall_mask=wall_mask
+        )
         cell_pil = Image.fromarray(dual_cell)
         
         draw = ImageDraw.Draw(cell_pil)
@@ -232,7 +243,7 @@ def run_epic_ecosystem(
     print(f"Composite Filmstrip : {filmstrip_path}")
     
     # Motion Heatmap
-    heatmap_path = os.path.join(output_dir, "epic_ecosystem_motion_heatmap.png")
+    heatmap_path = os.path.join(output_dir, "motion_heatmap.png")
     norm_diffs = accumulated_diffs / (np.max(accumulated_diffs) + 1e-8)
     import matplotlib.cm as cm
     magma_rgba = cm.magma(norm_diffs)
@@ -241,7 +252,7 @@ def run_epic_ecosystem(
     print(f"Motion Heatmap      : {heatmap_path}")
     
     # Metadata JSON
-    meta_path = os.path.join(output_dir, "epic_ecosystem_metadata.json")
+    meta_path = os.path.join(output_dir, "metadata.json")
     meta = {
         "grid_size": grid_size,
         "total_steps": total_steps,

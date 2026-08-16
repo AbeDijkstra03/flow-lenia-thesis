@@ -81,16 +81,15 @@ docker run --rm -v $(pwd)/results:/app/results flow-lenia:latest python run_expe
 │   ├── AGENTS.md                   # Core behavioral rules & physics constraints
 │   ├── CONTEXT_HANDOFF.md          # Active cross-session AI agent state memory
 │   └── skills/                     # Specialized agent workflow skills
-├── results/                        # Categorized simulation outputs (MP4s, plots, JSON)
-│   ├── baseline_imgep/             # IMGEP vs Random Search benchmark & elite videos
-│   ├── wall_obstacles/             # IMGEP search in wall obstacle environments
-│   ├── barrier_constriction/       # Corridor constriction sweep (W=8, 16, 24, 32)
-│   ├── hero_ecosystems/            # 1-minute Hero Ecosystem run (384x384)
-│   ├── epic_ecosystem/             # 5-minute Master Epic Ecosystem broadcast video
+├── results/                        # Categorized simulation outputs with subfolders per run
+│   ├── baseline_imgep/             # IMGEP open search (elite_1/, elite_2/, elite_3/)
+│   ├── wall_obstacles/             # IMGEP barrier search (elite_1/, elite_2/, elite_3/)
+│   ├── barrier_constriction/       # Constriction sweep (width_08/, width_16/, width_24/, width_32/)
+│   ├── epic_ecosystem/             # 5-minute Master Epic Ecosystem broadcast video & filmstrip
 │   ├── orbium/                     # Classic Orbium unicaudatus glider verification
-│   ├── resource_depletion/         # Static vs dynamic nutrient depletion study
-│   ├── scaleup/                    # 512x512 scaled-up FPS reruns
-│   ├── showcase/                   # 3 Physical mechanism showcase videos
+│   ├── resource_depletion/         # static_baseline/ vs dynamic_depletion/
+│   ├── scaleup/                    # 512x512 scaled-up reruns (rerun_1/, rerun_2/)
+│   ├── showcase/                   # method_1_gene_mutation/ & method_2_negotiation_rule/
 │   └── agentic_loop/               # Multi-generation AI Scientist discovery state
 ├── tests/                          # Automated unit test suite
 ├── Dockerfile                      # Container environment definition
@@ -106,12 +105,14 @@ docker run --rm -v $(pwd)/results:/app/results flow-lenia:latest python run_expe
 
 | Mode | Command | Output Duration | What Happens? |
 | :--- | :--- | :--- | :--- |
-| **Barrier Constriction** | `uv run python run_experiment.py --mode barrier_constriction` | **1 min per width** (4x 60s) | Sweeps corridor widths $W \in [8, 16, 24, 32]$ px, measuring soliton elasticity and transmission $T(W)$. |
-| **Resource Depletion** | `uv run python run_experiment.py --mode depletion` | **1 min** (2x 60s) | Compares static food baseline vs. dynamic nutrient depletion trails. |
-| **Showcase Methods** | `uv run python run_experiment.py --mode showcase` | **1 min each** (3x 60s) | Demonstrates Gene Mutation, Softmax Negotiation Competition, and Dynamic Foraging Depletion. |
-| **Scaled-Up Reruns** | `uv run python run_experiment.py --mode scaleup` | **1 min each** (2x 60s) | Re-evaluates top IMGEP candidates on massive $512 \times 512$ grids with proportional seeding. |
-| **Hero Ecosystem** | `uv run python run_experiment.py --mode hero --steps 4500` | **1 min** (60s) | Multi-species ecosystem with 6 lineages on $384 \times 384$ arena. |
-| **Epic Ecosystem Master** | `uv run python run_experiment.py --mode epic --steps 22500` | **5.0 minutes** (300s) | Master broadcast simulation (22,500 steps, 7,500 frames) with 10 densely seeded multi-blob species. |
+| **Baseline IMGEP** | `uv run python run_experiment.py --mode imgep --trials 40` | **3x 1 min** (60s each) | Runs 40 IMGEP goal exploration trials vs Random Search, saving top 3 elites into `elite_1/`, `elite_2/`, `elite_3/`. |
+| **Wall Obstacles IMGEP** | `uv run python run_experiment.py --mode wall_obstacle --trials 40` | **3x 1 min** (60s each) | Runs IMGEP search in arena with DodgerBlue barriers and narrow corridor slits. |
+| **Barrier Constriction** | `uv run python run_experiment.py --mode barrier_constriction` | **1 min per width** (4x 60s) | Sweeps corridor widths $W \in [8, 16, 24, 32]$ px (`width_08/` .. `width_32/`), measuring soliton deformation & transmission $T(W)$. |
+| **Resource Depletion** | `uv run python run_experiment.py --mode depletion` | **1 min** (2x 60s) | Compares `static_baseline/` vs. `dynamic_depletion/` foraging trails. |
+| **Showcase Methods** | `uv run python run_experiment.py --mode showcase` | **1 min each** (2x 60s) | Demonstrates `method_1_gene_mutation/` and `method_2_negotiation_rule/`. |
+| **Scaled-Up Reruns** | `uv run python run_experiment.py --mode scaleup` | **1 min each** (2x 60s) | Re-evaluates top IMGEP candidates on massive $512 \times 512$ grids (`rerun_1/`, `rerun_2/`). |
+| **Orbium Verification** | `uv run python run_experiment.py --mode orbium` | **1 min** (60s) | Verifies physics engine on classic *Orbium unicaudatus* glider in `results/orbium/`. |
+| **Epic Ecosystem Master** | `uv run python run_experiment.py --mode epic --steps 22500` | **5.0 minutes** (300s) | Master broadcast simulation (22,500 steps, 7,500 frames, 56.6 MB) with 8 species interacting around 4 DodgerBlue arena obstacle pillars. |
 
 ---
 

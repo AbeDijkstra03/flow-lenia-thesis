@@ -72,3 +72,29 @@ We completely re-engineered the core simulation engine into native, functional J
 | **Scale-up Reruns** | `experiments/run_scaleup.py` | 512x512 long-horizon FPS scaleup reruns |
 | **Agentic Loop** | `experiments/run_autonomous_agentic_loop.py` | Multi-generation AI Scientist discovery loop |
 | **Unified CLI** | `run_experiment.py` | Top-level CLI orchestrator |
+
+---
+
+## 5. Visual Refinements & Hierarchical Results Architecture
+
+### 1. Elimination of Brightness Strobing (Fixed Absolute Intensity Scaling)
+- **Problem**: `core/visualization.py` was dividing mass by `np.max(log_f)` on every single frame. Because peak density fluctuated between $0.70$ and $0.98$, the colormap brightness jumped frame-to-frame, creating a rapid flickering strobe.
+- **Fix**: Replaced dynamic per-frame division with fixed absolute physical scaling:
+  $$\text{Intensity} = \frac{\log(1 + 1.8 \cdot A)}{\log(1 + 1.8)}$$
+- **Result**: $100\%$ rock-steady, flicker-free videos with crisp, high-contrast internal cell pores.
+
+### 2. Smooth Velocity Regularization ($\tanh(\mathbf{v})$)
+- **Problem**: Hard clipping of velocities $\mathbf{v} \in [-1, 1]$ caused 1-pixel sign-flip vibrations for steep gradients.
+- **Fix**: Applied smooth $C^\infty$ hyperbolic tangent saturation $\mathbf{v} \leftarrow \tanh(\mathbf{v})$ with $v_{\text{scale}} \approx 5.4, \alpha \approx 0.055$.
+- **Result**: Silky smooth hydrodynamic advection with zero artificial vibration.
+
+### 3. Hierarchical Per-Run Subfolder Structure
+- Standardized all experiment outputs into clean, dedicated subfolders containing self-contained artifacts (`rollout.mp4`, `trajectory_filmstrip.png`, `motion_heatmap.png`, `metadata.json`, `data.npz`):
+  - `results/baseline_imgep/elite_1/` .. `elite_3/`
+  - `results/wall_obstacles/elite_1/` .. `elite_3/`
+  - `results/barrier_constriction/width_08/` .. `width_32/`
+  - `results/resource_depletion/static_baseline/` and `dynamic_depletion/`
+  - `results/showcase/method_1_gene_mutation/` and `method_2_negotiation_rule/`
+  - `results/scaleup/rerun_1/` and `rerun_2/`
+  - `results/epic_ecosystem/`
+  - `results/orbium/`

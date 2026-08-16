@@ -20,11 +20,11 @@
       "foraging_variance": 2.3032248150590413
     },
     "artifacts": {
-      "video": "results/resource_depletion/static_baseline_rollout.mp4",
-      "filmstrip": "results/resource_depletion/static_baseline_trajectory_filmstrip.png",
-      "heatmap": "results/resource_depletion/static_baseline_motion_heatmap.png",
-      "data": "results/resource_depletion/static_baseline_data.npz",
-      "metadata": "results/resource_depletion/static_baseline_metadata.json"
+      "video": "results/resource_depletion/static_baseline/rollout.mp4",
+      "filmstrip": "results/resource_depletion/static_baseline/trajectory_filmstrip.png",
+      "heatmap": "results/resource_depletion/static_baseline/motion_heatmap.png",
+      "data": "results/resource_depletion/static_baseline/data.npz",
+      "metadata": "results/resource_depletion/static_baseline/metadata.json"
     }
   },
   "dynamic_depletion": {
@@ -48,11 +48,11 @@
       "foraging_variance": 0.054855896618831765
     },
     "artifacts": {
-      "video": "results/resource_depletion/dynamic_depletion_rollout.mp4",
-      "filmstrip": "results/resource_depletion/dynamic_depletion_trajectory_filmstrip.png",
-      "heatmap": "results/resource_depletion/dynamic_depletion_motion_heatmap.png",
-      "data": "results/resource_depletion/dynamic_depletion_data.npz",
-      "metadata": "results/resource_depletion/dynamic_depletion_metadata.json"
+      "video": "results/resource_depletion/dynamic_depletion/rollout.mp4",
+      "filmstrip": "results/resource_depletion/dynamic_depletion/trajectory_filmstrip.png",
+      "heatmap": "results/resource_depletion/dynamic_depletion/motion_heatmap.png",
+      "data": "results/resource_depletion/dynamic_depletion/data.npz",
+      "metadata": "results/resource_depletion/dynamic_depletion/metadata.json"
     }
   }
 }

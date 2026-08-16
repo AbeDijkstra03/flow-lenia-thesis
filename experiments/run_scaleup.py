@@ -112,7 +112,7 @@ def main():
         print(f"Raw Complexity: {metrics['complexity_raw']:.0f} bytes | Normalized Comp: {metrics['complexity_norm']:.4f}")
         print(f"Raw Entropy: {metrics['entropy_raw']:.4f} bits | Normalized Entropy: {metrics['entropy_norm']:.4f}")
         
-        prefix = f"scaleup_rerun_{idx+1}_arch{archive_idx}"
+        prefix = f"rerun_{idx+1}"
         art_paths = save_experiment_artifacts(
             sampled_mass_frames=sampled_mass_np,
             metrics=metrics,

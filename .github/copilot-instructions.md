@@ -15,15 +15,21 @@ To ensure alignment with the thesis architecture and literature (Michel et al. 2
 
 ## Quick Reference CLI
 ```bash
-# Unit tests
+# Run automated test suite
 uv run python -m unittest discover tests
 
 # IMGEP vs Random baseline
-uv run python run_experiment.py --mode imgep --trials 50 --steps 2000
+uv run python run_experiment.py --mode imgep --trials 40 --steps 2500
 
-# Corridor constriction thesis experiment
+# IMGEP with wall obstacles
+uv run python run_experiment.py --mode wall_obstacle --trials 40 --steps 2500
+
+# Corridor constriction parameter sweep
 uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32
 
-# Multi-species ecosystem
-uv run python run_experiment.py --mode hero --patches 6 --grid_size 384 --steps 4000
+# Resource depletion study
+uv run python run_experiment.py --mode depletion
+
+# Master 5-minute Epic Ecosystem with obstacles
+uv run python run_experiment.py --mode epic --steps 22500
 ```
