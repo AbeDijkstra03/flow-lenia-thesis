@@ -37,6 +37,7 @@ from core.config import load_config, SimulationConfig
 from experiments.run_imgep_search import main as run_imgep_main
 from experiments.run_scaleup import main as run_scaleup_main
 from experiments.run_barrier_constriction import main as run_constriction_main
+from experiments.run_resource_depletion import main as run_depletion_main
 from scripts.run_hero_ecosystem import main as run_hero_main
 from scripts.run_showcase_methods import main as run_showcase_main
 from scripts.spawn_orbium import main as run_orbium_main
@@ -49,7 +50,7 @@ def main():
     )
     parser.add_argument(
         "--mode", type=str,
-        choices=["imgep", "wall_obstacle", "barrier_constriction", "scaleup", "hero", "showcase", "orbium"],
+        choices=["imgep", "wall_obstacle", "barrier_constriction", "depletion", "scaleup", "hero", "showcase", "orbium"],
         default="imgep",
         help="Experiment execution mode (default: imgep)"
     )
@@ -124,6 +125,18 @@ def main():
             "--output_dir", out_dir
         ]
         run_constriction_main()
+        
+    elif args.mode == "depletion":
+        out_dir = args.output_dir or "results/resource_depletion"
+        sys.argv = [
+            sys.argv[0],
+            "--grid_size", str(args.grid_size),
+            "--steps", str(args.steps),
+            "--sample_interval", str(max(10, args.sample_interval // 2)),
+            "--seed", str(args.seed),
+            "--output_dir", out_dir
+        ]
+        run_depletion_main()
         
     elif args.mode == "scaleup":
         out_dir = args.output_dir or "results/scaleup"

@@ -71,3 +71,8 @@ This codebase implements a GPU-accelerated Flow-Lenia Open-Ended Evolution (OEE)
        - Overly aggressive directional coupling (e.g., forced global tangential swirl hubs) can drive 5-generation runs to zero valid elites.
     - Recovery pattern:
        - Roll back to simpler randomized directional slopes and moderate proximity seeding, then iterate with small range adjustments.
+
+12. **Mandatory Documentation & State Synchronization (Rule for all Agents)**:
+    - Whenever an agent runs an exploration campaign, modifies hyperparameters, or discovers new elite lineages, the agent MUST persist findings in `.agents/CONTEXT_HANDOFF.md`.
+    - Any permanent physics or metric updates MUST be documented in `docs/THESIS_ARCHITECTURE.md`.
+    - AI agents MUST maintain documentation integrity so that human thesis writers and future agents have an exact, up-to-date record of the codebase state.
