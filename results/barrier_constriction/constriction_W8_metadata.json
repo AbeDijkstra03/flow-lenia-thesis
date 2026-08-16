@@ -4,17 +4,17 @@
     "passage_width": 8,
     "grid_size": 256,
     "steps": 3600,
-    "v_scale": 5.4,
-    "alpha_diffusion": 0.06
+    "v_scale": 4.0,
+    "alpha_diffusion": 0.038
   },
   "metrics": {
     "passage_width": 8,
-    "transmission_coeff": 3.1402266361639757e-18,
-    "mass_preservation": 0.9998767604555492,
-    "solid_core_ratio": 0.9602383753913513,
-    "com_shift": 7.137724062272187,
-    "right_chamber_mass": 4.130147050372072e-15,
-    "total_mass": 1315.238525400625
+    "transmission_coeff": 0.0,
+    "mass_preservation": 0.9999978275043465,
+    "solid_core_ratio": 0.9748837231710011,
+    "com_shift": 11.146471714874872,
+    "right_chamber_mass": 0.0,
+    "total_mass": 730.4551391701563
   },
   "video_file": "constriction_W8_rollout.mp4",
   "filmstrip_file": "constriction_W8_trajectory_filmstrip.png",

@@ -303,20 +303,15 @@ def flow_lenia_step_single(
     vx = v_s * ((1.0 - alpha) * gx - alpha * ax)
     vy = v_s * ((1.0 - alpha) * gy - alpha * ay)
     
+    # Smooth continuous velocity bounded in [-1.0, 1.0] without hard clipping shocks
+    vx = jnp.tanh(vx)
+    vy = jnp.tanh(vy)
+    
     if wall_mask is not None:
         vx = vx * wall_mask
         vy = vy * wall_mask
     
     new_mass_primary, retained_center, f_left, f_right, f_up, f_down = moroz_reintegration_tracking(mass_primary, vx, vy)
-    
-    target_tot = target_mass_total if target_mass_total is not None else jnp.sum(mass_primary)
-    curr_mass_sum = jnp.sum(new_mass_primary)
-    new_mass_primary = jnp.where(
-        curr_mass_sum > 1e-8,
-        new_mass_primary * (target_tot / curr_mass_sum),
-        new_mass_primary
-    )
-    new_mass_primary = jnp.clip(new_mass_primary, 0.0, 5.0)
     
     if wall_mask is not None:
         new_mass_primary = new_mass_primary * wall_mask
@@ -398,7 +393,8 @@ def initialize_multi_patch_state(
     mu_presets: Optional[jnp.ndarray] = None,
     sigma_presets: Optional[jnp.ndarray] = None,
     weights_presets: Optional[jnp.ndarray] = None,
-    wall_mask: Optional[jnp.ndarray] = None
+    wall_mask: Optional[jnp.ndarray] = None,
+    is_corridor_test: bool = False
 ) -> FlowLeniaState:
     mass = jnp.zeros((C, H, W), dtype=jnp.float32)
     mu_map = jnp.full((K, H, W), 0.15, dtype=jnp.float32)
@@ -413,18 +409,18 @@ def initialize_multi_patch_state(
     for i in range(n_patches):
         rng_key, subk_pos, subk_blobs, subk_angle, subk_p1, subk_p2 = random.split(rng_key, 6)
         
-        if wall_mask is not None:
-            cy = int(H * 0.50 + random.uniform(subk_pos, (), minval=-15.0, maxval=15.0))
-            cx = int(W * 0.22 + random.uniform(subk_pos, (), minval=-15.0, maxval=15.0))
-            dy_dir = random.uniform(subk_angle, (), minval=-0.25, maxval=0.25)
-            dx_dir = random.uniform(subk_angle, (), minval=0.80, maxval=1.00)
+        if is_corridor_test:
+            cy = int(H * 0.50 + random.uniform(subk_pos, (), minval=-10.0, maxval=10.0))
+            cx = int(W * 0.22 + random.uniform(subk_pos, (), minval=-10.0, maxval=10.0))
+            dy_dir = random.uniform(subk_angle, (), minval=-0.20, maxval=0.20)
+            dx_dir = random.uniform(subk_angle, (), minval=0.85, maxval=1.00)
         else:
             base_angle = (2.0 * jnp.pi * i) / float(n_patches)
             angle_jitter = random.uniform(subk_pos, (), minval=-0.25, maxval=0.25)
             angle = base_angle + angle_jitter
             min_dim = float(min(H, W))
             if n_patches > 1:
-                radius_offset = min_dim * random.uniform(subk_pos, (), minval=0.15, maxval=0.23)
+                radius_offset = min_dim * random.uniform(subk_pos, (), minval=0.18, maxval=0.28)
             else:
                 radius_offset = 0.0
             cy = int(center_y + radius_offset * jnp.sin(angle))

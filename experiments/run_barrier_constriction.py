@@ -73,18 +73,17 @@ def run_constriction_sweep(
     print(f"=== Flow-Lenia Corridor Constriction Experiment ===")
     print(f"Grid: {H}x{W} | Steps: {steps} | Passage Widths: {passage_widths} | JAX: {jax.devices()}")
     
-    # Fixed tuned glider genome for controlled comparative sweep
+    # Calibrated multi-shell motile glider genome for corridor navigation
     rng_key, subk = random.split(rng_key)
-    radii = jnp.sort(random.uniform(subk, (K,), minval=6.0, maxval=15.0))
+    radii = jnp.linspace(8.0, 20.0, K)
     kernel_ffts = precompute_kernel_ffts(radii, H, W)
     
-    n_patches = 3
-    rng_key, k_mu, k_sigma = random.split(rng_key, 3)
-    mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.14, maxval=0.18)
-    sigma_presets = random.uniform(k_sigma, (n_patches, K), minval=0.012, maxval=0.018)
+    n_patches = 2
+    mu_presets = jnp.tile(jnp.linspace(0.165, 0.135, K)[None, :], (n_patches, 1))
+    sigma_presets = jnp.full((n_patches, K), 0.015, dtype=jnp.float32)
     
-    v_scale = 5.4
-    alpha_diff = 0.06
+    v_scale = 4.0
+    alpha_diff = 0.038
     params = FlowLeniaParams(
         mu=mu_presets[0], sigma=sigma_presets[0], weights=jnp.full((K,), 1.0 / K),
         v_scale=v_scale, alpha_diffusion=alpha_diff
@@ -98,11 +97,12 @@ def run_constriction_sweep(
             H=H, W=W, wall_x=W // 2, wall_thickness=8, passage_width=p_width, passage_y=H // 2
         )
         
-        # Initialize organism in left chamber (x ~ W * 0.25)
+        # Initialize organism in left chamber (x ~ W * 0.22) aiming rightwards into corridor
         rng_key, subk_init = random.split(rng_key)
         state = initialize_multi_patch_state(
             subk_init, H, W, C=1, K=K, n_patches=n_patches, kernel_radii=radii,
-            mu_presets=mu_presets, sigma_presets=sigma_presets, wall_mask=wall_mask
+            mu_presets=mu_presets, sigma_presets=sigma_presets, wall_mask=wall_mask,
+            is_corridor_test=True
         )
         
         rng_key, subk_rollout = random.split(rng_key)
