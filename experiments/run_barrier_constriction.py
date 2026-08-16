@@ -59,8 +59,8 @@ def create_single_corridor_wall_mask(
 def run_constriction_sweep(
     passage_widths: List[int] = [8, 16, 24, 32],
     grid_size: int = 256,
-    steps: int = 2000,
-    sample_interval: int = 25,
+    steps: int = 3600,
+    sample_interval: int = 3,
     seed: int = 42,
     output_dir: str = "results/barrier_constriction"
 ):
@@ -201,10 +201,10 @@ def run_constriction_sweep(
 
 def main():
     parser = argparse.ArgumentParser(description="Corridor Constriction Thesis Experiment")
-    parser.add_argument("--widths", type=int, nargs="+", default=[8, 16, 24, 32], help="Passage widths to sweep")
+    parser.add_argument("--widths", nargs="+", type=int, default=[8, 16, 24, 32], help="Passage widths (px)")
     parser.add_argument("--grid_size", type=int, default=256, help="Grid size resolution")
-    parser.add_argument("--steps", type=int, default=2000, help="Simulation steps horizon")
-    parser.add_argument("--sample_interval", type=int, default=25, help="Frame sample interval")
+    parser.add_argument("--steps", type=int, default=3600, help="Simulation steps (default: 3600 -> 1 min video)")
+    parser.add_argument("--sample_interval", type=int, default=3, help="Sampling interval (default: 3)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--output_dir", type=str, default="results/barrier_constriction", help="Output directory")
     args = parser.parse_args()

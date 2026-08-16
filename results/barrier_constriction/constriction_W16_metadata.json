@@ -3,18 +3,18 @@
   "config": {
     "passage_width": 16,
     "grid_size": 256,
-    "steps": 2000,
+    "steps": 3600,
     "v_scale": 5.4,
     "alpha_diffusion": 0.06
   },
   "metrics": {
     "passage_width": 16,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9998187764396803,
-    "solid_core_ratio": 0.963400673050632,
-    "com_shift": 2.7237788587510825,
-    "right_chamber_mass": 0.0,
-    "total_mass": 814.2222900490625
+    "transmission_coeff": 1.5300492214959025e-26,
+    "mass_preservation": 0.9998098514146952,
+    "solid_core_ratio": 0.954193593226634,
+    "com_shift": 2.618963660338583,
+    "right_chamber_mass": 1.913060585908596e-23,
+    "total_mass": 1250.326171885
   },
   "video_file": "constriction_W16_rollout.mp4",
   "filmstrip_file": "constriction_W16_trajectory_filmstrip.png",

@@ -26,8 +26,8 @@ from core.visualization import save_experiment_artifacts
 
 def run_depletion_experiment(
     grid_size: int = 256,
-    steps: int = 2500,
-    sample_interval: int = 25,
+    steps: int = 3600,
+    sample_interval: int = 3,
     seed: int = 42,
     output_dir: str = "results/resource_depletion"
 ):
@@ -180,8 +180,8 @@ def run_depletion_experiment(
 def main():
     parser = argparse.ArgumentParser(description="Resource Depletion Thesis Experiment")
     parser.add_argument("--grid_size", type=int, default=256, help="Grid resolution")
-    parser.add_argument("--steps", type=int, default=2500, help="Simulation steps")
-    parser.add_argument("--sample_interval", type=int, default=25, help="Sampling interval")
+    parser.add_argument("--steps", type=int, default=3600, help="Simulation steps (default: 3600 -> 1 min video)")
+    parser.add_argument("--sample_interval", type=int, default=3, help="Sampling interval (default: 3)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--output_dir", type=str, default="results/resource_depletion", help="Output directory")
     args = parser.parse_args()

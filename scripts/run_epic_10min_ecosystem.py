@@ -47,11 +47,11 @@ def render_dual_panel_frame(
     return np.concatenate([left_rgb, right_rgb], axis=1)
 
 def run_epic_10min_ecosystem(
-    grid_size: int = 512,
-    total_steps: int = 45000,
+    grid_size: int = 384,
+    total_steps: int = 22500,
     sample_interval: int = 3,
     fps: int = 25,
-    n_patches: int = 8,
+    n_patches: int = 6,
     seed: int = 42,
     output_dir: str = "results/epic_ecosystem"
 ):
@@ -62,7 +62,7 @@ def run_epic_10min_ecosystem(
     expected_duration_min = expected_duration_sec / 60.0
     
     print("=" * 70)
-    print("🎬 EPIC FLOW-LENIA 10-MINUTE BROADCAST SIMULATION 🎬")
+    print("🎬 EPIC FLOW-LENIA 5-MINUTE BROADCAST ECOSYSTEM SIMULATION 🎬")
     print("=" * 70)
     print(f"Canvas Resolution   : {grid_size}x{grid_size} (Dual Panel: {grid_size * 2}x{grid_size})")
     print(f"Simulation Horizon  : {total_steps:,} continuous time steps")
@@ -79,27 +79,18 @@ def run_epic_10min_ecosystem(
     
     # 1. Generate multi-shell kernels with staggered radii
     rng_key, subk = random.split(rng_key)
-    radii = jnp.linspace(8.0, 22.0, K)
+    radii = jnp.sort(random.uniform(subk, (K,), minval=7.0, maxval=18.0))
     print("\n[1/4] Precomputing Fourier-domain multi-shell kernels...")
     kernel_ffts = precompute_kernel_ffts(radii, H, W)
     
-    # 2. Configure 8 distinct species genomes with active motility
+    # 2. Configure heterogeneous multi-kernel species genomes for rich emergent morphology
     rng_key, k_mu, k_sigma = random.split(rng_key, 3)
-    mu_presets = jnp.array([
-        [0.150] * K,
-        [0.156] * K,
-        [0.144] * K,
-        [0.152] * K,
-        [0.148] * K,
-        [0.158] * K,
-        [0.142] * K,
-        [0.154] * K,
-    ], dtype=jnp.float32)
-    sigma_presets = jnp.full((n_patches, K), 0.015, dtype=jnp.float32)
+    mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.135, maxval=0.215)
+    sigma_presets = random.uniform(k_sigma, (n_patches, K), minval=0.011, maxval=0.022)
     
     v_scale = 5.6
-    alpha_diff = 0.045
-    beta_negotiation = 2.8
+    alpha_diff = 0.05
+    beta_negotiation = 3.0
     
     params = FlowLeniaParams(
         mu=mu_presets[0],
@@ -279,12 +270,12 @@ def run_epic_10min_ecosystem(
     print(f"Simulation Metadata : {meta_path}\n")
 
 def main():
-    parser = argparse.ArgumentParser(description="Epic 10-Minute Long Ecosystem Simulation")
-    parser.add_argument("--grid_size", type=int, default=512, help="Grid size resolution (default: 512)")
-    parser.add_argument("--steps", type=int, default=45000, help="Total simulation steps (default: 45,000)")
+    parser = argparse.ArgumentParser(description="Epic 5-Minute Long Ecosystem Simulation")
+    parser.add_argument("--grid_size", type=int, default=384, help="Grid size resolution (default: 384)")
+    parser.add_argument("--steps", type=int, default=22500, help="Total simulation steps (default: 22,500 -> 5 min)")
     parser.add_argument("--sample_interval", type=int, default=3, help="Sample every N steps (default: 3)")
-    parser.add_argument("--fps", type=int, default=25, help="Video FPS (default: 25 -> 10 minutes)")
-    parser.add_argument("--patches", type=int, default=8, help="Number of species patches (default: 8)")
+    parser.add_argument("--fps", type=int, default=25, help="Video FPS (default: 25 -> 5 minutes)")
+    parser.add_argument("--patches", type=int, default=6, help="Number of species patches (default: 6)")
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
     parser.add_argument("--output_dir", type=str, default="results/epic_ecosystem", help="Output directory")
     args = parser.parse_args()

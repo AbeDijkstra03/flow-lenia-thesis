@@ -1,38 +1,38 @@
 [
   {
     "passage_width": 8,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9944597593902067,
-    "solid_core_ratio": 0.9505368421416239,
-    "com_shift": 3.705255940794912,
-    "right_chamber_mass": 0.0,
-    "total_mass": 551.3765869240625
+    "transmission_coeff": 3.1402266361639757e-18,
+    "mass_preservation": 0.9998767604555492,
+    "solid_core_ratio": 0.9602383753913513,
+    "com_shift": 7.137724062272187,
+    "right_chamber_mass": 4.130147050372072e-15,
+    "total_mass": 1315.238525400625
   },
   {
     "passage_width": 16,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9998187764396803,
-    "solid_core_ratio": 0.963400673050632,
-    "com_shift": 2.7237788587510825,
-    "right_chamber_mass": 0.0,
-    "total_mass": 814.2222900490625
+    "transmission_coeff": 1.5300492214959025e-26,
+    "mass_preservation": 0.9998098514146952,
+    "solid_core_ratio": 0.954193593226634,
+    "com_shift": 2.618963660338583,
+    "right_chamber_mass": 1.913060585908596e-23,
+    "total_mass": 1250.326171885
   },
   {
     "passage_width": 24,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9999999143382226,
-    "solid_core_ratio": 0.9579571103301557,
-    "com_shift": 3.1834902437596924,
-    "right_chamber_mass": 0.0,
-    "total_mass": 712.5132446389063
+    "transmission_coeff": 1.191153231005675e-22,
+    "mass_preservation": 0.9991538407522624,
+    "solid_core_ratio": 0.9581457199250206,
+    "com_shift": 0.9698768452477697,
+    "right_chamber_mass": 1.3654912728857264e-19,
+    "total_mass": 1146.3607177834374
   },
   {
     "passage_width": 32,
-    "transmission_coeff": 0.0,
-    "mass_preservation": 0.9994954610981662,
-    "solid_core_ratio": 0.9683613518904708,
-    "com_shift": 11.103726240760132,
-    "right_chamber_mass": 0.0,
-    "total_mass": 939.3584594826563
+    "transmission_coeff": 4.524328444417627e-22,
+    "mass_preservation": 0.9990437700584821,
+    "solid_core_ratio": 0.9698085043830218,
+    "com_shift": 7.583511323955409,
+    "right_chamber_mass": 5.973249047077112e-19,
+    "total_mass": 1320.2509765725
   }
 ]
