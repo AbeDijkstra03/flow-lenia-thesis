@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Thesis Experiment 3: Reactive Resource Depletion & Niche Construction.
+Thesis Experiment 4C: Reactive Resource Depletion & Niche Construction.
 
 Systematically evaluates how continuous dynamic resource depletion and regeneration
-alter self-organizing soliton dynamics compared to a static, infinite-nutrient baseline.
-Measures organism motility, spatial foraging radius, and active lifespan, and generates
-comparative transmission plots and dual-panel MP4 videos.
+alter self-organizing soliton dynamics compared to a static, infinite-nutrient baseline
+across multiple random seeds.
 """
 
 import os
@@ -24,33 +23,35 @@ from core.flow_lenia_jax import (
 from core.metrics import evaluate_run_metrics, compute_center_of_mass
 from core.visualization import save_experiment_artifacts
 
-def run_depletion_experiment(
+def run_single_depletion_seed(
+    seed: int,
     grid_size: int = 256,
     steps: int = 3600,
     sample_interval: int = 3,
-    seed: int = 42,
-    output_dir: str = "results/resource_depletion"
-):
-    os.makedirs(output_dir, exist_ok=True)
+    base_output_dir: str = "results/resource_depletion"
+) -> Dict[str, Any]:
+    seed_dir = os.path.join(base_output_dir, f"seed_{seed}")
+    os.makedirs(seed_dir, exist_ok=True)
     rng_key = random.PRNGKey(seed)
     H, W = grid_size, grid_size
     K = 9
     
-    print(f"=== Flow-Lenia Resource Depletion & Niche Construction Experiment ===")
-    print(f"Grid: {H}x{W} | Steps: {steps} | JAX: {jax.devices()}")
+    print(f"\n=======================================================")
+    print(f"=== Resource Depletion Experiment (Seed {seed}) ===")
+    print(f"=======================================================")
     
-    # 1. Initialize fixed tuned genome for controlled comparison
+    # 1. Initialize calibrated genome for controlled comparison
     rng_key, subk = random.split(rng_key)
     radii = jnp.sort(random.uniform(subk, (K,), minval=6.0, maxval=15.0))
     kernel_ffts = precompute_kernel_ffts(radii, H, W)
     
-    n_patches = 2
+    n_patches = 4
     rng_key, k_mu, k_sigma = random.split(rng_key, 3)
-    mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.14, maxval=0.19)
-    sigma_presets = random.uniform(k_sigma, (n_patches, K), minval=0.012, maxval=0.018)
+    mu_presets = random.uniform(k_mu, (n_patches, K), minval=0.140, maxval=0.168)
+    sigma_presets = random.uniform(k_sigma, (n_patches, K), minval=0.012, maxval=0.017)
     
-    v_scale = 5.2
-    alpha_diff = 0.06
+    v_scale = 5.8
+    alpha_diff = 0.050
     
     # Condition A: Static Infinite-Nutrient Baseline (depletion_rate = 0.0)
     params_static = FlowLeniaParams(
@@ -81,14 +82,16 @@ def run_depletion_experiment(
     results = {}
     
     for cond_name, enable_dep, p in conditions:
-        print(f"\n--- Running Condition: {cond_name} ---")
+        print(f"\n--- [Seed {seed}] Running Condition: {cond_name} ---")
         rng_key, subk_rollout = random.split(rng_key)
         final_state, sampled_mass, sampled_gid = run_flow_lenia_rollout(
             init_state, kernel_ffts, p, subk_rollout,
             num_steps=steps,
             sample_interval=sample_interval,
             enable_depletion=enable_dep,
-            enable_mutation=False
+            mixing_rule='gene_wise',
+            enable_mutation=True,
+            mutation_interval=50
         )
         
         sampled_mass_np = np.array(sampled_mass)
@@ -106,10 +109,10 @@ def run_depletion_experiment(
         com_arr = np.array(com_coords)
         com_variance = float(np.var(com_arr[:, 0]) + np.var(com_arr[:, 1]))
         
-        print(f"Motility (CoM Shift): {metrics['com_displacement']:.2f} px")
+        print(f"Motility (CoM Shift)      : {metrics['com_displacement']:.2f} px")
         print(f"Evolutionary Activity (EA): {metrics['ea_raw']:.6f}")
-        print(f"Compression Complexity: {metrics['complexity_raw']:.0f} bytes")
-        print(f"Foraging Spatial Variance: {com_variance:.2f} px^2")
+        print(f"Compression Complexity    : {metrics['complexity_raw']:.0f} bytes")
+        print(f"Foraging Spatial Variance : {com_variance:.2f} px^2")
         
         config_dict = {
             "condition": cond_name,
@@ -118,6 +121,7 @@ def run_depletion_experiment(
             "regen_rate": float(p.regen_rate),
             "grid_size": grid_size,
             "steps": steps,
+            "seed": seed,
             "v_scale": v_scale
         }
         
@@ -127,7 +131,7 @@ def run_depletion_experiment(
             sampled_mass_frames=sampled_mass_np,
             metrics=metrics,
             config=config_dict,
-            output_dir=output_dir,
+            output_dir=seed_dir,
             prefix=cond_name,
             fps=20
         )
@@ -136,63 +140,70 @@ def run_depletion_experiment(
             "artifacts": art_paths
         }
         
-    # Generate Comparison Plot
+    # Generate Comparison Plot for this seed
     fig, axes = plt.subplots(1, 3, figsize=(14, 4), dpi=300)
     conds = ["Static Baseline", "Dynamic Depletion"]
     colors = ["#2b5c8f", "#e05a47"]
     
-    # 1. Motility (CoM)
     coms = [results["static_baseline"]["metrics"]["com_displacement"], results["dynamic_depletion"]["metrics"]["com_displacement"]]
     axes[0].bar(conds, coms, color=colors, width=0.5)
     axes[0].set_title("Motility (CoM Displacement)", fontsize=11, fontweight='bold')
     axes[0].set_ylabel("Pixels (px)", fontsize=10)
     axes[0].grid(axis='y', linestyle='--', alpha=0.5)
     
-    # 2. Evolutionary Activity
     eas = [results["static_baseline"]["metrics"]["ea_raw"], results["dynamic_depletion"]["metrics"]["ea_raw"]]
     axes[1].bar(conds, eas, color=colors, width=0.5)
     axes[1].set_title("Evolutionary Activity (EA)", fontsize=11, fontweight='bold')
     axes[1].set_ylabel(r"Mean $(\Delta A)^2$", fontsize=10)
     axes[1].grid(axis='y', linestyle='--', alpha=0.5)
     
-    # 3. Foraging Variance (Coverage)
     vars_ = [results["static_baseline"]["metrics"]["foraging_variance"], results["dynamic_depletion"]["metrics"]["foraging_variance"]]
     axes[2].bar(conds, vars_, color=colors, width=0.5)
     axes[2].set_title(r"Foraging Spatial Coverage ($\sigma_{\text{CoM}}^2$)", fontsize=11, fontweight='bold')
     axes[2].set_ylabel(r"$\text{px}^2$", fontsize=10)
     axes[2].grid(axis='y', linestyle='--', alpha=0.5)
     
-    plt.suptitle("Impact of Dynamic Niche Depletion on Flow-Lenia Soliton Locomotion", fontsize=13, fontweight='bold')
+    plt.suptitle(f"Impact of Dynamic Niche Depletion on Flow-Lenia Soliton Locomotion (Seed {seed})", fontsize=13, fontweight='bold')
     plt.tight_layout()
     
-    comp_plot_path = os.path.join(output_dir, "depletion_comparison_metrics.png")
+    comp_plot_path = os.path.join(seed_dir, "depletion_comparison_metrics.png")
     plt.savefig(comp_plot_path)
     plt.close()
     
-    summary_path = os.path.join(output_dir, "depletion_experiment_summary.json")
+    summary_path = os.path.join(seed_dir, "depletion_experiment_summary.json")
     with open(summary_path, "w") as f:
         json.dump(results, f, indent=2, default=lambda x: float(x) if isinstance(x, (np.float32, np.float64)) else str(x))
         
-    print(f"\n=== Depletion Experiment Complete ===")
-    print(f"Comparison Plot: {comp_plot_path}")
-    print(f"Summary JSON: {summary_path}")
+    return {"seed": seed, "results": results}
 
 def main():
-    parser = argparse.ArgumentParser(description="Resource Depletion Thesis Experiment")
+    parser = argparse.ArgumentParser(description="Resource Depletion Multi-Seed Thesis Experiment")
     parser.add_argument("--grid_size", type=int, default=256, help="Grid resolution")
-    parser.add_argument("--steps", type=int, default=3600, help="Simulation steps (default: 3600 -> 1 min video)")
-    parser.add_argument("--sample_interval", type=int, default=3, help="Sampling interval (default: 3)")
-    parser.add_argument("--seed", type=int, default=42, help="Random seed")
+    parser.add_argument("--steps", type=int, default=3600, help="Simulation steps (3600 = 1 min video)")
+    parser.add_argument("--sample_interval", type=int, default=3, help="Sampling interval")
+    parser.add_argument("--seeds", type=int, nargs="+", default=[42, 101, 2024], help="Random seeds to evaluate")
     parser.add_argument("--output_dir", type=str, default="results/resource_depletion", help="Output directory")
     args = parser.parse_args()
     
-    run_depletion_experiment(
-        grid_size=args.grid_size,
-        steps=args.steps,
-        sample_interval=args.sample_interval,
-        seed=args.seed,
-        output_dir=args.output_dir
-    )
+    os.makedirs(args.output_dir, exist_ok=True)
+    multiseed_summaries = []
+    for s in args.seeds:
+        summary = run_single_depletion_seed(
+            seed=s,
+            grid_size=args.grid_size,
+            steps=args.steps,
+            sample_interval=args.sample_interval,
+            base_output_dir=args.output_dir
+        )
+        multiseed_summaries.append(summary)
+        
+    with open(os.path.join(args.output_dir, "multiseed_summary.json"), "w") as f:
+        json.dump(multiseed_summaries, f, indent=2, default=lambda x: float(x) if isinstance(x, (np.float32, np.float64)) else str(x))
+        
+    print(f"\n=======================================================")
+    print(f"Resource Depletion completed across all {len(args.seeds)} seeds!")
+    print(f"Aggregated summary written to: {args.output_dir}/multiseed_summary.json")
+    print(f"=======================================================")
 
 if __name__ == "__main__":
     main()

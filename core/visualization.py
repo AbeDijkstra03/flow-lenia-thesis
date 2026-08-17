@@ -114,6 +114,28 @@ def render_physical_frame(
             
     return rgb
 
+def render_dual_panel_rgb(
+    mass_2d: np.ndarray,
+    genome_id_map: Optional[np.ndarray] = None,
+    n_patches: Optional[int] = None,
+    wall_mask: Optional[np.ndarray] = None
+) -> np.ndarray:
+    """
+    Render a single dual-panel composite RGB image.
+    Left: Multi-species or Plasma log colorization.
+    Right: Absolute physical mass density [0, 1] with obstacle boundaries.
+    """
+    H, W = mass_2d.shape
+    yy, xx = np.meshgrid(np.arange(H), np.arange(W), indexing='ij')
+    tot_m = np.sum(mass_2d) + 1e-8
+    cy = float(np.sum(mass_2d * yy) / tot_m)
+    cx = float(np.sum(mass_2d * xx) / tot_m)
+    
+    left_img = colorize_multi_species_frame(mass_2d, genome_id_map, wall_mask=wall_mask)
+    right_img = render_physical_frame(mass_2d, wall_mask=wall_mask, com_pos=(cy, cx))
+    combined = np.concatenate([left_img, right_img], axis=1)
+    return combined
+
 def save_rollout_mp4(
     frames: np.ndarray,
     filepath: str,

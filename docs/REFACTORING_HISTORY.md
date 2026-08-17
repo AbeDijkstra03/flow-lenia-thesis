@@ -1,6 +1,6 @@
-# Engineering History: PyTorch to JAX Flow-Lenia Modernization
+# Engineering & Scientific History: Flow-Lenia Research Framework
 
-This document records the architectural evolution, critical physics debugging, and engineering milestones of the Flow-Lenia Master's Thesis research framework.
+This document records the architectural evolution, critical physics debugging, mathematical discoveries, and engineering milestones of the Flow-Lenia Master's Thesis research framework.
 
 ---
 
@@ -12,7 +12,7 @@ The initial exploratory codebase was written in PyTorch with manual spatial loop
 ### The JAX Transformation
 We completely re-engineered the core simulation engine into native, functional JAX (`core/flow_lenia_jax.py`):
 1. **FFT-Accelerated Convolutions**: Replaced spatial kernel loops with 2D real Fast Fourier Transforms (`jnp.fft.rfft2` / `irfft2`) utilizing precomputed frequency-domain kernel tensors ($\widehat{K}_k$).
-2. **`jax.lax.scan` Rollouts**: Entire 2,000–10,000 step simulation rollouts execute as a single compiled XLA graph without Python interpreter overhead.
+2. **`jax.lax.scan` Rollouts**: Entire 2,000–22,500 step simulation rollouts execute as a single compiled XLA graph without Python interpreter overhead.
 3. **Hardware Acceleration**: Rollouts execute on NVIDIA Blackwell (RTX 5090) in **0.06 seconds per 2000 steps** ($>750\times$ speedup over legacy PyTorch).
 
 ---
@@ -58,43 +58,51 @@ We completely re-engineered the core simulation engine into native, functional J
 
 ---
 
-## 4. Summary of Modern Repository Layout
+## 4. Algorithmic Discoveries & AI Scientist Loop Diagnostics
 
-| Component | Modern File Location | Purpose |
-| :--- | :--- | :--- |
-| **Physics Engine** | `core/flow_lenia_jax.py` | JAX circular convolutions, advection fluxes, mixing rules |
-| **3D Metrics Suite** | `core/metrics.py` | Motility, EA, Complexity, Solidity, Watertight Quality Filter |
-| **Curiosity Search** | `core/imgep.py` | IMGEP archive, goal sampling, mutation, FPS selection |
-| **Environments** | `core/environment.py` | Static barriers, corridor passages, resource fields |
-| **Visualization** | `core/visualization.py` | H.264 MP4, 6-frame filmstrips, motion heatmaps |
-| **Configuration** | `core/config.py` | Typed dataclass YAML config loader |
-| **Constriction Experiment** | `experiments/run_barrier_constriction.py` | Corridor passage sweep & transmission curves |
-| **Scale-up Reruns** | `experiments/run_scaleup.py` | 512x512 long-horizon FPS scaleup reruns |
-| **Agentic Loop** | `experiments/run_autonomous_agentic_loop.py` | Multi-generation AI Scientist discovery loop |
-| **Unified CLI** | `run_experiment.py` | Top-level CLI orchestrator |
+### 1. The Stochastic Seed Overfitting Dilemma
+- **Observation**: During autonomous discovery campaigns, single-seed score optimization caused the AI Scientist loop to overfit on lucky asymmetric initialization noise rather than intrinsically motile PDE parameter vectors.
+- **Resolution**: Diagnosed the "Stochastic Seed Overfitting" dilemma and implemented multi-seed ensemble evaluation ($N=3$ seeds per candidate), ensuring discovered elites generalize across diverse random configurations.
+
+### 2. The Stability-Motility Trade-off
+- Discovered that hard solidity constraints ($R_{\text{core}} \ge 0.50$) introduce a subtle selective bias toward static crystal breathers ($R_{\text{core}} \approx 0.99$) over dynamic fluid gliders ($R_{\text{core}} \approx 0.65$).
+- Grounded final ecosystem parameters in hydrodynamic regimes ($v_{\text{scale}} \approx 8.5 - 9.2, \alpha \approx 0.055 - 0.065$) that preserve robust locomotion and soft-bodied elasticity.
 
 ---
 
-## 5. Visual Refinements & Hierarchical Results Architecture
+## 5. The Chemotactic Breakthrough & Grand Ecological Synthesis
 
-### 1. Elimination of Brightness Strobing (Fixed Absolute Intensity Scaling)
-- **Problem**: `core/visualization.py` was dividing mass by `np.max(log_f)` on every single frame. Because peak density fluctuated between $0.70$ and $0.98$, the colormap brightness jumped frame-to-frame, creating a rapid flickering strobe.
-- **Fix**: Replaced dynamic per-frame division with fixed absolute physical scaling:
-  $$\text{Intensity} = \frac{\log(1 + 1.8 \cdot A)}{\log(1 + 1.8)}$$
-- **Result**: $100\%$ rock-steady, flicker-free videos with crisp, high-contrast internal cell pores.
+### 1. Directed Chemotactic Foraging Coupling
+- Coupled spatial nutrient gradients $\nabla R(\mathbf{x}, t)$ directly into the velocity advection field:
+  $$\mathbf{v}_{\text{total}}(\mathbf{x}) = v_{\text{scale}} \left( (1 - \alpha)\nabla G(U)(\mathbf{x}) - \alpha \nabla A(\mathbf{x}) \right) + \chi \cdot \nabla R(\mathbf{x})$$
+  $$\mathbf{v}_{\text{bounded}}(\mathbf{x}) = \tanh(\mathbf{v}_{\text{total}}(\mathbf{x})) \cdot M_{\text{env}}(\mathbf{x})$$
 
-### 2. Smooth Velocity Regularization ($\tanh(\mathbf{v})$)
-- **Problem**: Hard clipping of velocities $\mathbf{v} \in [-1, 1]$ caused 1-pixel sign-flip vibrations for steep gradients.
-- **Fix**: Applied smooth $C^\infty$ hyperbolic tangent saturation $\mathbf{v} \leftarrow \tanh(\mathbf{v})$ with $v_{\text{scale}} \approx 5.4, \alpha \approx 0.055$.
-- **Result**: Silky smooth hydrodynamic advection with zero artificial vibration.
+### 2. Discovery of the Cohesion-Fission Phase Transition
+- Discovered that the balance between internal surface tension ($\alpha_{\text{diffusion}}, \sigma$) and external gradient pull ($\chi$) dictates whether an advecting soliton undergoes:
+  1. **Unitary Cohesive Migration** ($\alpha = 0.065, \sigma = 0.013, \chi = 18.0$): Single solid bead drifting rapidly ($\Delta x = +120.7\text{ px}$) with $96.5\%$ core preservation.
+  2. **Amoeboid Fission / Mitosis** ($\alpha = 0.035, \sigma = 0.015, \chi = 25.0$): Shear-induced splitting into two communicating daughter lobes ($\Delta x = +144.4\text{ px}$).
 
-### 3. Hierarchical Per-Run Subfolder Structure
-- Standardized all experiment outputs into clean, dedicated subfolders containing self-contained artifacts (`rollout.mp4`, `trajectory_filmstrip.png`, `motion_heatmap.png`, `metadata.json`, `data.npz`):
-  - `results/baseline_imgep/elite_1/` .. `elite_3/`
-  - `results/wall_obstacles/elite_1/` .. `elite_3/`
-  - `results/barrier_constriction/width_08/` .. `width_32/`
-  - `results/resource_depletion/static_baseline/` and `dynamic_depletion/`
-  - `results/showcase/method_1_gene_mutation/` and `method_2_negotiation_rule/`
-  - `results/scaleup/rerun_1/` and `rerun_2/`
-  - `results/epic_ecosystem/`
-  - `results/orbium/`
+### 3. Soft-Bodied Barrier Constriction Assay
+- Quantified the aperture transmission sigmoid $T(W)$ from $0.0\%$ at $W=8\text{ px}$ to $77.0\%$ at $W=64\text{ px}$ for cohesive soft solitons.
+
+### 4. Grand Synthesis Colosseum Ecosystem
+- Built the spacious Colosseum arena (98.9% passable water) with **4 Dynamic Chemotactic Sanctuaries**, cyclic grazing ($\delta_{\text{dep}}=0.004, \delta_{\text{reg}}=0.001$), cardinal archways, and continuous Gumbel-Max territorial speciation across 22,500 continuous steps.
+
+---
+
+## 6. Complete Clean Directory Hierarchy
+
+```
+results/
+├── physics_verification/       # Mass conservation Q=0 verification
+├── gene_mutation/              # Multi-species Gumbel-Max mixing (seed_42, seed_101, seed_2024)
+├── negotiation_rule/           # Softmax growth negotiation (seed_42, seed_101, seed_2024)
+├── baseline_imgep/             # IMGEP curiosity search vs Random (seed_42, seed_101, seed_2024)
+├── agentic_loop/               # 138-gen AI Scientist loop (+392% gain, 108 elites)
+├── chemotaxis_calibration/     # 3-Way Cohesion vs Fission phase transition (seed_42, seed_101, seed_2024)
+├── barrier_constriction/       # Soft-bodied aperture transmission sweep (seed_42, seed_101, seed_2024)
+├── wall_obstacles/             # Obstacle maze exploration (seed_42, seed_101, seed_2024)
+├── resource_depletion/         # Cyclic foraging & trailing kinetics (seed_42, seed_101, seed_2024)
+├── scaleup/                    # 512x512 canvas resolution invariance (seed_42, seed_101, seed_2024)
+└── epic_ecosystem/             # Grand Synthesis Chemotactic Colosseum (seed_42, seed_101, seed_2024)
+```

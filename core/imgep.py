@@ -96,30 +96,50 @@ def sample_random_config(rng_key: jnp.ndarray, K: int = 9) -> Tuple[jnp.ndarray,
     return rng_key, config
 
 def mutate_config(rng_key: jnp.ndarray, parent_config: Dict[str, Any], std: float = 0.02) -> Tuple[jnp.ndarray, Dict[str, Any]]:
-    rng_key, k1, k2, k3, k4, k5 = random.split(rng_key, 6)
+    rng_key, k1, k2, k3, k4, k5, k6 = random.split(rng_key, 7)
     
     parent_radii = np.array(parent_config["radii"])
     radii_noise = np.array(random.normal(k1, parent_radii.shape)) * 0.3
     mut_radii = np.sort(np.clip(parent_radii + radii_noise, 5.0, 16.0))
     
-    n_patches = parent_config["n_patches"]
+    n_patches = int(parent_config.get("n_patches", 4))
+    # 20% probability to alter patch count by +/- 1
+    p_patch_mut = float(random.uniform(k6, ()))
+    if p_patch_mut < 0.15 and n_patches < 6:
+        new_n_patches = n_patches + 1
+    elif p_patch_mut > 0.85 and n_patches > 2:
+        new_n_patches = n_patches - 1
+    else:
+        new_n_patches = n_patches
+        
     parent_mu = np.array(parent_config["mu_presets"])
+    parent_sigma = np.array(parent_config["sigma_presets"])
+    
+    if new_n_patches > len(parent_mu):
+        # Add new patch inheriting from an existing patch with perturbation
+        extra_mu = parent_mu[-1:] + np.array(random.normal(k2, (1, parent_mu.shape[1]))) * std
+        parent_mu = np.vstack([parent_mu, extra_mu])
+        extra_sigma = parent_sigma[-1:] + np.array(random.normal(k3, (1, parent_sigma.shape[1]))) * (std * 0.25)
+        parent_sigma = np.vstack([parent_sigma, extra_sigma])
+    elif new_n_patches < len(parent_mu):
+        parent_mu = parent_mu[:new_n_patches]
+        parent_sigma = parent_sigma[:new_n_patches]
+        
     mu_noise = np.array(random.normal(k2, parent_mu.shape)) * std
     mut_mu = np.clip(parent_mu + mu_noise, 0.13, 0.20)
     
-    parent_sigma = np.array(parent_config["sigma_presets"])
     sigma_noise = np.array(random.normal(k3, parent_sigma.shape)) * (std * 0.25)
     mut_sigma = np.clip(parent_sigma + sigma_noise, 0.010, 0.020)
     
-    v_s_noise = float(random.normal(k4, ())) * 0.3
-    mut_v_scale = float(np.clip(parent_config.get("v_scale", 5.2) + v_s_noise, 4.0, 6.5))
+    v_s_noise = float(random.normal(k4, ())) * 0.35
+    mut_v_scale = float(np.clip(parent_config.get("v_scale", 5.2) + v_s_noise, 4.2, 6.5))
     
     a_diff_noise = float(random.normal(k5, ())) * 0.01
     mut_alpha_diff = float(np.clip(parent_config.get("alpha_diffusion", 0.06) + a_diff_noise, 0.04, 0.08))
     
     mut_config = {
         "radii": mut_radii.tolist(),
-        "n_patches": n_patches,
+        "n_patches": new_n_patches,
         "mu_presets": mut_mu.tolist(),
         "sigma_presets": mut_sigma.tolist(),
         "v_scale": mut_v_scale,
@@ -193,7 +213,8 @@ def run_imgep_experiment(
     grid_size: int = 256,
     num_steps: int = 2000,
     sample_interval: int = 250,
-    wall_mask: Optional[jnp.ndarray] = None
+    wall_mask: Optional[jnp.ndarray] = None,
+    seed_configs: Optional[List[Dict[str, Any]]] = None
 ) -> Tuple[IMGEPArchive, List[np.ndarray]]:
     if wall_mask is not None:
         metric_names = ["com_norm", "corridor_coverage", "ea_norm"]
@@ -204,7 +225,23 @@ def run_imgep_experiment(
     rollouts: List[np.ndarray] = []
     
     print(f"[IMGEP] Starting Bootstrap Phase ({n_bootstrap} trials)... Goal Metrics: {metric_names}")
-    for b in range(n_bootstrap):
+    
+    # 1. Evaluate seed configs if provided (elite lineage continuity)
+    seed_count = 0
+    if seed_configs:
+        for sc in seed_configs:
+            if seed_count >= n_bootstrap:
+                break
+            rng_key, metrics, sampled_mass = evaluate_single_config_jax(
+                rng_key, sc, grid_size=grid_size, num_steps=num_steps,
+                sample_interval=sample_interval, wall_mask=wall_mask
+            )
+            archive.add_trial(sc, metrics)
+            rollouts.append(sampled_mass)
+            seed_count += 1
+            
+    # 2. Fill remaining bootstrap slots with random sampling
+    for b in range(seed_count, n_bootstrap):
         rng_key, cfg = sample_random_config(rng_key)
         rng_key, metrics, sampled_mass = evaluate_single_config_jax(
             rng_key, cfg, grid_size=grid_size, num_steps=num_steps,
@@ -216,7 +253,8 @@ def run_imgep_experiment(
     print(f"[IMGEP] Starting Goal Exploration Phase ({n_trials - n_bootstrap} trials)...")
     for t in range(n_bootstrap, n_trials):
         rng_key, k_goal = random.split(rng_key)
-        goal_norm = np.array(random.uniform(k_goal, (len(metric_names),), minval=0.0, maxval=1.0))
+        # Sample goals across behavior space with focus on high motility & evolutionary dynamism
+        goal_norm = np.array(random.uniform(k_goal, (len(metric_names),), minval=0.1, maxval=1.0))
         
         nearest_idx = archive.find_nearest(goal_norm)
         parent_cfg = archive.trials[nearest_idx]["config"]

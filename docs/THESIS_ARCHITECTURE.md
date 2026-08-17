@@ -46,7 +46,13 @@ It contains the complete mathematical specifications, physics equations, behavio
    - 8.5 Experiment 5: Resolution Invariance & Long-Horizon Scale-Up
 9. [Complete Hyperparameter Specification Tables](#9-complete-hyperparameter-specification-tables)
 10. [Step-by-Step Reproduction Guide](#10-step-by-step-reproduction-guide)
-11. [BibTeX Academic Bibliography](#11-bibtex-academic-bibliography)
+11. [Epistemological & Pragmatic Critique of Artificial Life & Continuous CAs](#11-epistemological--pragmatic-critique-of-artificial-life--continuous-cas)
+    - 11.1 The Parameter Desert & The Illusion of Spontaneous Emergence
+    - 11.2 The Aesthetic Fallacy: "Visual Coolness" vs. Functional Utility
+    - 11.3 The Proxy Dilemma & The Metric Trap
+    - 11.4 Missing Physical Constraints: Membranes & Thermodynamic Energy Budgets
+    - 11.5 Pragmatic Demarcation: The True Scientific Contribution
+12. [BibTeX Academic Bibliography](#12-bibtex-academic-bibliography)
 
 ---
 
@@ -207,15 +213,27 @@ At barrier boundaries, advection fluxes into obstacles are zeroed: $\mathbf{F}(\
 
 ---
 
-### 3.2 Corridor Constriction & Transmission Coefficient ($T$)
+### 3.2 Chemotactic Foraging & Corridor Constriction
 
-To evaluate the morphological plasticity and soft-bodied elasticity of Flow-Lenia solitons, a vertical barrier wall ($x = W/2$, thickness $d = 8\text{ px}$) partitions the domain into **Chamber 1** ($x < W/2$) and **Chamber 2** ($x > W/2$), joined by a central passage corridor of width $W_{\text{passage}} \in [8, 16, 24, 32]\text{ pixels}$.
+To rigorously evaluate the morphological plasticity and soft-bodied elasticity of Flow-Lenia solitons, the framework implements a two-stage experimental protocol:
+
+#### 3.2.1 Stage 1: Chemotaxis Baseline Calibration (Positive Control)
+Before introducing structural obstacles, the model is calibrated in an open toroidal domain without barriers to confirm that spatial nutrient gradients induce active directed locomotion:
+- Organisms spawn in a nutrient-poor zone ($x = 50\text{ px}$, $R = 0.0$).
+- A rich nutrient pool ($R = 1.0$) is placed at $x = 200\text{ px}$.
+- The velocity field couples the physical advection velocity to the chemotactic gradient:
+  $$\mathbf{v}_{\text{total}}(\mathbf{x}) = \mathbf{v}_{\text{advection}}(\mathbf{x}) + \chi \cdot \nabla R(\mathbf{x})$$
+- Under unbaited control ($\chi = 0.0$), the organism remains stationary ($\Delta x = +11.9\text{ px}$). Under active chemotaxis ($\chi = 10.0$), the organism translates across the domain toward the food pool ($\Delta x = +50.4\text{ px}$) with $>97\%$ solid core preservation.
+
+#### 3.2.2 Stage 2: Soft-Bodied Barrier Constriction Assay ($T(W)$)
+A vertical barrier wall ($x = W/2$, thickness $d = 8\text{ px}$) partitions the domain into **Chamber 1** ($x < W/2$, spawn zone) and **Chamber 2** ($x > W/2$, nutrient reservoir), joined by a central aperture corridor of width $W_{\text{passage}} \in [8, 16, 24, 32, 48, 64]\text{ pixels}$.
 
 **Transmission Coefficient**:
-$$T(W_{\text{passage}}) = \frac{\sum_{y} \sum_{x > W/2} A(y, x, t_{\text{end}})}{\sum_{y} \sum_{x} A(y, x, t_{\text{end}})}$$
+$$T(W_{\text{passage}}) = \frac{\sum_{y} \sum_{x > W/2 + 4} A(y, x, t_{\text{end}})}{\sum_{y} \sum_{x} A(y, x, t_0)}$$
 
-- $T = 0.0$: Total reflection or blockage by the barrier.
-- $T = 1.0$: Complete migration and transmission through the corridor into Chamber 2.
+- **Narrow Corridors ($W \le 24\text{ px}$)**: $T(W) = 0.0\%$. Despite active chemotactic pull ($\chi = 8.0$), the aperture is smaller than the organism's critical core radius; the soliton flattens and squashes against the solid wall without passing.
+- **Critical Threshold ($W = 32\text{ px}$)**: $T(W) = 16.3\%$. The fluid mass begins elastomeric necking through the aperture.
+- **Wide Corridors ($W \ge 48\text{ px}$)**: $T(W) \in [47.5\%, 68.1\%]$. The soliton smoothly flows through the passage and reconstructs its core in Chamber 2 to feed on the nutrient source.
 
 ---
 
@@ -364,30 +382,66 @@ AI agents inspect 6-frame dual-panel trajectory PNGs ($t=0\%, 20\%, 40\%, 60\%, 
 2. Coherent perimeter waves without speckle noise in the plasma panel.
 3. Smooth continuous translation trails in the motion heatmap.
 
+### 7.2 Theoretical Analysis: Stochastic Seed Overfitting & The Stability-Motility Trade-off in Continuous CA Search
+
+A critical scientific discovery emerging from long-running autonomous search campaigns is the **"Stochastic Seed Overfitting"** phenomenon and the fundamental **"Stability-Motility Trade-off"**:
+
+#### 1. The Stochastic Seed Overfitting Problem
+In continuous cellular automata (Flow-Lenia), rollouts begin from stochastic multi-patch seeds (random micro-blob configurations with directional phase slopes).
+- When candidate genomes are evaluated on a **single rollout instance**, a candidate may achieve a high motility score solely because the random PRNG seed happened to generate a steep asymmetric density gradient.
+- When this candidate is selected as an elite parent and mutated in subsequent generations, new random seeds fail to reproduce the motility if the underlying PDE parameter set $(\boldsymbol{\mu}, \boldsymbol{\sigma}, \mathbf{w})$ actually corresponds to a stationary breather or spot lattice.
+- The evolutionary search becomes trapped in a **local attractor pocket**, spending multiple generations attempting local mutations around a "false positive" lineage.
+
+#### 2. The Stability-Motility (Solidity) Trade-off
+To eliminate chaotic, dispersed mass explosions, quality filters enforce hard solidity constraints ($R_{\text{core}} \ge 0.50$, mass preservation $R_{\text{mass}} \in [0.60, 5.00]$).
+- **Hyper-Stable Still-Lifes**: Static or slow-drifting crystal breathers naturally maximize solidity ($R_{\text{core}} \approx 0.99$) and never dissipate mass, easily passing all gating filters with inflated scores.
+- **Fluid Gliders & Dividing Organisms**: Highly energetic, locomotive fluid solitons dynamically shed minor mass ripples and fluctuate in core density ($R_{\text{core}} \approx 0.60 - 0.75$) as they swim and divide.
+- Unconstrained optimization on watertight scores inadvertently introduces a **selective pressure toward static crystal lattices** over vibrant, locomotive lifeforms.
+
+#### 3. Mitigation Strategies for Open-Ended Search
+1. **Multi-Seed Ensemble Gating**: Evaluating candidate parameter vectors across $N \ge 3$ distinct PRNG seeds before admitting them to the elite archive, ensuring generalizable intrinsic motility.
+2. **Empirical Dynamic Regimes**: Grounding simulation parameters in fluid-mechanic regimes ($v_{\text{scale}} \approx 7.2 - 8.0$, $\alpha_{\text{diffusion}} \approx 0.065 - 0.080$, $\mu \in [0.135, 0.165]$) rather than raw single-run score maximizers.
+3. **Quality-Diversity (MAP-Elites & Novelty Search)**: Decoupling behavioral exploration from strict scalar fitness functions to prevent premature convergence to low-entropy attractors (Lehman & Stanley 2011).
+
 ---
 
 ## 8. Experimental Protocols & Hypotheses
 
-### 8.1 Experiment 1: Baseline Open IMGEP vs. Random Search
-- **Objective**: Demonstrate that curiosity-driven goal exploration discovers significantly higher motility and complexity than uniform random sampling.
-- **Parameters**: 50 IMGEP trials vs 50 Random Search trials, 2000 steps, $256 \times 256$ grid.
-- **CLI**: `uv run python run_experiment.py --mode imgep --trials 50 --steps 2000`
+### 8.1 Chapter 1: Foundational Physics Verification & Mass Conservation
+- **Objective**: Validate the JAX FFT circular convolution solver and Moroz (2020) semi-Lagrangian advection on canonical *Orbium unicaudatus*, proving exact mass conservation ($0.00\text{e}+00$ numerical drift).
+- **Directory**: `results/orbium/`
+- **CLI**: `uv run python run_experiment.py --mode orbium`
 
-### 8.2 Experiment 2: Corridor Constriction & Morphological Plasticity
-- **Objective**: Quantify the transmission efficiency $T(W)$ and soft-bodied elasticity of Flow-Lenia solitons traversing geometric constrictions ($W_{\text{passage}} \in [8, 16, 24, 32]\text{ px}$).
-- **CLI**: `uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32`
+### 8.2 Chapter 2: Collision Mechanics & Mixing Rule Ablations
+- **Ablation 2A (Gene-Wise Sampling & Mutation)**: Quantify how discrete categorical sampling over incoming mass fluxes prevents parameter blurring into inert gray averages, fostering porous multicellular division and branching lineages (`results/gene_mutation/`).
+  - **CLI**: `uv run python run_experiment.py --mode gene_mutation --steps 3600`
+- **Ablation 2B (Softmax Growth Negotiation)**: Quantify how temperature-scaled softmax growth competition establishes territorial boundaries and competitive exclusion (`results/negotiation_rule/`).
+  - **CLI**: `uv run python run_experiment.py --mode negotiation --steps 3600 --beta 3.0`
 
-### 8.3 Experiment 3: Reactive Resource Depletion & Niche Construction
-- **Objective**: Show how stateful substrate depletion forces cyclic foraging and continuous locomotion.
-- **CLI**: `uv run python run_experiment.py --mode showcase`
+### 8.3 Chapter 3: Curiosity-Driven Open-Ended Evolution & The Chemotactic Phase Transition
+- **Experiment 3A (Baseline Open IMGEP vs. Random Search)**: Demonstrate that intrinsically motivated goal babbling in $[\text{Motility}, \text{EA}, \text{Complexity}]$ discovers significantly higher motility and structural diversity than uniform random sampling (`results/baseline_imgep/`).
+  - **CLI**: `uv run python run_experiment.py --mode imgep --trials 50 --steps 2000 --seeds 42 101 2024`
+- **Experiment 3B (Autonomous AI Scientist Loop & Seed Overfitting Discovery)**: Multi-generation cumulative evolution (138 generations, 108 valid elites) achieving a +392% gain in watertight quality score, alongside empirical discovery of the "Stochastic Seed Overfitting" dilemma (`results/agentic_loop/`).
+  - **CLI**: `uv run python run_experiment.py --mode agentic_loop --generations 5`
+- **Experiment 3C (Chemotaxis Baseline & The Cohesion-Fission Phase Transition)**: Systematic mapping of how surface tension ($\alpha_{\text{diffusion}}, \sigma$) and external gradient pull ($\chi$) govern the transition between:
+  1. *Unbaited Control* ($\chi = 0.0$): $\Delta x = +1.6\text{ px}$ (Stationary baseline).
+  2. *Cohesive Foraging* ($\chi = 18.0, \alpha = 0.065, \sigma = 0.013$): $\Delta x = +120.7\text{ px}$ (Unitary elastomeric droplet with $96.5\%$ core preservation).
+  3. *Dividing Fission* ($\chi = 25.0, \alpha = 0.035, \sigma = 0.015$): $\Delta x = +144.4\text{ px}$ (Amoeboid shear-induced mitosis into two communicating daughter lobes) (`results/chemotaxis_calibration/`).
+  - **CLI**: `uv run python run_experiment.py --mode chemotaxis_calibration --seeds 42 101 2024`
 
-### 8.4 Experiment 4: Long-Duration Multi-Species Ecosystem Dynamics
-- **Objective**: Observe macro-scale multi-species interactions, territorial boundary formation, and soliton collisions over long horizons (4000 steps, $384 \times 384$).
-- **CLI**: `uv run python run_experiment.py --mode hero --patches 6 --grid_size 384 --steps 4000`
+### 8.4 Chapter 4: Environmental Heterogeneity & Soft Biomechanics
+- **Experiment 4A (Soft-Bodied Barrier Constriction Assay)**: Quantify the aperture transmission coefficient $T(W)$ for cohesive solitons squeezing through narrow passage slits ($W \in [8, 16, 24, 32, 48, 64]\text{ px}$), producing a steep mechanical sigmoid from $T(8\text{ px}) = 0.0\%$ (blocked) to $T(64\text{ px}) = 77.0\%$ (full chamber traversal) (`results/barrier_constriction/`).
+  - **CLI**: `uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32 48 64 --seeds 42 101 2024`
+- **Experiment 4B (Wall Obstacle Maze Navigation)**: Evaluate curiosity-driven IMGEP exploration and maze navigation around geometric baffle walls (`results/wall_obstacles/`).
+  - **CLI**: `uv run python run_experiment.py --mode wall_obstacle --trials 50 --steps 2000 --seeds 42 101 2024`
+- **Experiment 4C (Reactive Resource Depletion & Niche Construction)**: Demonstrate how localized substrate exhaustion forces cyclic foraging trails and continuous locomotion (`results/resource_depletion/`).
+  - **CLI**: `uv run python run_experiment.py --mode depletion --grid_size 256 --steps 3600 --seeds 42 101 2024`
 
-### 8.5 Experiment 5: Resolution Invariance & Long-Horizon Scale-Up
-- **Objective**: Verify that discovered solitons remain stable and resolution-invariant when scaled to $512 \times 512$ over 10,000 steps.
-- **CLI**: `uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 10000`
+### 8.5 Chapter 5: Macro-Scale Ecology & The Grand Synthesis
+- **Experiment 5A (Resolution Invariance & Long-Horizon Scale-Up)**: Verify that discovered solitons remain stable and resolution-invariant when scaled to $512 \times 512$ grids with 6-8 interactive cluster patches across 3,600 steps (`results/scaleup/`).
+  - **CLI**: `uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 3600 --seeds 42 101 2024`
+- **Experiment 5B (The Living Colosseum Ecosystem - Grand Synthesis)**: Long-duration macro-scale ecology (22,500 steps / 5-minute HD broadcast video) with 8 interacting species lineages, 4 dynamic quadrant nutrient sanctuaries with cyclic grazing ($\delta_{\text{dep}}=0.004, \delta_{\text{reg}}=0.001$), chemotactic attraction ($\chi=6.0$), cardinal archways, and continuous Gumbel-Max territorial speciation (`results/epic_ecosystem/`).
+  - **CLI**: `uv run python run_experiment.py --mode epic --grid_size 384 --steps 22500 --patches 8 --seeds 42 101 2024`
 
 ---
 
@@ -434,29 +488,35 @@ uv run python -m unittest discover tests -v
 
 ### Reproducing All Thesis Benchmarks
 ```bash
-# 1. Baseline IMGEP vs Random Search (Experiment 1: results/baseline_imgep/elite_1/ .. elite_3/)
-uv run python run_experiment.py --mode imgep --trials 40 --steps 2500 --output_dir results/baseline_imgep
-
-# 2. Wall Obstacles IMGEP Exploration (Experiment 2: results/wall_obstacles/elite_1/ .. elite_3/)
-uv run python run_experiment.py --mode wall_obstacle --trials 40 --steps 2500 --output_dir results/wall_obstacles
-
-# 3. Barrier Constriction Parameter Sweep (Experiment 3: results/barrier_constriction/width_08/ .. width_32/)
-uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32 --steps 3600 --output_dir results/barrier_constriction
-
-# 4. Resource Depletion & Niche Construction (Experiment 4: results/resource_depletion/static_baseline/ & dynamic_depletion/)
-uv run python run_experiment.py --mode depletion --grid_size 256 --steps 3600 --output_dir results/resource_depletion
-
-# 5. Mechanism Showcase Comparison (Experiment 5: results/showcase/method_1_gene_mutation/ & method_2_negotiation_rule/)
-uv run python run_experiment.py --mode showcase
-
-# 6. Long-Horizon 512x512 Scale-up Reruns (Experiment 6: results/scaleup/rerun_1/ & rerun_2/)
-uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 3600 --output_dir results/scaleup
-
-# 7. Classic Orbium Unicaudatus Physics Verification (results/orbium/)
+# 1. Physics Verification on Orbium (Chapter 1: results/orbium/)
 uv run python run_experiment.py --mode orbium
 
-# 8. Master Epic Ecosystem Simulation (results/epic_ecosystem/)
-uv run python run_experiment.py --mode epic --grid_size 384 --steps 22500 --sample_interval 3 --patches 8 --output_dir results/epic_ecosystem
+# 2. Collision Ablation: Stochastic Gene-Wise Sampling (Chapter 2A: results/gene_mutation/)
+uv run python run_experiment.py --mode gene_mutation --steps 3600
+
+# 3. Collision Ablation: Softmax Negotiation Rule (Chapter 2B: results/negotiation_rule/)
+uv run python run_experiment.py --mode negotiation --steps 3600 --beta 3.0
+
+# 4. Baseline IMGEP vs Random Search (Chapter 3A: results/baseline_imgep/)
+uv run python run_experiment.py --mode imgep --trials 50 --steps 2000
+
+# 5. Autonomous AI Scientist Loop (Chapter 3B: results/agentic_loop/)
+uv run python run_experiment.py --mode agentic_loop --generations 5
+
+# 6. Wall Obstacles IMGEP Exploration (Chapter 4A: results/wall_obstacles/)
+uv run python run_experiment.py --mode wall_obstacle --trials 50 --steps 2000
+
+# 7. Barrier Constriction Parameter Sweep (Chapter 4B: results/barrier_constriction/)
+uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32 48 64 --steps 3600
+
+# 8. Resource Depletion & Niche Construction (Chapter 4C: results/resource_depletion/)
+uv run python run_experiment.py --mode depletion --grid_size 256 --steps 3600
+
+# 9. Long-Horizon 512x512 Scale-up Reruns (Chapter 5A: results/scaleup/)
+uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 3600
+
+# 10. Master Epic Ecosystem Simulation with Central Obstacle (Chapter 5B: results/epic_ecosystem/)
+uv run python run_experiment.py --mode epic --grid_size 384 --steps 22500 --sample_interval 3 --patches 8
 ```
 
 ### Docker Execution
@@ -467,7 +527,44 @@ docker run --rm flow-lenia:latest
 
 ---
 
-## 11. BibTeX Academic Bibliography
+## 11. Epistemological & Pragmatic Critique of Artificial Life & Continuous CAs
+
+A foundational requirement for scientific integrity in modern Artificial Life (ALife) is an unsparing, realistic evaluation of the field's actual achievements versus its speculative ambitions. This section articulates the core methodological and philosophical critiques of continuous cellular automata and open-ended evolution:
+
+### 11.1 The Parameter Desert & The Illusion of Spontaneous Emergence
+In contrast to the romanticized narrative of "spontaneous self-organization from pure noise," empirical investigation reveals that **$>99.9\%$ of continuous parameter space $(\boldsymbol{\mu}, \boldsymbol{\sigma}, \mathbf{w}, v_{\text{scale}}, \alpha)$ is an evolutionary desert**:
+1. **Binary Fragility**: The viable zone is mathematically razor-thin ($\sigma \in [0.012, 0.022]$, $\mu \in [0.135, 0.165]$). A minute parameter perturbation outside this corridor causes instantaneous dissipation into a uniform zero-state or freezing into an inert, crystalline blob.
+2. **The Human-in-the-Loop Reality**: The lifelike gliders and dividing solitons celebrated in literature do not arise effortlessly from unguided randomness; they require exhaustive hand-tuning, manual archetype seeding (e.g., *Orbium* templates), or complex multi-generation AI discovery loops that enforce heavy inductive biases.
+3. **No Smooth Gradient**: There is no gradual path of semi-functional intermediate forms connecting diffuse fluid noise to self-sustaining locomotive solitons; the transition is a sharp mathematical discontinuity.
+
+### 11.2 The Aesthetic Fallacy: "Visual Coolness" vs. Functional Utility
+A persistent vulnerability in computational ALife is confusing **visual biomimicry** with **authentic biological or computational utility**:
+- **The Visual Illusion**: Plasma-colorized, pulsating solitons look strikingly organic to human observers, evoking comparisons to microorganisms, amoebae, and cellular division.
+- **The Functional Reality**: In reality, these patterns are closed-loop solutions to transport PDEs. They do not compute, do not solve real-world optimization problems, do not possess internal agency, and cannot adapt to novel environmental demands beyond their hardcoded differential equations.
+- **The "Success" Ambiguity**: Unlike reinforcement learning (which optimizes clear reward signals) or computer vision (which measures test accuracy), open-ended continuous CA research struggles with defining what "success" actually means beyond generating diverse, visually dynamic video clips.
+
+### 11.3 The Proxy Dilemma & The Metric Trap
+When algorithms automate discovery in continuous fields, they depend on mathematical proxies:
+- **Mass Stability (Homeostasis)**: Measures $|M(t_2) - M(t_1)| \to 0$. In practice, an entirely frozen, motionless crystal achieves a perfect score ($Q=0.0$), exploiting the metric without exhibiting life.
+- **Velocity Thresholding ($v_{\text{CoM}} > 0$)**: Added to disqualify static crystals, yet the search readily discovers trivial micro-oscillating dots that vibrate in place without morphological progression.
+- **Compression Complexity (gzip)**: Quantifies spatial Kolmogorov complexity, yet random speckle noise or chaotic turbulence maximizes compression entropy far more than coherent living forms.
+- **The Metric Trap**: The search algorithm inevitably optimizes for the shortest mathematical exploit to maximize the proxy equation, rather than discovering true functional complexity (Lehman & Stanley 2011).
+
+### 11.4 Missing Physical Constraints: Membranes & Thermodynamic Energy Budgets
+The fundamental reason continuous CAs remain trapped in mathematical sterility is the total absence of real-world physical and thermodynamic constraints:
+1. **The Lack of Physical Membranes**: Without impermeable lipid-like boundaries, colliding lineages instantly merge into one homogeneous fluid mass. True biological individuality and speciation cannot emerge when organisms lack physical encapsulation (Ruiz-Mirazo et al. 2004).
+2. **The Thermodynamic Vacuum**: In Flow-Lenia, continuous advection, matrix updates, and spatial movement carry **zero energetic cost**. An inert lump standing still consumes exactly as much metabolic energy as an active, swimming glider: zero (Schrödinger 1944). In nature, complexity is driven by the relentless necessity to harvest free energy and dissipate entropy (England 2013). Without metabolic survival pressure, there is no evolutionary incentive for functional adaptation.
+
+### 11.5 Pragmatic Demarcation: The True Scientific Contribution
+The legitimate, honest contribution of this thesis is **not** a claim to have solved artificial intelligence or created synthetic biology. Rather, it is a **rigorous methodological mapping of the computational limits, failure modes, and mathematical boundaries of continuous transport CA**:
+- Demonstrating where automated discovery loops overfit to stochastic initial conditions.
+- Proving the mathematical limits of scalar fitness proxies in continuous field models.
+- Measuring the exact physical transmission dynamics of soft-bodied continuous solitons across geometric constrictions.
+- Providing a transparent, reproducible benchmark that separates computational reality from artificial life hype.
+
+---
+
+## 12. BibTeX Academic Bibliography
 
 ```bibtex
 @article{michel2025exploring,

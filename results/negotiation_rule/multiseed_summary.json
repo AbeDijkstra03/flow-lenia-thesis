@@ -1,0 +1,122 @@
+[
+  {
+    "seed": 42,
+    "metrics": {
+      "ea_raw": 0.012916670180857182,
+      "complexity_raw": 5626.0,
+      "entropy_raw": 7.102683258056641,
+      "com_displacement": 1.7290791683328457,
+      "corridor_coverage": 0.0592041015625,
+      "ea_norm": 0.003587963939126995,
+      "complexity_norm": 0.085845947265625,
+      "entropy_norm": 0.44391770362853394,
+      "com_norm": 0.004775951582564652,
+      "total_mass": 2430.2685546975,
+      "watertight_score": 0.0,
+      "watertight_valid": 0.0,
+      "solid_core_ratio": 0.9618690465865882,
+      "mass_preservation_ratio": 0.9999979908382223,
+      "grid_size": 256,
+      "horizon": 3600,
+      "method": "negotiation_rule",
+      "mixing_rule": "negotiation",
+      "beta": 3.0
+    },
+    "config": {
+      "grid_size": 256,
+      "steps": 3600,
+      "patches": 6,
+      "beta": 3.0,
+      "v_scale": 5.8,
+      "alpha_diffusion": 0.05,
+      "seed": 42
+    },
+    "artifacts": {
+      "video": "results/negotiation_rule/seed_42/rollout.mp4",
+      "filmstrip": "results/negotiation_rule/seed_42/trajectory_filmstrip.png",
+      "heatmap": "results/negotiation_rule/seed_42/motion_heatmap.png",
+      "data": "results/negotiation_rule/seed_42/data.npz",
+      "metadata": "results/negotiation_rule/seed_42/metadata.json"
+    }
+  },
+  {
+    "seed": 101,
+    "metrics": {
+      "ea_raw": 0.022393546998500824,
+      "complexity_raw": 5149.0,
+      "entropy_raw": 7.027709102630615,
+      "com_displacement": 5.992425292963244,
+      "corridor_coverage": 0.042938232421875,
+      "ea_norm": 0.006220429721805784,
+      "complexity_norm": 0.0785675048828125,
+      "entropy_norm": 0.4392318189144074,
+      "com_norm": 0.016551892814094114,
+      "total_mass": 2676.56201172875,
+      "watertight_score": 19.929231428583357,
+      "watertight_valid": 1.0,
+      "solid_core_ratio": 0.9673146466898053,
+      "mass_preservation_ratio": 0.9999983581460039,
+      "grid_size": 256,
+      "horizon": 3600,
+      "method": "negotiation_rule",
+      "mixing_rule": "negotiation",
+      "beta": 3.0
+    },
+    "config": {
+      "grid_size": 256,
+      "steps": 3600,
+      "patches": 6,
+      "beta": 3.0,
+      "v_scale": 5.8,
+      "alpha_diffusion": 0.05,
+      "seed": 101
+    },
+    "artifacts": {
+      "video": "results/negotiation_rule/seed_101/rollout.mp4",
+      "filmstrip": "results/negotiation_rule/seed_101/trajectory_filmstrip.png",
+      "heatmap": "results/negotiation_rule/seed_101/motion_heatmap.png",
+      "data": "results/negotiation_rule/seed_101/data.npz",
+      "metadata": "results/negotiation_rule/seed_101/metadata.json"
+    }
+  },
+  {
+    "seed": 2024,
+    "metrics": {
+      "ea_raw": 0.008951017633080482,
+      "complexity_raw": 6179.0,
+      "entropy_raw": 7.307654094696045,
+      "com_displacement": 5.868475730121086,
+      "corridor_coverage": 0.06622314453125,
+      "ea_norm": 0.0024863937869668007,
+      "complexity_norm": 0.0942840576171875,
+      "entropy_norm": 0.45672838091849655,
+      "com_norm": 0.016209527281239436,
+      "total_mass": 3056.974365244375,
+      "watertight_score": 18.913223270115225,
+      "watertight_valid": 1.0,
+      "solid_core_ratio": 0.9677080785157374,
+      "mass_preservation_ratio": 0.9999968853338036,
+      "grid_size": 256,
+      "horizon": 3600,
+      "method": "negotiation_rule",
+      "mixing_rule": "negotiation",
+      "beta": 3.0
+    },
+    "config": {
+      "grid_size": 256,
+      "steps": 3600,
+      "patches": 6,
+      "beta": 3.0,
+      "v_scale": 5.8,
+      "alpha_diffusion": 0.05,
+      "seed": 2024
+    },
+    "artifacts": {
+      "video": "results/negotiation_rule/seed_2024/rollout.mp4",
+      "filmstrip": "results/negotiation_rule/seed_2024/trajectory_filmstrip.png",
+      "heatmap": "results/negotiation_rule/seed_2024/motion_heatmap.png",
+      "data": "results/negotiation_rule/seed_2024/data.npz",
+      "metadata": "results/negotiation_rule/seed_2024/metadata.json"
+    }
+  }
+]

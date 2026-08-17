@@ -1,0 +1,25 @@
+# Chapter 2A: Stochastic Gene-Wise Sampling & Mutation Ablation
+experiment:
+  name: "gene_mutation"
+  output_dir: "results/gene_mutation"
+  seed: 42
+
+simulation:
+  grid_size: 384
+  steps: 3600
+  sample_interval: 3
+  dt: 0.05
+
+physics:
+  v_scale: 5.4
+  alpha_diffusion: 0.055
+  n_kernels: 9
+  kernel_radii_range: [6.0, 15.0]
+
+biology:
+  n_patches: 6
+  mu_range: [0.13, 0.22]
+  sigma_range: [0.011, 0.024]
+  mixing_rule: "gene_wise"
+  enable_mutation: true
+  mutation_interval: 60

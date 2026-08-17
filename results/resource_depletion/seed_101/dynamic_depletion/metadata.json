@@ -1,0 +1,36 @@
+{
+  "prefix": "dynamic_depletion",
+  "config": {
+    "condition": "dynamic_depletion",
+    "enable_depletion": true,
+    "depletion_rate": 0.04,
+    "regen_rate": 0.01,
+    "grid_size": 256,
+    "steps": 3600,
+    "seed": 101,
+    "v_scale": 5.8
+  },
+  "metrics": {
+    "ea_raw": 1.219246925643347e-12,
+    "complexity_raw": 1570.0,
+    "entropy_raw": 4.927833175659179,
+    "com_displacement": 0.05387689831919899,
+    "corridor_coverage": 0.013031005859375,
+    "ea_norm": 3.386797015675964e-13,
+    "complexity_norm": 0.023956298828125,
+    "entropy_norm": 0.3079895734786945,
+    "com_norm": 0.000148815313089077,
+    "total_mass": 1840.345458994375,
+    "watertight_score": 0.0,
+    "watertight_valid": 0.0,
+    "solid_core_ratio": 0.9930785195861962,
+    "mass_preservation_ratio": 0.9999988060594869,
+    "grid_size": 256,
+    "horizon": 3600,
+    "foraging_variance": 0.002321021518553431
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

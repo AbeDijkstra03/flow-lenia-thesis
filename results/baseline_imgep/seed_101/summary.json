@@ -1,0 +1,18 @@
+{
+  "seed": 101,
+  "env": "open",
+  "trials": 30,
+  "grid_size": 256,
+  "imgep_com_mean": 3.6918206214904785,
+  "imgep_com_std": 2.8837008476257324,
+  "random_com_mean": 2.665767192840576,
+  "random_com_std": 1.9336574077606201,
+  "imgep_ea_mean": 0.0016524215461686254,
+  "imgep_ea_std": 0.0007758511928841472,
+  "random_ea_mean": 0.002228864235803485,
+  "random_ea_std": 0.0011075688526034355,
+  "imgep_comp_mean": 5054.93310546875,
+  "imgep_comp_std": 830.49365234375,
+  "random_comp_mean": 4507.7666015625,
+  "random_comp_std": 853.2333984375
+}

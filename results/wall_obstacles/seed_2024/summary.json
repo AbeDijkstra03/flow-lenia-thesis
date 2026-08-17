@@ -1,0 +1,18 @@
+{
+  "seed": 2024,
+  "env": "wall",
+  "trials": 30,
+  "grid_size": 256,
+  "imgep_com_mean": 0.022214505821466446,
+  "imgep_com_std": 0.010879229754209518,
+  "random_com_mean": 0.021746307611465454,
+  "random_com_std": 0.01475091278553009,
+  "imgep_ea_mean": 0.021636962890625,
+  "imgep_ea_std": 0.009263372980058193,
+  "random_ea_mean": 0.02351175993680954,
+  "random_ea_std": 0.008415460586547852,
+  "imgep_comp_mean": 0.0016742076259106398,
+  "imgep_comp_std": 0.0008921698899939656,
+  "random_comp_mean": 0.00170176662504673,
+  "random_comp_std": 0.000707241240888834
+}

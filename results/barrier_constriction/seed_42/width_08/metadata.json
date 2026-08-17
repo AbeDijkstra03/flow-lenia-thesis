@@ -1,0 +1,36 @@
+{
+  "prefix": "width_08",
+  "config": {
+    "experiment": "Chemotactic Corridor Constriction",
+    "passage_width": 8,
+    "grid_size": 256,
+    "steps": 3600,
+    "seed": 42,
+    "chemotaxis_chi": 18.0,
+    "transmission_ratio": 3.174004577574145e-05,
+    "com_dx": -13.520910268529754,
+    "cohesion": "high_surface_tension"
+  },
+  "metrics": {
+    "ea_raw": 0.0,
+    "complexity_raw": 615.0,
+    "entropy_raw": 3.319992780685425,
+    "com_displacement": 13.639937426109714,
+    "corridor_coverage": 0.0,
+    "ea_norm": 0.0,
+    "complexity_norm": 0.0093841552734375,
+    "entropy_norm": 0.2074995487928362,
+    "com_norm": 0.03767536034750922,
+    "total_mass": 198.45758057640626,
+    "watertight_score": 0.0,
+    "watertight_valid": 0.0,
+    "solid_core_ratio": 0.9606054566459701,
+    "mass_preservation_ratio": 0.22785234039557228,
+    "grid_size": 256,
+    "horizon": 3600
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}
