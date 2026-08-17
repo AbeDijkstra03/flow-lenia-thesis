@@ -1,4 +1,4 @@
-# Workspace Rules: Flow-Lenia Master's Thesis Framework
+# Workspace Rules: Flow-Lenia Bachelor's Thesis Framework
 
 ## Project Overview & Canon Alignment
 This codebase implements a GPU-accelerated Flow-Lenia Open-Ended Evolution (OEE) simulation framework in native JAX, adhering strictly to the canonical literature:

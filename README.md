@@ -46,7 +46,7 @@ docker run --rm -v $(pwd)/results:/app/results flow-lenia:latest python run_expe
 
 ---
 
-## 2. Master's Thesis Experimental Architecture (The 5 Acts)
+## 2. Bachelor's Thesis Experimental Architecture (The 5 Acts)
 
 | Chapter | Experiment / Benchmark | Primary CLI Command | Key Result / Metric |
 | :--- | :--- | :--- | :--- |

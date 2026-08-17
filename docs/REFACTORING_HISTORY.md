@@ -1,6 +1,6 @@
 # Engineering & Scientific History: Flow-Lenia Research Framework
 
-This document records the architectural evolution, critical physics debugging, mathematical discoveries, and engineering milestones of the Flow-Lenia Master's Thesis research framework.
+This document records the architectural evolution, critical physics debugging, mathematical discoveries, and engineering milestones of the Flow-Lenia Bachelor's Thesis research framework.
 
 ---
 

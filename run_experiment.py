@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Flow-Lenia Master's Thesis Unified Experiment Runner & CLI Orchestrator.
+Flow-Lenia Bachelor's Thesis Unified Experiment Runner & CLI Orchestrator.
 
 Usage:
   # Chapter 1: Foundational Physics & Mass Conservation
@@ -46,7 +46,7 @@ from experiments.run_chemotaxis_calibration import main as run_chemotaxis_calib_
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Flow-Lenia Master's Thesis Simulation Suite",
+        description="Flow-Lenia Bachelor's Thesis Simulation Suite",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__
     )

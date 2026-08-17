@@ -1,6 +1,6 @@
 # Comprehensive Scientific Reference & Mathematical Physics Canon: Flow-Lenia Research Framework
 
-This document serves as the **exhaustive, authoritative scientific reference** for the Master's Thesis research framework implementing GPU-accelerated **Flow-Lenia Open-Ended Evolution (OEE)** in native **JAX**.
+This document serves as the **exhaustive, authoritative scientific reference** for the Bachelor's Thesis research framework implementing GPU-accelerated **Flow-Lenia Open-Ended Evolution (OEE)** in native **JAX**.
 
 It contains the complete mathematical specifications, physics equations, behavioral metrics, curiosity-driven algorithms, experimental protocols, and parameter tables needed to write the thesis and reproduce every result without inspecting source code.
 

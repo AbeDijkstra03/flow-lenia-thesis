@@ -1,6 +1,6 @@
 # Context Handoff & Memory Persistence: Flow-Lenia Discovery Engine
 
-This document maintains state persistence across conversation turns and model sessions for the GPU-accelerated Flow-Lenia Master's Thesis research framework.
+This document maintains state persistence across conversation turns and model sessions for the GPU-accelerated Flow-Lenia Bachelor's Thesis research framework.
 
 ---
 
