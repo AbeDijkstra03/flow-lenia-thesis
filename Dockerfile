@@ -25,7 +25,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy project source code
 COPY core/ /app/core/
 COPY experiments/ /app/experiments/
-COPY scripts/ /app/scripts/
 COPY configs/ /app/configs/
 COPY tests/ /app/tests/
 COPY run_experiment.py /app/

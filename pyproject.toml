@@ -23,4 +23,4 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["core*", "experiments*", "scripts*"]
+include = ["core*", "experiments*"]

@@ -76,17 +76,17 @@ docker run --rm -v $(pwd)/results:/app/results flow-lenia:latest python run_expe
 │   ├── visualization.py            # H.264 MP4, trajectory filmstrip, & heatmap exporter
 │   └── config.py                   # Typed dataclass YAML configuration engine
 ├── experiments/                    # Structured thesis experiments
+│   ├── run_physics_verification.py # Classical Orbium glider verification (Act 1A)
+│   ├── run_gene_mutation.py        # Multi-species Gumbel-Max mixing (Act 1B)
+│   ├── run_negotiation_rule.py     # Softmax growth negotiation (Act 1C)
+│   ├── run_imgep_search.py         # Open IMGEP vs. Random Search benchmark (Act 2A)
+│   ├── run_autonomous_agentic_loop.py # Multi-generation AI Scientist discovery loop (Act 2B)
 │   ├── run_chemotaxis_calibration.py # 3-way Cohesion vs Fission phase transition (Act 3)
 │   ├── run_barrier_constriction.py # Passage width sweep & transmission curves (Act 4A)
-│   ├── run_imgep_search.py         # Open IMGEP vs. Random Search benchmark (Act 2A)
 │   ├── run_resource_depletion.py   # Dynamic niche depletion & foraging study (Act 4C)
 │   ├── run_scaleup.py              # 512x512 scaled-up FPS reruns (Act 5A)
-│   ├── run_epic_ecosystem.py       # Grand Synthesis Chemotactic Colosseum (Act 5B)
-│   └── run_autonomous_agentic_loop.py # Multi-generation AI Scientist discovery loop
-├── scripts/                        # Standalone utilities & showcases
-│   ├── spawn_orbium.py             # Classic Orbium glider physics verification
-│   └── run_hero_ecosystem.py       # Ecosystem simulation
-├── docs/                           # Academic thesis documentation
+│   └── run_epic_ecosystem.py       # Grand Synthesis Chemotactic Colosseum (Act 5B)
+├── configs/                        # Standardized YAML configuration files
 │   ├── THESIS_ARCHITECTURE.md      # Exhaustive mathematical specification & formulas
 │   ├── LITERATURE_READING_LIST.md  # Core papers & literature review
 │   └── REFACTORING_HISTORY.md      # Engineering & scientific evolution log
