@@ -32,19 +32,22 @@ pip install -e .
 python -m unittest discover tests -v
 ```
 
-### Option C: Using Docker (Containerized Execution)
+### Option C: Using Docker & GitHub Container Registry (GHCR)
 ```bash
-# 1. Build Docker image (CPU & portable fallback)
+# Option 1: Pull pre-built image directly from GitHub Packages (GHCR)
+docker pull ghcr.io/abedijkstra03/flow-lenia-thesis:latest
+
+# Option 2: Build Docker image locally
 docker build -t flow-lenia:latest .
 
-# 2. Run unit tests inside container
-docker run --rm flow-lenia:latest
+# Run test suite inside container:
+docker run --rm ghcr.io/abedijkstra03/flow-lenia-thesis:latest
 
-# 3. Run GPU-accelerated container with NVIDIA Container Toolkit:
-docker run --gpus all --rm -v $(pwd)/results:/app/results flow-lenia:latest python run_experiment.py --mode barrier_constriction --widths 8 16 24 32
+# Run experiment inside container (persisting artifacts to host):
+docker run --rm -v $(pwd)/results:/app/results ghcr.io/abedijkstra03/flow-lenia-thesis:latest python run_experiment.py --mode orbium
 
-# 4. Interactive container shell:
-docker run --gpus all --rm -it -v $(pwd)/results:/app/results flow-lenia:latest bash
+# Interactive container shell:
+docker run --rm -it -v $(pwd)/results:/app/results ghcr.io/abedijkstra03/flow-lenia-thesis:latest bash
 ```
 
 ---
