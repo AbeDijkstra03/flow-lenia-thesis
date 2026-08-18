@@ -1,0 +1,30 @@
+{
+  "prefix": "",
+  "config": {
+    "scenario": "continuous_maze",
+    "grid_size": 256,
+    "steps": 3600,
+    "sample_interval": 3,
+    "seed": 2024,
+    "chi": 0.28,
+    "alpha_diffusion": 0.04,
+    "v_scale": 7.0
+  },
+  "metrics": {
+    "scenario": "continuous_maze",
+    "seed": 2024,
+    "success_reach_goal": false,
+    "initial_mass": 424.41469102498115,
+    "final_mass": 312.83514404296875,
+    "final_goal_mass": 109.26018524169922,
+    "mass_preservation_ratio": 0.7370978211901346,
+    "max_dead_end_1_mass": 0.28039979934692383,
+    "final_dead_end_1_mass": 2.8306228979361305e-43,
+    "dead_end_1_evacuated": false,
+    "steps": 3600
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

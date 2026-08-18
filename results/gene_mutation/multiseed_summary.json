@@ -1,0 +1,122 @@
+[
+  {
+    "seed": 42,
+    "metrics": {
+      "ea_raw": 0.014390955679118633,
+      "complexity_raw": 5488.0,
+      "entropy_raw": 7.096275043487549,
+      "com_displacement": 1.3702336115342626,
+      "corridor_coverage": 0.056640625,
+      "ea_norm": 0.003997487688644065,
+      "complexity_norm": 0.083740234375,
+      "entropy_norm": 0.4435171902179657,
+      "com_norm": 0.003784771400490666,
+      "total_mass": 2430.267822275625,
+      "watertight_score": 0.0,
+      "watertight_valid": 0.0,
+      "solid_core_ratio": 0.9628035988551131,
+      "mass_preservation_ratio": 0.9999976894639556,
+      "grid_size": 256,
+      "horizon": 3600,
+      "method": "gene_mutation",
+      "mixing_rule": "gene_wise",
+      "mutation_interval": 50
+    },
+    "config": {
+      "grid_size": 256,
+      "steps": 3600,
+      "patches": 6,
+      "mutation_interval": 50,
+      "v_scale": 5.8,
+      "alpha_diffusion": 0.05,
+      "seed": 42
+    },
+    "artifacts": {
+      "video": "results/gene_mutation/seed_42/rollout.mp4",
+      "filmstrip": "results/gene_mutation/seed_42/trajectory_filmstrip.png",
+      "heatmap": "results/gene_mutation/seed_42/motion_heatmap.png",
+      "data": "results/gene_mutation/seed_42/data.npz",
+      "metadata": "results/gene_mutation/seed_42/metadata.json"
+    }
+  },
+  {
+    "seed": 101,
+    "metrics": {
+      "ea_raw": 0.021836843341588974,
+      "complexity_raw": 5538.0,
+      "entropy_raw": 7.1421819686889645,
+      "com_displacement": 2.80111448776467,
+      "corridor_coverage": 0.042236328125,
+      "ea_norm": 0.006065789817108048,
+      "complexity_norm": 0.084503173828125,
+      "entropy_norm": 0.4463863730430541,
+      "com_norm": 0.007737058785852659,
+      "total_mass": 2676.56201172875,
+      "watertight_score": 0.0,
+      "watertight_valid": 0.0,
+      "solid_core_ratio": 0.9676180253207474,
+      "mass_preservation_ratio": 0.9999983581460039,
+      "grid_size": 256,
+      "horizon": 3600,
+      "method": "gene_mutation",
+      "mixing_rule": "gene_wise",
+      "mutation_interval": 50
+    },
+    "config": {
+      "grid_size": 256,
+      "steps": 3600,
+      "patches": 6,
+      "mutation_interval": 50,
+      "v_scale": 5.8,
+      "alpha_diffusion": 0.05,
+      "seed": 101
+    },
+    "artifacts": {
+      "video": "results/gene_mutation/seed_101/rollout.mp4",
+      "filmstrip": "results/gene_mutation/seed_101/trajectory_filmstrip.png",
+      "heatmap": "results/gene_mutation/seed_101/motion_heatmap.png",
+      "data": "results/gene_mutation/seed_101/data.npz",
+      "metadata": "results/gene_mutation/seed_101/metadata.json"
+    }
+  },
+  {
+    "seed": 2024,
+    "metrics": {
+      "ea_raw": 0.018234752118587494,
+      "complexity_raw": 6048.0,
+      "entropy_raw": 7.301787567138672,
+      "com_displacement": 5.328732156105059,
+      "corridor_coverage": 0.066650390625,
+      "ea_norm": 0.00506520892182986,
+      "complexity_norm": 0.09228515625,
+      "entropy_norm": 0.45636172294616073,
+      "com_norm": 0.014718682198080858,
+      "total_mass": 3056.974609385,
+      "watertight_score": 16.6517780157878,
+      "watertight_valid": 1.0,
+      "solid_core_ratio": 0.9682497152036695,
+      "mass_preservation_ratio": 0.9999969651970394,
+      "grid_size": 256,
+      "horizon": 3600,
+      "method": "gene_mutation",
+      "mixing_rule": "gene_wise",
+      "mutation_interval": 50
+    },
+    "config": {
+      "grid_size": 256,
+      "steps": 3600,
+      "patches": 6,
+      "mutation_interval": 50,
+      "v_scale": 5.8,
+      "alpha_diffusion": 0.05,
+      "seed": 2024
+    },
+    "artifacts": {
+      "video": "results/gene_mutation/seed_2024/rollout.mp4",
+      "filmstrip": "results/gene_mutation/seed_2024/trajectory_filmstrip.png",
+      "heatmap": "results/gene_mutation/seed_2024/motion_heatmap.png",
+      "data": "results/gene_mutation/seed_2024/data.npz",
+      "metadata": "results/gene_mutation/seed_2024/metadata.json"
+    }
+  }
+]

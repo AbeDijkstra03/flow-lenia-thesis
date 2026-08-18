@@ -1,0 +1,13 @@
+{
+  "scenario": "predator_prey_trophic_ecosystem",
+  "seed": 2024,
+  "prey_biomass_min": 1071.3963623046875,
+  "prey_biomass_max": 2120.697265625,
+  "pred_biomass_min": 532.5646362304688,
+  "pred_biomass_max": 1777.1004638671875,
+  "pred_swelling_factor": 3.336872765486094,
+  "prey_swelling_factor": 1.9793769331728785,
+  "trophic_cycles_detected": 58,
+  "steps": 4500,
+  "fps": 25
+}

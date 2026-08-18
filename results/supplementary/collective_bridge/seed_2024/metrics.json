@@ -1,0 +1,10 @@
+{
+  "scenario": "collective_bridge_building",
+  "seed": 2024,
+  "bridge_span_percent": 100.0,
+  "biomass_nest_percent": 0.0,
+  "biomass_bridge_percent": 4.947743886673372e-27,
+  "biomass_oasis_percent": 99.99999150288839,
+  "steps": 4500,
+  "mass_preservation_ratio": 0.9999948740005493
+}

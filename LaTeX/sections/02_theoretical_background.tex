@@ -1,0 +1,89 @@
+\section{Theoretical Background and Related Work}
+\label{sec:theoretical_background}
+
+\subsection{From Discrete Automata to Continuous Fields}
+\label{subsec:bg_discrete_to_continuous}
+
+The computational study of emergent macroscopic behavior in decentralized systems originates with discrete Cellular Automata (CAs). The canonical foundation was established by John Conway's \textit{Game of Life} \parencite{gardner1970game}, which demonstrated that an extremely minimal set of deterministic local transition rules operating on a two-dimensional binary grid ($\{0, 1\}$) can yield universal computation, self-replicating patterns, and complex localized oscillators. 
+
+Despite its theoretical expressiveness, discrete binary cellular dynamics suffer from extreme structural brittleness. Because cell states are strictly binary and spatial updates occur in discrete integer steps, small local perturbations or single bit flips routinely trigger catastrophic structural collapse. Furthermore, patterns are rigidly coupled to the discrete grid topology, resulting in non-isotropic artifacts where pattern propagation speeds and rotational symmetries are strictly constrained by the underlying orthogonal lattice.
+
+To overcome these structural limitations, continuous generalizations of cellular automata were introduced. Pioneered by \textcite{chan2019lenia, chan2020lenia}, the \textit{Lenia} framework generalizes the discrete state space, spatial lattice, and temporal updates into a continuous mathematical continuum:
+\begin{itemize}
+    \item \textbf{Continuous State Space:} Cell states are defined as real-valued continuous mass densities $A(\mathbf{x}, t) \in [0.0, 1.0]$.
+    \item \textbf{Continuous Space and Circular Kernels:} Neighborhood potentials are computed via continuous, radially symmetric, multi-shell annular kernels $K(\mathbf{x})$, eliminating directional lattice bias and supporting rotational invariance.
+    \item \textbf{Continuous Time and Smooth Growth Mappings:} State evolution is governed by smooth, nonlinear growth functions $G(U) \in [-1.0, 1.0]$ integrated over differential time steps $\Delta t$.
+\end{itemize}
+
+Within this continuous formulation, virtual organisms manifest as localized, dynamic solitary wave solutions known as solitons. These solitons exhibit continuous translational locomotion, organic deformations, and self-repair capabilities that closely resemble biological microorganisms \parencite{chan2019lenia}. Because continuous spatial updates are formulated as matrix convolutions, they can be computed with extreme efficiency in the frequency domain using the Fast Fourier Transform (FFT), enabling parallelized execution across high-performance GPU tensor cores \parencite{chan2023towards}.
+
+\subsection{Mass Conservation and Hydrodynamic Transport in ALife}
+\label{subsec:bg_mass_conservation}
+
+While classical Lenia produces visually compelling dynamic solitons, it possesses a fundamental theoretical vulnerability regarding physical mass conservation. In standard Lenia, the update rule updates cell values directly via local growth mappings:
+\begin{equation}
+A(\mathbf{x}, t + \Delta t) = \text{clip}\left(A(\mathbf{x}, t) + \Delta t \cdot G(U(\mathbf{x}, t)), \, 0.0, \, 1.0\right)
+\label{eq:bg_standard_lenia}
+\end{equation}
+Because the growth function $G(U)$ adds or subtracts mass locally without regard for global mass balance, material is created or annihilated freely. Consequently, standard Lenia systems are volatile: minor deviations from the viable parameter space cause creatures to explode exponentially across the lattice or completely evaporate into the zero-state background \parencite{plantec2025flowlenia}.
+
+To establish physical plausibility and structural robustness, \textcite{plantec2025flowlenia} formulated \textit{Flow Lenia}, integrating continuous cellular automata with computational fluid dynamics. Flow Lenia enforces strict mass conservation by requiring that mass cannot be created or destroyed, but can only be transported through continuous advection. The temporal evolution of the scalar density field $A(\mathbf{x}, t)$ is governed by the physical continuity equation:
+\begin{equation}
+\frac{\partial A}{\partial t} + \nabla \cdot (A \mathbf{v}) = 0
+\label{eq:bg_continuity_law}
+\end{equation}
+where $\mathbf{v}(\mathbf{x}, t)$ defines a two-dimensional velocity vector field derived directly from the spatial gradients of local biological growth potentials and internal mass density. Alternative mass-conserving formulations, such as \textit{MaCE} \parencite{papadopoulos2025mace}, have similarly highlighted the stabilizing power of conservative transport across diverse continuous and discrete CA families.
+
+By coupling spatial growth gradients with conservative semi-Lagrangian transport algorithms, such as the bilinear reintegration tracking proposed by \textcite{moroz2020reintegration} and adapted by \textcite{plantec2025flowlenia}, Flow Lenia preserves total grid mass at machine-precision scales in exact arithmetic. This mass-conserving framework transforms continuous solitons into cohesive, fluid droplets with internal surface tension and elastomeric elasticity, providing a robust physical substrate for open-ended evolutionary dynamics.
+
+\subsection{Open-Ended Evolution and the Simulation Gap}
+\label{subsec:bg_oee_simulation_gap}
+
+A central goal in Artificial Life is achieving Open-Ended Evolution (OEE), defined as the capacity of an algorithmic system to continuously generate an expanding hierarchy of novel, diverse, and increasingly complex organizational structures without human intervention \parencite{taylor2016open}. In the natural biosphere, evolution has generated a continuous trajectory of innovation over billions of years, producing major evolutionary transitions, complex multicellularity, and diverse ecological niches \parencite{schrodinger1944what, ruiz2004universal}.
+
+In contrast, artificial evolutionary systems encounter the \textit{simulation gap}: computational simulations almost universally reach an evolutionary plateau or collapse into trivial attractors after short runtimes \parencite{taylor2016open}. Several factors drive this stagnation in continuous cellular systems:
+\begin{enumerate}
+    \item \textbf{The Parameter Desert:} The viable parameter regime where stable solitons exist represents an infinitesimally small fraction (less than 0.1\%) of the continuous parameter space. Random parameter modifications almost invariably push offspring into sterile zones, resulting in immediate structural disintegration \parencite{plantec2025flowlenia}.
+    \item \textbf{Mathematical Discontinuity:} Unlike optimization problems in deep learning that feature smooth loss landscapes, the transition from amorphous, formless fluid noise to a self-organizing, locomotive soliton represents a sharp mathematical discontinuity with no intermediate gradient \parencite{chan2023towards}.
+    \item \textbf{The Metric Trap:} Standard evolutionary algorithms optimize a scalar objective function. In continuous fields, simple proxies for biological quality (such as mass homeostasis) are easily exploited by motionless crystalline lumps or trivial edge-vibrating spots that maximize the mathematical formula while remaining devoid of biological complexity \parencite{lehman2011novelty}.
+\end{enumerate}
+
+\subsection{Automated Discovery: Quality-Diversity and Curiosity Search}
+\label{subsec:bg_automated_discovery}
+
+To escape the local minima inherent to objective optimization, non-objective search paradigms have become prominent in ALife and evolutionary computation:
+
+\subsubsection{Quality-Diversity and MAP-Elites}
+Quality-Diversity (QD) algorithms, such as Multi-dimensional Archive of Phenotypic Elites (MAP-Elites) \parencite{mouret2015illuminating}, explicitly decouple behavioral exploration from objective fitness. Instead of searching for a single optimal solution, MAP-Elites partitions a predefined low-dimensional behavioral feature space into a discrete tessellation of niches. The algorithm seeks to illuminate the search space by finding the highest-performing individual within every behavioral cell. Recent work, such as \textit{Leniabreeder} \parencite{faldor2024leniabreeder}, applied Quality-Diversity to standard Lenia using restricted genotype variations and directional mutation operators to discover diverse glider morphologies.
+
+However, when applied to mass-conserving systems like Flow Lenia, standard QD algorithms encounter structural challenges. In early implementations, defining behavioral axes based on global grid statistics caused behavioral archive collapse due to global mass invariance. Furthermore, fixed grid discretizations struggle to scale when the true intrinsic dimensionality of the continuous behavior space is unknown.
+
+\subsubsection{Intrinsically Motivated Goal Exploration Processes (IMGEP)}
+To explore continuous, high-dimensional spaces without rigid grid discretization, developmental robotics and curiosity-driven machine learning formulated the Intrinsically Motivated Goal Exploration Process (IMGEP) \parencite{oudeyer2007intrinsic}. 
+
+Rather than relying on fixed archive bins, an IMGEP agent explores its environment through iterative goal babbling:
+\begin{enumerate}
+    \item \textbf{Goal Sampling:} The agent samples a target goal vector $\mathbf{g}$ uniformly from a continuous multi-dimensional behavioral metric space $\mathcal{B}$.
+    \item \textbf{Parent Selection:} The agent queries its historical archive $\mathcal{A}$ to find the parameter configuration whose observed behavior $\mathbf{b}$ is closest in Euclidean distance to the sampled goal $\mathbf{g}$:
+    \begin{equation}
+    \boldsymbol{\theta}_{\text{parent}} = \arg\min_{(\boldsymbol{\theta}, \mathbf{b}) \in \mathcal{A}} \|\mathbf{b} - \mathbf{g}\|_2
+    \label{eq:bg_imgep_parent}
+    \end{equation}
+    \item \textbf{Parameter Mutation and Rollout:} The parent parameters are mutated via stochastic perturbation ($\boldsymbol{\theta}_{\text{child}} = \boldsymbol{\theta}_{\text{parent}} + \boldsymbol{\epsilon}$), simulated in the forward environment, evaluated through rigorous quality filters, and appended to the archive.
+\end{enumerate}
+
+Recent work by \textcite{michel2025exploring}, alongside related foundation model and semantic search frameworks (e.g., ASAL \parencite{kumar2025asal} and Expedition \& Expansion \parencite{khajehabdollahi2025expedition}), demonstrated that IMGEP architectures combined with automated AI scientist feedback loops can discover diverse families of solitons in Flow Lenia across multi-dimensional metric spaces spanning motility, evolutionary activity, and compression complexity \parencite{cisneros2019evolving}.
+
+\subsection{Environmental Heterogeneity and Soft Biomechanics}
+\label{subsec:bg_heterogeneity_biomechanics}
+
+A critical limitation in existing continuous CA literature is the near-universal reliance on homogeneous, isotropic simulation domains \parencite{chan2019lenia, plantec2025flowlenia}. In a uniform vacuum, an emergent soliton faces no selective pressure to adapt, deform, or regulate its internal mass flow.
+
+In theoretical biology, environmental heterogeneity and physical barriers are fundamental drivers of evolutionary divergence and morphological specialization. By introducing spatial friction, the environment actively tests the physical and computational resilience of emergent lifeforms:
+\begin{itemize}
+    \item \textbf{Geometric Constrictions and Soft Biomechanics:} In active matter physics and microfluidics, measuring the passage of soft droplets through narrow apertures is a standard benchmark for quantifying surface tension, elasticity, and viscous dissipation. Applying geometric slit constrictions to Flow Lenia enables formal measurement of the transmission coefficient $T(W)$ as a function of passage width.
+    \item \textbf{Dynamic Niche Construction:} Organisms in natural ecosystems do not merely adapt to static environments; they actively modify their physical and chemical surroundings through resource consumption and metabolic waste production. Embedding dynamic, depletable resource fields into continuous cellular automata introduces localized negative feedback, preventing static resting equilibria and compelling continuous migratory foraging trails.
+    \item \textbf{Multi-Species Genome Mixing:} In multi-organism ecologies, spatial collisions between distinct lineages test territorial competition. Without proper mixing rules, overlapping continuous fields blend into inert numerical averages. Implementing discrete categorical sampling (such as Gumbel-Max flux selection) or growth negotiation dynamics preserves genetic diversity across extended ecological horizons \parencite{plantec2025flowlenia, michel2025exploring}.
+\end{itemize}
+
+By synthesizing continuous mass-conservative fluid mechanics, curiosity-driven goal exploration, and structured environmental heterogeneity, this thesis provides a systematic computational framework to evaluate the physical and evolutionary limits of open-ended artificial life within a rigorous, reproducible experimental setting.

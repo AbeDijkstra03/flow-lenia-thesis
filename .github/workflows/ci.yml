@@ -1,0 +1,41 @@
+name: Flow-Lenia CI/CD Suite
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Fast Verification Suite (Python 3.11)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install FFmpeg (Video Encoding)
+      run: |
+        sudo apt-get update && sudo apt-get install -y ffmpeg
+
+    - name: Set up uv & Cache
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+        version: "latest"
+
+    - name: Set up Python 3.11
+      run: uv python install 3.11
+
+    - name: Install Project Dependencies
+      run: |
+        uv sync
+
+    - name: Run Automated Physics & Engine Unit Tests
+      run: |
+        uv run python -m unittest discover tests -v
+
+    - name: Run Fast Physics Verification Smoke Test
+      run: |
+        uv run python experiments/run_physics_verification.py --steps 30 --output_dir results/ci_smoke_test
+

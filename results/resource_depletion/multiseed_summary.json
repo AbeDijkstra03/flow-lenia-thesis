@@ -1,0 +1,185 @@
+[
+  {
+    "seed": 42,
+    "results": {
+      "static_baseline": {
+        "metrics": {
+          "ea_raw": 0.01567086949944496,
+          "complexity_raw": 4102.0,
+          "entropy_raw": 6.580080127716064,
+          "com_displacement": 3.9333916204282504,
+          "corridor_coverage": 0.03076171875,
+          "ea_norm": 0.004353019305401378,
+          "complexity_norm": 0.062591552734375,
+          "entropy_norm": 0.41125500798224834,
+          "com_norm": 0.010864562061981086,
+          "total_mass": 1674.47607422875,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.9600316621833784,
+          "mass_preservation_ratio": 0.999997594285948,
+          "grid_size": 256,
+          "horizon": 3600,
+          "foraging_variance": 1.3507619054947395
+        },
+        "artifacts": {
+          "video": "results/resource_depletion/seed_42/static_baseline/rollout.mp4",
+          "filmstrip": "results/resource_depletion/seed_42/static_baseline/trajectory_filmstrip.png",
+          "heatmap": "results/resource_depletion/seed_42/static_baseline/motion_heatmap.png",
+          "data": "results/resource_depletion/seed_42/static_baseline/data.npz",
+          "metadata": "results/resource_depletion/seed_42/static_baseline/metadata.json"
+        }
+      },
+      "dynamic_depletion": {
+        "metrics": {
+          "ea_raw": 6.500963678490734e-08,
+          "complexity_raw": 1621.0,
+          "entropy_raw": 4.829394769668579,
+          "com_displacement": 0.3842127535477427,
+          "corridor_coverage": 0.012298583984375,
+          "ea_norm": 1.8058232440252038e-08,
+          "complexity_norm": 0.0247344970703125,
+          "entropy_norm": 0.30183717310428204,
+          "com_norm": 0.0010612478259842367,
+          "total_mass": 1674.478515635,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.9921841192336234,
+          "mass_preservation_ratio": 0.9999990522944644,
+          "grid_size": 256,
+          "horizon": 3600,
+          "foraging_variance": 0.01609574997095048
+        },
+        "artifacts": {
+          "video": "results/resource_depletion/seed_42/dynamic_depletion/rollout.mp4",
+          "filmstrip": "results/resource_depletion/seed_42/dynamic_depletion/trajectory_filmstrip.png",
+          "heatmap": "results/resource_depletion/seed_42/dynamic_depletion/motion_heatmap.png",
+          "data": "results/resource_depletion/seed_42/dynamic_depletion/data.npz",
+          "metadata": "results/resource_depletion/seed_42/dynamic_depletion/metadata.json"
+        }
+      }
+    }
+  },
+  {
+    "seed": 101,
+    "results": {
+      "static_baseline": {
+        "metrics": {
+          "ea_raw": 0.030448295176029205,
+          "complexity_raw": 3998.0,
+          "entropy_raw": 6.496227502822876,
+          "com_displacement": 1.298472306369827,
+          "corridor_coverage": 0.030609130859375,
+          "ea_norm": 0.008457859771119224,
+          "complexity_norm": 0.061004638671875,
+          "entropy_norm": 0.40601421892642414,
+          "com_norm": 0.003586556925847816,
+          "total_mass": 1840.344482431875,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.9631277368593752,
+          "mass_preservation_ratio": 0.9999982754192589,
+          "grid_size": 256,
+          "horizon": 3600,
+          "foraging_variance": 2.1301285061924746
+        },
+        "artifacts": {
+          "video": "results/resource_depletion/seed_101/static_baseline/rollout.mp4",
+          "filmstrip": "results/resource_depletion/seed_101/static_baseline/trajectory_filmstrip.png",
+          "heatmap": "results/resource_depletion/seed_101/static_baseline/motion_heatmap.png",
+          "data": "results/resource_depletion/seed_101/static_baseline/data.npz",
+          "metadata": "results/resource_depletion/seed_101/static_baseline/metadata.json"
+        }
+      },
+      "dynamic_depletion": {
+        "metrics": {
+          "ea_raw": 1.219246925643347e-12,
+          "complexity_raw": 1570.0,
+          "entropy_raw": 4.927833175659179,
+          "com_displacement": 0.05387689831919899,
+          "corridor_coverage": 0.013031005859375,
+          "ea_norm": 3.386797015675964e-13,
+          "complexity_norm": 0.023956298828125,
+          "entropy_norm": 0.3079895734786945,
+          "com_norm": 0.000148815313089077,
+          "total_mass": 1840.345458994375,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.9930785195861962,
+          "mass_preservation_ratio": 0.9999988060594869,
+          "grid_size": 256,
+          "horizon": 3600,
+          "foraging_variance": 0.002321021518553431
+        },
+        "artifacts": {
+          "video": "results/resource_depletion/seed_101/dynamic_depletion/rollout.mp4",
+          "filmstrip": "results/resource_depletion/seed_101/dynamic_depletion/trajectory_filmstrip.png",
+          "heatmap": "results/resource_depletion/seed_101/dynamic_depletion/motion_heatmap.png",
+          "data": "results/resource_depletion/seed_101/dynamic_depletion/data.npz",
+          "metadata": "results/resource_depletion/seed_101/dynamic_depletion/metadata.json"
+        }
+      }
+    }
+  },
+  {
+    "seed": 2024,
+    "results": {
+      "static_baseline": {
+        "metrics": {
+          "ea_raw": 0.014764690771698952,
+          "complexity_raw": 4370.0,
+          "entropy_raw": 6.757923126220703,
+          "com_displacement": 1.1612566271638283,
+          "corridor_coverage": 0.032257080078125,
+          "ea_norm": 0.004101302992138597,
+          "complexity_norm": 0.066680908203125,
+          "entropy_norm": 0.4223701953887881,
+          "com_norm": 0.0032075485772084422,
+          "total_mass": 2036.0096435646874,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.9653990460166875,
+          "mass_preservation_ratio": 0.9999970621810368,
+          "grid_size": 256,
+          "horizon": 3600,
+          "foraging_variance": 0.578310646633573
+        },
+        "artifacts": {
+          "video": "results/resource_depletion/seed_2024/static_baseline/rollout.mp4",
+          "filmstrip": "results/resource_depletion/seed_2024/static_baseline/trajectory_filmstrip.png",
+          "heatmap": "results/resource_depletion/seed_2024/static_baseline/motion_heatmap.png",
+          "data": "results/resource_depletion/seed_2024/static_baseline/data.npz",
+          "metadata": "results/resource_depletion/seed_2024/static_baseline/metadata.json"
+        }
+      },
+      "dynamic_depletion": {
+        "metrics": {
+          "ea_raw": 1.2769119095423775e-11,
+          "complexity_raw": 1575.0,
+          "entropy_raw": 4.874480485916138,
+          "com_displacement": 0.3944989560714497,
+          "corridor_coverage": 0.012451171875,
+          "ea_norm": 3.546977526506604e-12,
+          "complexity_norm": 0.0240325927734375,
+          "entropy_norm": 0.3046550303697544,
+          "com_norm": 0.0010896597148794375,
+          "total_mass": 2036.013671885,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.9957416573007167,
+          "mass_preservation_ratio": 0.9999990407121753,
+          "grid_size": 256,
+          "horizon": 3600,
+          "foraging_variance": 0.007539496222365079
+        },
+        "artifacts": {
+          "video": "results/resource_depletion/seed_2024/dynamic_depletion/rollout.mp4",
+          "filmstrip": "results/resource_depletion/seed_2024/dynamic_depletion/trajectory_filmstrip.png",
+          "heatmap": "results/resource_depletion/seed_2024/dynamic_depletion/motion_heatmap.png",
+          "data": "results/resource_depletion/seed_2024/dynamic_depletion/data.npz",
+          "metadata": "results/resource_depletion/seed_2024/dynamic_depletion/metadata.json"
+        }
+      }
+    }
+  }
+]

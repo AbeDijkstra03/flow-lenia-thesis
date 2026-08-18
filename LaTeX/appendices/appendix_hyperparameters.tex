@@ -1,0 +1,92 @@
+\section{Comprehensive Hyperparameter Specifications}
+\label{sec:appendix_hyperparameters}
+
+This appendix provides the complete, authoritative hyperparameter tables required to reproduce every experiment in this thesis.
+
+\subsection{Continuous Physics Engine Parameters}
+\label{subsec:app_param_physics}
+
+\Cref{tab:app_physics_hyperparams} details the core mathematical parameters governing the JAX Flow Lenia simulation engine.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Continuous Physics Engine Hyperparameter Configuration.}
+\label{tab:app_physics_hyperparams}
+\begin{tabularx}{\textwidth}{l X c p{3.4cm}}
+\toprule
+\textbf{Parameter Symbol} & \textbf{Description} & \textbf{Canonical Value} & \textbf{Search Bounds} \\
+\midrule
+$H \times W$ & Spatial Lattice Grid Resolution & $256 \times 256$ & $256^2 \text{ to } 512^2$ \\
+$\Delta t$ & Differential Time Step & $0.050$ & Fixed \\
+$K$ & Number of Concentric Kernels & $9$ & Fixed \\
+$M$ & Number of Gaussian Shells per Kernel & $3$ & Fixed \\
+$R_k$ & Outer Kernel Radius & $[6.0, 15.0]\text{ px}$ & $[5.0, 18.0]\text{ px}$ \\
+$\mathbf{b}$ & Concentric Shell Amplitudes & $[1.0, 0.50, 0.33]$ & Fixed \\
+$\mathbf{r}_{\text{peaks}}$ & Normalized Radial Peak Positions & $[0.50, 0.25, 0.75]$ & Fixed \\
+$w_{\text{width}}$ & Normalized Radial Shell Width & $0.12$ & Fixed \\
+$\mu_k$ & Gaussian Growth Center & $0.150$ & $[0.100, 0.280]$ \\
+$\sigma_k$ & Gaussian Growth Tolerance Width & $0.015$ & $[0.008, 0.030]$ \\
+$w_k$ & Kernel Composition Weights & $\mathbf{1} \in \Real^K$ & $[0.0, 1.0]$ \\
+$\vscale$ & Global Velocity Advection Scale & $5.20$ & $[4.20, 6.50]$ \\
+$\adiff$ & Entropic Mass Diffusion Constant & $0.060$ & $[0.030, 0.080]$ \\
+$A_{\text{cutoff}}$ & Minimum Density Cutoff Threshold & $0.001$ & Fixed \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Morphological Quality Filter and IMGEP Discovery Parameters}
+\label{subsec:app_param_imgep}
+
+\Cref{tab:app_imgep_hyperparams} summarizes the parameters used during curiosity-driven automated discovery and quality gating.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Morphological Quality Filter Gates and IMGEP Exploration Hyperparameters.}
+\label{tab:app_imgep_hyperparams}
+\begin{tabularx}{\textwidth}{l X c p{3.4cm}}
+\toprule
+\textbf{Parameter Symbol} & \textbf{Description} & \textbf{Operational Value} & \textbf{Scope} \\
+\midrule
+$N_{\text{trials}}$ & Total Exploration Trials per Run & $50$ & IMGEP Evaluation \\
+$N_{\text{bootstrap}}$ & Random Bootstrap Trials & $10$ & Initial Archive Seeding \\
+$T_{\text{rollout}}$ & Discovery Simulation Horizon & $2000\text{ steps}$ & Evaluation Window \\
+$\sigma_{\text{mut}}$ & Gaussian Parameter Mutation Scale & $0.010$ & Parent Perturbation \\
+Gate 1 ($\MassRatio$) & Mass Conservation Ratio Bounds & $[0.60, 5.00]$ & Hard Filter Gate \\
+Gate 2 ($\CoreRatio$) & Solid Core Biomass Ratio Minimum & $\ge 0.50$ & Hard Filter Gate \\
+Gate 3 ($\Motility$) & Center-of-Mass Displacement Minimum & $\ge 5.0\text{ px}$ & Hard Filter Gate \\
+Gate 4 ($\GridCover$) & Maximum Grid Area Coverage & $\le 0.25$ & Hard Filter Gate \\
+Gate 5 ($M_{\text{total}}$) & Non-Trivial Integrated Mass Minimum & $\ge 10.0$ & Hard Filter Gate \\
+$\Motility^{\max}$ & Upper Normalization Bound for Motility & $150.0\text{ px}$ & Metric Space Scaling \\
+$\EvoActivity^{\max}$ & Upper Normalization Bound for EA & $0.050$ & Metric Space Scaling \\
+$\Complexity^{\max}$ & Upper Normalization Bound for gzip Size & $50000\text{ bytes}$ & Metric Space Scaling \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Environmental Heterogeneity Assay Parameters}
+\label{subsec:app_param_environmental}
+
+\Cref{tab:app_env_hyperparams} outlines the configuration parameters for the environmental heterogeneity assays.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Environmental Heterogeneity and Biomechanics Parameters.}
+\label{tab:app_env_hyperparams}
+\begin{tabularx}{\textwidth}{l X c p{3.8cm}}
+\toprule
+\textbf{Parameter Symbol} & \textbf{Description} & \textbf{Standard Value} & \textbf{Evaluation Sweep} \\
+\midrule
+$\chi_{\text{chemotaxis}}$ & Chemotactic Gradient Sensitivity & $18.0$ & $[0.0, 25.0]$ \\
+$d_{\text{wall}}$ & Barrier Wall Thickness & $8\text{ px}$ & Fixed \\
+$W_{\text{passage}}$ & Barrier Aperture Corridor Width & $32\text{ px}$ & $\{8, 16, 24, 32, 48, 64\}\text{ px}$ \\
+$\delta_{\text{dep}}$ & Per-Step Resource Depletion Rate & $0.040$ & $[0.004, 0.040]$ \\
+$\delta_{\text{reg}}$ & Per-Step Resource Regeneration Rate & $0.010$ & $[0.001, 0.010]$ \\
+$T_{\text{barrier}}$ & Barrier Sweep Simulation Horizon & $3600\text{ steps}$ & Fixed \\
+$T_{\text{colosseum}}$ & Colosseum Macro-Ecology Horizon & $22500\text{ steps}$ & Fixed \\
+$\beta_{\text{softmax}}$ & Growth Negotiation Temperature Scale & $3.0$ & $\{1.0, 2.0, 3.0, 4.0\}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}

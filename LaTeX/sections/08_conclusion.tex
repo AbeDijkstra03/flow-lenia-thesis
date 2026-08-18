@@ -1,0 +1,64 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+\subsection{Summary of Contributions}
+\label{subsec:concl_summary}
+
+This thesis presented a GPU-accelerated computational investigation into the role of spatial heterogeneity, mass-conserving fluid mechanics, and curiosity-driven exploration within the continuous cellular automata framework of Flow Lenia. By re-engineering the continuous physics engine into native functional JAX, we eliminated artificial coordinate damping and evaluated open-ended evolutionary dynamics across structured environments.
+
+The primary contributions of this work are summarized as follows:
+
+\begin{enumerate}
+    \item \textbf{Conservative Physics Engine in Functional JAX:} By formulating continuous convolutions via two-dimensional spectral Fourier transforms and implementing semi-Lagrangian bilinear reintegration tracking \parencite{moroz2020reintegration, plantec2025flowlenia}, our framework preserves global mass within floating-point round-off limits. This eliminates artificial coordinate drag and provides an elastomeric, soft-matter fluid substrate executing at over 33,000 steps per second.
+    \item \textbf{Curiosity-Driven Automated Discovery and Quality Gating:} We developed an Intrinsically Motivated Goal Exploration Process (IMGEP) operating across a standardized three-dimensional metric space ($[\Motility, \EvoActivity, \Complexity]$). Evaluated through a sequential five-stage morphological filter, IMGEP achieved a 44.0\% gate pass rate in our benchmark ($n=3$ seeds) and discovered diverse families of swimming solitons while mapping critical failure modes such as stochastic seed sensitivity and the solidity-motility trade-off.
+    \item \textbf{Biomechanical Characterization under Spatial Heterogeneity:} 
+    \begin{itemize}
+        \item In directional chemotaxis assays, we mapped a cohesion-fission phase transition in the explored parameter space, distinguishing unitary droplet locomotion ($96.5\%$ core preservation) from shear-induced amoeboid division.
+        \item In a two-chamber aperture constriction assay, we measured the aperture transmission coefficient $T(W)$, showing that soft-bodied solitons exhibit a sigmoidal transmission profile with an empirical necking transition interval near $W \approx 28\text{--}32\text{ pixels}$.
+    \end{itemize}
+    \item \textbf{Dynamic Niche Construction and Ecological Dynamics:} Coupling local growth potentials to dynamic resource depletion eliminated static crystal attractors in our evaluated sample ($0.0\%$ stationary states), compelling continuous cyclic foraging trajectories. Across 22,500 continuous simulation steps in a multi-chamber arena benchmark, categorical Gumbel-Max flux sampling prevented parameter homogenization and preserved distinct territorial lineages.
+\end{enumerate}
+
+\subsection{Answers to Research Questions}
+\label{subsec:concl_answers}
+
+Returning to the central research question:
+
+\begin{quote}
+\textbf{Central Research Question:} \textit{To what extent does structured spatial heterogeneity drive phenotypic adaptation, structural plasticity, and behavioral divergence in continuous mass-conserving cellular automata?}
+\end{quote}
+
+Our empirical findings indicate that structured spatial heterogeneity acts as an essential catalyst for complex dynamics in continuous cellular automata:
+\begin{itemize}
+    \item In homogeneous, isotropic spaces, continuous systems suffer from evolutionary stagnation: gliders encounter zero environmental resistance, and populations converge to static or trivial periodic attractors.
+    \item Introducing spatial friction (rigid geometric constrictions, depletable resource fields, and external chemotactic gradients) destabilizes static equilibria in the tested regimes, tests droplet elasticity, forces adaptive deformation, and sustains long-term migratory and territorial dynamics.
+\end{itemize}
+
+Addressing the specific sub-questions:
+\begin{itemize}
+    \item \textbf{Sub-Question 1 (Curiosity Discovery):} IMGEP effectively circumvents the parameter desert in our benchmark by expanding the behavioral frontier in continuous metric space. Multi-seed ensemble evaluation mitigates seed sensitivity, while non-objective goal babbling prevents premature convergence to the low-complexity attractors that trap scalar objective optimization.
+    \item \textbf{Sub-Question 2 (Aperture Transmission):} Soliton transmission through narrow slits is governed by a balance between external gradient pull and internal cohesive surface tension, establishing an aperture interval below which passage is mechanically obstructed.
+    \item \textbf{Sub-Question 3 (Niche Construction and Scalability):} Dynamic resource depletion introduces a self-generated negative feedback loop that prevents organisms from resting, driving continuous trail following and multi-species ecological stability across large spatial canvases.
+\end{itemize}
+
+\subsection{Epistemological Synthesis and Computational Limits}
+\label{subsec:concl_epistemology}
+
+This research established clear epistemological boundaries regarding Artificial Life in continuous cellular fields:
+\begin{itemize}
+    \item \textbf{Physical Droplets vs. Cognitive Agents:} Solitons in Flow Lenia are continuous dissipative wave structures governed by partial differential equations. They exhibit soft-bodied elastomeric physics rather than symbolic information processing or cognitive decision-making.
+    \item \textbf{Demarcation of Spatial Routing:} When continuous solitons traverse complex mazes or solve routing problems, global path planning is governed by external geodesic potential fields, while Flow Lenia supplies the continuous, deformable physical medium.
+    \item \textbf{Missing Physical Constraints:} The absence of impenetrable physical membranes and thermodynamic energy accounting limits the emergence of true open-ended evolutionary hierarchies. In a medium where mass updates carry zero energetic cost, selective pressure for metabolic efficiency is fundamentally absent.
+\end{itemize}
+
+\subsection{Future Outlook: Towards Hybrid Architectures}
+\label{subsec:concl_future_work}
+
+To bridge the remaining gap in artificial open-ended evolution, future research should focus on three promising avenues:
+\begin{enumerate}
+    \item \textbf{Thermodynamic Energy Accounting:} Formulating explicit local energy budgets where mass advection, state updates, and kernel convolutions consume finite metabolic resources, penalizing stationary dissipation and rewarding efficient foraging.
+    \item \textbf{Physical Enclosed Membranes:} Developing phase-field or level-set models that support impermeable, deformable boundaries capable of maintaining chemical isolation against external mixing.
+    \item \textbf{Hybrid HPC Architectures:} Combining GPU-accelerated continuous field equations for underlying fluid mechanics with asynchronous, discrete agent-based processing for downward causal decision-making, resolving the parallelization paradox.
+\end{enumerate}
+
+In conclusion, while continuous cellular automata do not spontaneously generate biological cognition, coupling mass-conserving fluid mechanics with structured spatial heterogeneity provides a mathematically sound, highly scalable foundation for modeling soft-matter physics, emergent biomechanics, and decentralized artificial life.

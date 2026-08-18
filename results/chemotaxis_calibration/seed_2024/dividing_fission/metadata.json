@@ -1,0 +1,36 @@
+{
+  "prefix": "dividing_fission",
+  "config": {
+    "condition": "dividing_fission",
+    "description": "Amoeboid Fission / Mitosis",
+    "chemotaxis_chi": 25.0,
+    "alpha_diffusion": 0.035,
+    "sigma": 0.015,
+    "v_scale": 9.5,
+    "seed": 2024,
+    "com_dx": 144.41501508436824,
+    "steps": 3600
+  },
+  "metrics": {
+    "ea_raw": 0.0,
+    "complexity_raw": 1748.0,
+    "entropy_raw": 5.374721193313599,
+    "com_displacement": 144.3152111281347,
+    "corridor_coverage": 0.021759033203125,
+    "ea_norm": 0.0,
+    "complexity_norm": 0.02667236328125,
+    "entropy_norm": 0.33592007458209533,
+    "com_norm": 0.39861822037918887,
+    "total_mass": 870.9896240334375,
+    "watertight_score": 269.46831885737896,
+    "watertight_valid": 1.0,
+    "solid_core_ratio": 0.9736147692430501,
+    "mass_preservation_ratio": 0.999997196982215,
+    "grid_size": 256,
+    "horizon": 3600
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

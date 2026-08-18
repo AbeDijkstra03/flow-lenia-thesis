@@ -1,0 +1,57 @@
+\section{Discussion and Epistemological Demarcation}
+\label{sec:discussion}
+
+\subsection{The Parameter Desert and Fragility of Continuous Solitons}
+\label{subsec:disc_parameter_desert}
+
+A foundational requirement for scientific integrity in modern Artificial Life (ALife) is an unsparing, realistic evaluation of the field's actual computational achievements versus its theoretical ambitions. Empirical examination of the continuous parameter space in Flow Lenia demonstrates that viable parameter regions are narrow \parencite{chan2023towards, plantec2025flowlenia}. Cohesive solitons exist primarily within restricted bands ($\mu \in [0.135, 0.165]$, $\sigma \in [0.011, 0.024]$). Over 99.9\% of the unguided continuous parameter space represents an evolutionary desert:
+\begin{enumerate}
+    \item When growth tolerance $\sigma$ is too narrow, potential wells fail to sustain sufficient cohesion, causing mass to disperse into low-density background veils.
+    \item When $\sigma$ is too broad or $\mu$ is displaced, mass distributions grow excessively, resulting in static clumps or ring instabilities that fragment into satellite droplets.
+\end{enumerate}
+The boundary separating formless mass distributions from self-organizing solitary waves is a sharp mathematical discontinuity without smooth intermediate loss gradients. Consequently, automated exploration requires structured parental perturbation via curiosity search \parencite{michel2025exploring, kumar2025asal} rather than unguided uniform sampling.
+
+\subsection{Visual Biomimicry versus Physical Soliton Dynamics}
+\label{subsec:disc_aesthetic_fallacy}
+
+When rendered with continuous color mappings, Flow Lenia dynamics produce visual patterns reminiscent of biological microorganisms, amoeboid locomotion, and cellular mitosis. However, a persistent vulnerability in computational ALife is confusing \textit{visual biomimicry} with \textit{authentic biological agency}:
+\begin{itemize}
+    \item Continuous solitons represent solitary wave solutions to coupled fluid transport partial differential equations; they do not possess internal symbolic representations, cognitive memory, or goal-directed decision architectures.
+    \item Unlike reinforcement learning (which optimizes explicit extrinsic reward functions) or supervised learning (which optimizes predictive loss), open-ended continuous CA exploration relies on statistical proxies (such as motility, evolutionary activity, and compression complexity), each of which captures only specific physical facets of the system.
+\end{itemize}
+
+\subsection{Heuristic Quality Filters and Seed Sensitivity}
+\label{subsec:disc_metric_trap}
+
+The design of automated search metrics and filters reveals trade-offs between stability and dynamism:
+\begin{itemize}
+    \item \textbf{Solidity vs. Motility Trade-off:} Strict solidity thresholds ($\CoreRatio \ge 0.50$) prevent dispersed fluid debris but naturally favor static, crystalline mass configurations that do not deform. Active solitons, which shed minor fluid ripples during locomotion, register lower solidity values despite greater behavioral richness.
+    \item \textbf{Heuristic Nature of Quality Gates:} Sequential quality filters are necessarily heuristic approximations. While they eliminate obvious failure modes (such as mass explosion, vacuum extinction, and static crystals), they do not guarantee biological realism or prevent exploitation by edge-vibrating limit cycles.
+    \item \textbf{Stochastic Seed Sensitivity:} A candidate evaluated on a single stochastic initial condition may register translational movement due to an asymmetric initial mass configuration rather than intrinsic genome properties. Evaluating candidate genomes across multiple random seeds ($N \ge 3$) reduces false positives before admitting individuals to the elite archive.
+\end{itemize}
+
+\subsection{Demarcation of External Guidance and Physical Medium}
+\label{subsec:disc_agency_demarcation}
+
+In structured spatial tasks such as maze navigation, aperture traversal, or traveling salesperson routing, the origin of problem-solving guidance must be clearly demarcated:
+\begin{enumerate}
+    \item \textbf{Navigational Potential Fields ($\nabla \phi$):} External potential gradients (such as geodesic distance maps or Laplace wavefront diffusion) handle global topological routing and obstacle avoidance.
+    \item \textbf{The Flow Lenia Engine:} Provides the continuous, mass-conserving soft-matter substrate, contributing droplet deformation, surface tension, and physical squeezing through narrow corridors.
+\end{enumerate}
+This distinction clarifies that Flow Lenia acts as an expressive, continuous physical substrate for bio-inspired soft-matter simulation rather than an autonomous cognitive pathfinding agent.
+
+\subsection{Physical Constraints: Membranes and Thermodynamic Energy Accounting}
+\label{subsec:disc_missing_physics}
+
+The long-term evolutionary stagnation observed in continuous cellular models points to fundamental physical constraints that remain absent in current formulations \parencite{ruiz2004universal, schrodinger1944what}:
+\begin{itemize}
+    \item \textbf{Physical Enclosed Membranes:} Without impermeable physical boundaries, overlapping continuous fields tend to merge. Discrete multi-genome sampling (such as Gumbel-Max selection) serves as an algorithmic proxy to maintain lineage identity in the absence of physical lipid bilayers \parencite{plantec2025flowlenia}.
+    \item \textbf{Metabolic Energy Accounting:} In current models, mass advection and state transitions carry zero thermodynamic cost. An inert lump consumes exactly as much metabolic energy as an active swimming glider: zero \parencite{schrodinger1944what}. In natural biology, complexity is driven by the necessity to harvest free energy and dissipate entropy \parencite{england2013statistical}. Incorporating metabolic energy budgets that penalize continuous dissipation represents a promising direction for future research.
+\end{itemize}
+
+\subsection{Methodological Scope and Sample Size Considerations}
+\label{subsec:disc_parallelization_paradox}
+
+The experimental evaluations in this work were conducted across three canonical pseudo-random seeds ($n=3$). While sufficient to demonstrate qualitative regime transitions and compute preliminary descriptive statistics, larger sample sizes ($n \ge 10$) would be valuable to establish narrower confidence intervals on transition thresholds. 
+
+Furthermore, executing continuous simulations on SIMD hardware accelerators provides high computational throughput (exceeding 33,000 steps per second via spectral Fourier convolutions), but relies on uniform grid operations. Exploring hybrid computational models that combine continuous field updates on GPUs with asynchronous agent-level dynamics remains an important area for future investigation.

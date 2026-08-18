@@ -1,0 +1,31 @@
+{
+  "scenario": "traveling_salesperson_problem",
+  "seed": 42,
+  "full_tour_completed": true,
+  "cities_total": 7,
+  "laps_completed": 9,
+  "optimal_tour_sequence": [
+    0,
+    1,
+    2,
+    6,
+    5,
+    4,
+    3,
+    0
+  ],
+  "optimal_tour_length": 586.0502319335938,
+  "autonomous_tour_distance": 635.5040283203125,
+  "tour_efficiency_percent": 92.21817779541016,
+  "visited_timestamps": {
+    "0": 0,
+    "1": 4362,
+    "3": 4305,
+    "2": 4404,
+    "6": 4491,
+    "5": 4074,
+    "4": 4137
+  },
+  "steps": 4500,
+  "mass_preservation_ratio": 0.9999999403953552
+}

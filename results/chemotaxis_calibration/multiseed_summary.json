@@ -1,0 +1,347 @@
+[
+  {
+    "experiment_name": "Chemotaxis Baseline Calibration & Cohesion-Fission Transition",
+    "timestamp_iso": "2026-08-17T13:25:03.732059",
+    "seed": 42,
+    "results": {
+      "unbaited_control": {
+        "condition": "unbaited_control",
+        "description": "Stationary Baseline",
+        "chemotaxis_chi": 0.0,
+        "alpha_diffusion": 0.065,
+        "sigma": 0.013,
+        "v_scale": 8.5,
+        "com_dx": 1.6095979701814898,
+        "start_x": 49.999999999425945,
+        "end_x": 51.609597969607435,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 1852.0,
+          "entropy_raw": 5.354930067062378,
+          "com_displacement": 2.2334339187884242,
+          "corridor_coverage": 0.0,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.02825927734375,
+          "entropy_norm": 0.33468312919139404,
+          "com_norm": 0.006169047926981795,
+          "total_mass": 870.9881591896875,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.970857313830848,
+          "mass_preservation_ratio": 0.9999955151715441,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_42/unbaited_control/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_42/unbaited_control/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_42/unbaited_control/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_42/unbaited_control/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_42/unbaited_control/metadata.json"
+        }
+      },
+      "cohesive_foraging": {
+        "condition": "cohesive_foraging",
+        "description": "Unitary Droplet Migration",
+        "chemotaxis_chi": 18.0,
+        "alpha_diffusion": 0.065,
+        "sigma": 0.013,
+        "v_scale": 8.5,
+        "com_dx": 120.72111732255581,
+        "start_x": 49.999999999425945,
+        "end_x": 170.72111732198175,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 2082.0,
+          "entropy_raw": 5.458200740814209,
+          "com_displacement": 121.2880781090284,
+          "corridor_coverage": 0.027740478515625,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.031768798828125,
+          "entropy_norm": 0.34113754630088333,
+          "com_norm": 0.3350141504217876,
+          "total_mass": 870.9898681740625,
+          "watertight_score": 219.27657952248464,
+          "watertight_valid": 1.0,
+          "solid_core_ratio": 0.9586075917856054,
+          "mass_preservation_ratio": 0.9999974772839936,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_42/cohesive_foraging/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_42/cohesive_foraging/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_42/cohesive_foraging/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_42/cohesive_foraging/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_42/cohesive_foraging/metadata.json"
+        }
+      },
+      "dividing_fission": {
+        "condition": "dividing_fission",
+        "description": "Amoeboid Fission / Mitosis",
+        "chemotaxis_chi": 25.0,
+        "alpha_diffusion": 0.035,
+        "sigma": 0.015,
+        "v_scale": 9.5,
+        "com_dx": 144.41501508436824,
+        "start_x": 49.999999999425945,
+        "end_x": 194.41501508379417,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 1748.0,
+          "entropy_raw": 5.374721193313599,
+          "com_displacement": 144.3152111281347,
+          "corridor_coverage": 0.021759033203125,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.02667236328125,
+          "entropy_norm": 0.33592007458209533,
+          "com_norm": 0.39861822037918887,
+          "total_mass": 870.9896240334375,
+          "watertight_score": 269.46831885737896,
+          "watertight_valid": 1.0,
+          "solid_core_ratio": 0.9736147692430501,
+          "mass_preservation_ratio": 0.999997196982215,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_42/dividing_fission/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_42/dividing_fission/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_42/dividing_fission/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_42/dividing_fission/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_42/dividing_fission/metadata.json"
+        }
+      }
+    }
+  },
+  {
+    "experiment_name": "Chemotaxis Baseline Calibration & Cohesion-Fission Transition",
+    "timestamp_iso": "2026-08-17T13:25:12.418276",
+    "seed": 101,
+    "results": {
+      "unbaited_control": {
+        "condition": "unbaited_control",
+        "description": "Stationary Baseline",
+        "chemotaxis_chi": 0.0,
+        "alpha_diffusion": 0.065,
+        "sigma": 0.013,
+        "v_scale": 8.5,
+        "com_dx": 1.6095979701814898,
+        "start_x": 49.999999999425945,
+        "end_x": 51.609597969607435,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 1852.0,
+          "entropy_raw": 5.354930067062378,
+          "com_displacement": 2.2334339187884242,
+          "corridor_coverage": 0.0,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.02825927734375,
+          "entropy_norm": 0.33468312919139404,
+          "com_norm": 0.006169047926981795,
+          "total_mass": 870.9881591896875,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.970857313830848,
+          "mass_preservation_ratio": 0.9999955151715441,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_101/unbaited_control/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_101/unbaited_control/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_101/unbaited_control/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_101/unbaited_control/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_101/unbaited_control/metadata.json"
+        }
+      },
+      "cohesive_foraging": {
+        "condition": "cohesive_foraging",
+        "description": "Unitary Droplet Migration",
+        "chemotaxis_chi": 18.0,
+        "alpha_diffusion": 0.065,
+        "sigma": 0.013,
+        "v_scale": 8.5,
+        "com_dx": 120.72111732255581,
+        "start_x": 49.999999999425945,
+        "end_x": 170.72111732198175,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 2082.0,
+          "entropy_raw": 5.458200740814209,
+          "com_displacement": 121.2880781090284,
+          "corridor_coverage": 0.027740478515625,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.031768798828125,
+          "entropy_norm": 0.34113754630088333,
+          "com_norm": 0.3350141504217876,
+          "total_mass": 870.9898681740625,
+          "watertight_score": 219.27657952248464,
+          "watertight_valid": 1.0,
+          "solid_core_ratio": 0.9586075917856054,
+          "mass_preservation_ratio": 0.9999974772839936,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_101/cohesive_foraging/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_101/cohesive_foraging/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_101/cohesive_foraging/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_101/cohesive_foraging/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_101/cohesive_foraging/metadata.json"
+        }
+      },
+      "dividing_fission": {
+        "condition": "dividing_fission",
+        "description": "Amoeboid Fission / Mitosis",
+        "chemotaxis_chi": 25.0,
+        "alpha_diffusion": 0.035,
+        "sigma": 0.015,
+        "v_scale": 9.5,
+        "com_dx": 144.41501508436824,
+        "start_x": 49.999999999425945,
+        "end_x": 194.41501508379417,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 1748.0,
+          "entropy_raw": 5.374721193313599,
+          "com_displacement": 144.3152111281347,
+          "corridor_coverage": 0.021759033203125,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.02667236328125,
+          "entropy_norm": 0.33592007458209533,
+          "com_norm": 0.39861822037918887,
+          "total_mass": 870.9896240334375,
+          "watertight_score": 269.46831885737896,
+          "watertight_valid": 1.0,
+          "solid_core_ratio": 0.9736147692430501,
+          "mass_preservation_ratio": 0.999997196982215,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_101/dividing_fission/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_101/dividing_fission/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_101/dividing_fission/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_101/dividing_fission/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_101/dividing_fission/metadata.json"
+        }
+      }
+    }
+  },
+  {
+    "experiment_name": "Chemotaxis Baseline Calibration & Cohesion-Fission Transition",
+    "timestamp_iso": "2026-08-17T13:25:21.102196",
+    "seed": 2024,
+    "results": {
+      "unbaited_control": {
+        "condition": "unbaited_control",
+        "description": "Stationary Baseline",
+        "chemotaxis_chi": 0.0,
+        "alpha_diffusion": 0.065,
+        "sigma": 0.013,
+        "v_scale": 8.5,
+        "com_dx": 1.6095979701814898,
+        "start_x": 49.999999999425945,
+        "end_x": 51.609597969607435,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 1852.0,
+          "entropy_raw": 5.354930067062378,
+          "com_displacement": 2.2334339187884242,
+          "corridor_coverage": 0.0,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.02825927734375,
+          "entropy_norm": 0.33468312919139404,
+          "com_norm": 0.006169047926981795,
+          "total_mass": 870.9881591896875,
+          "watertight_score": 0.0,
+          "watertight_valid": 0.0,
+          "solid_core_ratio": 0.970857313830848,
+          "mass_preservation_ratio": 0.9999955151715441,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_2024/unbaited_control/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_2024/unbaited_control/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_2024/unbaited_control/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_2024/unbaited_control/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_2024/unbaited_control/metadata.json"
+        }
+      },
+      "cohesive_foraging": {
+        "condition": "cohesive_foraging",
+        "description": "Unitary Droplet Migration",
+        "chemotaxis_chi": 18.0,
+        "alpha_diffusion": 0.065,
+        "sigma": 0.013,
+        "v_scale": 8.5,
+        "com_dx": 120.72111732255581,
+        "start_x": 49.999999999425945,
+        "end_x": 170.72111732198175,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 2082.0,
+          "entropy_raw": 5.458200740814209,
+          "com_displacement": 121.2880781090284,
+          "corridor_coverage": 0.027740478515625,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.031768798828125,
+          "entropy_norm": 0.34113754630088333,
+          "com_norm": 0.3350141504217876,
+          "total_mass": 870.9898681740625,
+          "watertight_score": 219.27657952248464,
+          "watertight_valid": 1.0,
+          "solid_core_ratio": 0.9586075917856054,
+          "mass_preservation_ratio": 0.9999974772839936,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_2024/cohesive_foraging/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_2024/cohesive_foraging/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_2024/cohesive_foraging/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_2024/cohesive_foraging/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_2024/cohesive_foraging/metadata.json"
+        }
+      },
+      "dividing_fission": {
+        "condition": "dividing_fission",
+        "description": "Amoeboid Fission / Mitosis",
+        "chemotaxis_chi": 25.0,
+        "alpha_diffusion": 0.035,
+        "sigma": 0.015,
+        "v_scale": 9.5,
+        "com_dx": 144.41501508436824,
+        "start_x": 49.999999999425945,
+        "end_x": 194.41501508379417,
+        "metrics": {
+          "ea_raw": 0.0,
+          "complexity_raw": 1748.0,
+          "entropy_raw": 5.374721193313599,
+          "com_displacement": 144.3152111281347,
+          "corridor_coverage": 0.021759033203125,
+          "ea_norm": 0.0,
+          "complexity_norm": 0.02667236328125,
+          "entropy_norm": 0.33592007458209533,
+          "com_norm": 0.39861822037918887,
+          "total_mass": 870.9896240334375,
+          "watertight_score": 269.46831885737896,
+          "watertight_valid": 1.0,
+          "solid_core_ratio": 0.9736147692430501,
+          "mass_preservation_ratio": 0.999997196982215,
+          "grid_size": 256,
+          "horizon": 3600
+        },
+        "artifacts": {
+          "video": "results/chemotaxis_calibration/seed_2024/dividing_fission/rollout.mp4",
+          "filmstrip": "results/chemotaxis_calibration/seed_2024/dividing_fission/trajectory_filmstrip.png",
+          "heatmap": "results/chemotaxis_calibration/seed_2024/dividing_fission/motion_heatmap.png",
+          "data": "results/chemotaxis_calibration/seed_2024/dividing_fission/data.npz",
+          "metadata": "results/chemotaxis_calibration/seed_2024/dividing_fission/metadata.json"
+        }
+      }
+    }
+  }
+]

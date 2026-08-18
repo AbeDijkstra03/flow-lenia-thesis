@@ -1,0 +1,125 @@
+\documentclass{uva-inf-article}
+
+% --- Global Preamble & Package Configuration ---
+\input{preamble}
+
+% --- UvA Metadata Variables ---
+\title{Curiosity-Driven Exploration and Spatial Heterogeneity in Flow Lenia \\ Soft Biomechanics and Computational Limits in Continuous Artificial Life}
+\assignment{Bachelor thesis}
+\assignmenttype{}
+\authors{Albert R. Dijkstra}
+\uvanetids{14622556}
+\thesissupervisor{Dr. S. de Rooij}
+\degree{Bachelor \textit{Kunstmatige Intelligentie}}
+\course{}
+\courseid{}
+\date{Semester 2, 2025-2026}
+
+% --- Front Page Custom Commands ---
+\newcommand{\theTitle}{Curiosity-Driven Exploration and Spatial Heterogeneity in Flow Lenia}
+\newcommand{\theSubTitle}{Soft Biomechanics and Computational Limits in Continuous Artificial Life}
+\newcommand{\theAuthor}{Albert R. Dijkstra}
+\newcommand{\theStudentID}{14622556}
+\newcommand{\theSupervisor}{Dr. S. de Rooij}
+
+\newcommand{\theInstitute}{
+Informatics Institute \\ 
+Faculty of Science \\
+University of Amsterdam \\
+Science Park 900 \\ 
+1098 XH Amsterdam 
+}
+\newcommand{\theDate}{Semester 2, 2025-2026}
+
+\begin{document}
+
+% --- MANDATORY UVA FRONT PAGE ---
+\pagestyle{empty}
+\justifying
+\setlength{\RaggedRightParindent}{0pt} 
+\setlength{\parindent}{0pt}            
+\setlength{\parskip}{1em}    
+\begin{center}
+
+\vspace{2.0cm}
+
+{\Huge \bfseries \theTitle} \\[0.5cm]
+
+{\Large \theSubTitle}
+
+\vspace{1.5cm}
+
+{\large \textbf{\theAuthor}}\\
+{\normalsize Student ID: \theStudentID}
+
+\vspace{1.2cm}
+
+\textbf{Bachelor Thesis} \\
+Credits: 18 EC
+
+\vspace{0.4cm}
+
+Bachelor \textit{Kunstmatige Intelligentie} \\
+\vspace{0.3cm}
+\includegraphics[width=0.08\paperwidth]{images/uva_logo} \\
+\vspace{0.2cm}
+
+University of Amsterdam \\
+Faculty of Science \\
+Science Park 900 \\
+1098 XH Amsterdam
+
+\vspace{1.8cm}
+
+\emph{Supervisor}\\
+\textbf{\theSupervisor}
+
+\vspace{0.2cm}
+
+\theInstitute
+
+\vspace{0.8cm}
+
+\theDate
+
+\end{center}
+\newpage
+% --- END FRONT PAGE ---
+
+% --- ABSTRACT & PRE-BODY ---
+\pagenumbering{roman}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+\input{sections/00_abstract}
+\newpage
+
+% --- TABLE OF CONTENTS ---
+\tableofcontents
+\newpage
+
+% --- MAIN BODY CHAPTERS ---
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{sections/01_introduction}
+\input{sections/02_theoretical_background}
+\input{sections/03_model_and_physics}
+\input{sections/04_automated_discovery_imgep}
+\input{sections/05_experimental_setup}
+\input{sections/06_results}
+\input{sections/07_epistemological_discussion}
+\input{sections/08_conclusion}
+
+% --- REFERENCES ---
+\newpage
+\printbibliography[title={References}]
+
+% --- APPENDICES ---
+\newpage
+\appendix
+\input{appendices/appendix_supplementary_acts}
+\input{appendices/appendix_hyperparameters}
+\input{appendices/appendix_reproducibility}
+
+\end{document}

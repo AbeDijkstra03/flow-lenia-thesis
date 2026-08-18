@@ -1,0 +1,30 @@
+{
+  "prefix": "",
+  "config": {
+    "scenario": "dynamic_rerouting",
+    "grid_size": 256,
+    "steps": 3600,
+    "switch_step": 600,
+    "sample_interval": 3,
+    "seed": 42,
+    "chi": 0.28,
+    "alpha_diffusion": 0.04
+  },
+  "metrics": {
+    "scenario": "dynamic_rerouting",
+    "seed": 42,
+    "switch_step": 600,
+    "rerouting_success": true,
+    "initial_mass": 422.96073896586086,
+    "final_mass": 398.3338623046875,
+    "final_goal_mass": 170.8411865234375,
+    "mass_preservation_ratio": 0.9417750292123949,
+    "max_north_mass": 29.79192543029785,
+    "final_north_mass": 1.9365944776968972e-42,
+    "steps": 3600
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

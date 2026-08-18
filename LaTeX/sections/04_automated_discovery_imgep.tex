@@ -1,0 +1,176 @@
+\section{Curiosity-Driven Automated Discovery and Quality Gating}
+\label{sec:automated_discovery}
+
+\subsection{\texorpdfstring{The Three-Dimensional Behavioral Metric Space $\mathcal{B}$}{The Three-Dimensional Behavioral Metric Space}}
+\label{subsec:discovery_metric_space}
+
+To discover stable morphological structures across the parameter space of Flow Lenia without relying on fixed human templates, candidate rollouts are evaluated within a three-dimensional behavioral metric space \parencite{michel2025exploring}:
+\begin{equation}
+\MetricSpace = \Big[ \Motility, \, \EvoActivity, \, \Complexity \Big] \in \Real^3
+\label{eq:metric_space_definition}
+\end{equation}
+
+Each dimension captures an orthogonal dynamical characteristic of the continuous medium:
+
+\subsubsection{\texorpdfstring{Center of Mass Motility ($\Motility$)}{Center of Mass Motility}}
+Motility quantifies the net translational displacement of the biomass center across simulation horizon $T$:
+\begin{equation}
+\mathbf{x}_{\text{CoM}}(t) = \frac{\sum_{\mathbf{x}} \mathbf{x} \cdot A(\mathbf{x}, t)}{\sum_{\mathbf{x}} A(\mathbf{x}, t)}
+\label{eq:com_definition}
+\end{equation}
+\begin{equation}
+\Motility = \left\| \mathbf{x}_{\text{CoM}}(t_{\text{end}}) - \mathbf{x}_{\text{CoM}}(0) \right\|_2 \quad (\text{pixels})
+\label{eq:motility_metric}
+\end{equation}
+This metric separates stationary structures and localized breathers from propagating solitary waves.
+
+\subsubsection{\texorpdfstring{Non-Neutral Quadratic Evolutionary Activity ($\EvoActivity$)}{Non-Neutral Quadratic Evolutionary Activity}}
+Evolutionary activity measures persistent kinetic transformations, lineage turnover, and internal mass circulation over time \parencite{bedau2019openended}. In multi-species populations with $G$ lineages, activity is computed from changes in per-genome biomass shares $s_g(t) = \frac{M_g(t)}{M_{\text{total}}(t)}$:
+\begin{equation}
+\EvoActivity_{\text{shares}} = \sum_{t=1}^{T} \sum_{g=1}^{G} \max\left(0, \, s_g(t) - s_g(t - \Delta t)\right)^2
+\label{eq:evolutionary_activity_shares}
+\end{equation}
+In single-lineage settings, spatio-temporal kinetic activity is recorded as the mean quadratic difference across frames:
+\begin{equation}
+\EvoActivity_{\text{kinetic}} = \frac{1}{T} \sum_{t=1}^{T} \left( \frac{1}{HW} \sum_{\mathbf{x}} \left( A(\mathbf{x}, t) - A(\mathbf{x}, t - \Delta t) \right)^2 \right)
+\label{eq:evolutionary_activity_metric}
+\end{equation}
+Static equilibria yield $\EvoActivity \to 0$, whereas swimming, pulsating, or dividing solitons maintain non-zero activity.
+
+\subsubsection{\texorpdfstring{Compression Complexity ($\Complexity$) and Spatial Entropy}{Compression Complexity and Spatial Entropy}}
+Algorithmic complexity is approximated by the byte length of the gzip-compressed spatio-temporal mass occupancy \parencite{cisneros2019evolving}:
+\begin{equation}
+\Complexity = \text{len}\left( \text{gzip}\left( \text{uint8}\left(\text{clip}(A(\mathbf{x}, t_{\text{end}}) \cdot 255, \, 0, \, 255)\right) \right) \right) \quad (\text{bytes})
+\label{eq:compression_complexity}
+\end{equation}
+Additionally, spatial Shannon entropy is recorded across discretized density histograms:
+\begin{equation}
+\Entropy(A) = -\sum_{i=1}^{B} p_i \log_2(p_i), \quad p_i = \frac{\text{count}(A \in \text{bin}_i)}{HW}
+\label{eq:spatial_entropy}
+\end{equation}
+
+\subsubsection{Morphological Integrity Metrics}
+To assess droplet cohesion and filter diffuse mass distributions, two structural ratios are defined:
+\begin{itemize}
+    \item \textbf{Solid Core Ratio ($\CoreRatio$):} Evaluates the fraction of total biomass situated within dense regions ($A \ge 0.15$):
+    \begin{equation}
+    \CoreRatio = \frac{\sum_{\mathbf{x}} A(\mathbf{x}, t_{\text{end}}) \cdot \mathbb{I}(A(\mathbf{x}, t_{\text{end}}) \ge 0.15)}{\sum_{\mathbf{x}} A(\mathbf{x}, t_{\text{end}})}
+    \label{eq:core_ratio}
+    \end{equation}
+    \item \textbf{Mass Preservation Ratio ($\MassRatio$):} Measures mass retention relative to initialization:
+    \begin{equation}
+    \MassRatio = \frac{\sum_{\mathbf{x}} A(\mathbf{x}, t_{\text{end}})}{\sum_{\mathbf{x}} A(\mathbf{x}, 0)}
+    \label{eq:mass_ratio}
+    \end{equation}
+\end{itemize}
+
+\subsection{The Sequential Five-Stage Morphological Quality Filter}
+\label{subsec:discovery_watertight_filter}
+
+Automated searches in continuous dynamical systems are susceptible to trivial numerical attractors. Naive objectives can be satisfied by hollow boundary loops, explosive turbulent noise, or static mass clumps. To filter out degenerate rollouts, candidates are evaluated against a sequential five-stage morphological filter (\Cref{tab:watertight_gates}).
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{The Five Sequential Gating Stages of the Morphological Quality Filter.}
+\label{tab:watertight_gates}
+\begin{tabularx}{\textwidth}{lp{3.2cm}p{3.2cm}X}
+\toprule
+\textbf{Stage} & \textbf{Criterion} & \textbf{Operational Bound} & \textbf{Failure Mode Filtered} \\
+\midrule
+\textbf{Gate 1} & Mass Conservation & $\MassRatio \in [0.60, 5.00]$ & Severe numerical instability or mass annihilation. \\
+\textbf{Gate 2} & Solid Core Ratio & $\CoreRatio \ge 0.50$ & Diffuse, hollow outlines lacking a dense nucleus. \\
+\textbf{Gate 3} & Minimum Motility & $\Motility \ge 5.0\text{ px}$ & Motionless crystal lattices and static breathers. \\
+\textbf{Gate 4} & Spatial Bounding & $\GridCover \le 0.25$ & Unbounded chaotic patterns filling the grid. \\
+\textbf{Gate 5} & Non-Trivial Mass & $\sum_{\mathbf{x}} A(\mathbf{x}) \ge 10.0$ & Evaporated structures and empty background states. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Here, $\GridCover = \frac{1}{HW} \sum_{\mathbf{x}} \mathbb{I}(A(\mathbf{x}, t_{\text{end}}) \ge 0.05)$. Candidates failing any stage receive a score of zero ($\QualityScore \leftarrow 0.0$). For candidates satisfying all criteria, a continuous composite quality score is computed:
+\begin{equation}
+\QualityScore = \left( \frac{\Motility}{50.0} \right) \cdot \left( \frac{\EvoActivity}{0.010} \right) \cdot \CoreRatio \cdot \left( 1.0 - \GridCover \right)
+\label{eq:watertight_score}
+\end{equation}
+
+\subsection{Intrinsically Motivated Goal Exploration Process (IMGEP)}
+\label{subsec:discovery_imgep_algorithm}
+
+To autonomously navigate the continuous parameter space $\Theta$, we implement an Intrinsically Motivated Goal Exploration Process \parencite{oudeyer2007intrinsic, michel2025exploring}. Unlike traditional Quality-Diversity grids that require manual bin discretization, IMGEP performs goal-directed exploration in continuous metric space through iterative goal babbling.
+
+The exploration protocol is formalized in \Cref{alg:imgep_discovery}.
+
+\begin{algorithm}[htbp]
+\DontPrintSemicolon
+\caption{IMGEP Goal Exploration with Morphological Quality Gating}
+\label{alg:imgep_discovery}
+\KwIn{Total budget $N_{\text{trials}}$, bootstrap budget $N_{\text{bootstrap}}$, parameter bounds $[\Theta_{\min}, \Theta_{\max}]$, metric bounds $\MetricSpace_{\text{bounds}}$}
+\KwOut{Discovered elite archive $\mathcal{A} = \{ (\boldsymbol{\theta}_i, \mathbf{b}_i, q_i) \}$}
+Initialize empty archive $\mathcal{A} \leftarrow \emptyset$\;
+\BlankLine
+\tcp{Phase 1: Uniform Random Bootstrap}
+\For{$i \leftarrow 1$ \KwTo $N_{\text{bootstrap}}$}{
+    Sample genome $\boldsymbol{\theta}_i \sim \mathcal{U}(\Theta_{\min}, \Theta_{\max})$\;
+    Rollout state trajectory $\mathbf{X}_i \leftarrow \text{Simulate}(\boldsymbol{\theta}_i)$\;
+    Compute behavioral descriptor $\mathbf{b}_i \leftarrow \text{ExtractMetrics}(\mathbf{X}_i)$\;
+    Compute quality score $q_i \leftarrow \text{QualityFilter}(\mathbf{X}_i)$\;
+    \If{$q_i > 0$}{
+        $\mathcal{A} \leftarrow \mathcal{A} \cup \{ (\boldsymbol{\theta}_i, \mathbf{b}_i, q_i) \}$\;
+    }
+}
+\BlankLine
+\tcp{Phase 2: Goal-Directed Curiosity Exploration}
+\For{$i \leftarrow N_{\text{bootstrap}} + 1$ \KwTo $N_{\text{trials}}$}{
+    Sample random behavioral target $\mathbf{g} \sim \mathcal{U}(\MetricSpace_{\text{bounds}})$\;
+    \eIf{$\mathcal{A} \neq \emptyset$}{
+        Select parent $\boldsymbol{\theta}_{\text{parent}} \leftarrow \arg\min_{(\boldsymbol{\theta}, \mathbf{b}) \in \mathcal{A}} \|\mathbf{b} - \mathbf{g}\|_2$\;
+        Generate child genome $\boldsymbol{\theta}_{\text{child}} \leftarrow \boldsymbol{\theta}_{\text{parent}} + \mathcal{N}(0, \boldsymbol{\Sigma}_{\text{mut}})$\;
+    }{
+        Sample random genome $\boldsymbol{\theta}_{\text{child}} \sim \mathcal{U}(\Theta_{\min}, \Theta_{\max})$\;
+    }
+    Rollout state trajectory $\mathbf{X}_{\text{child}} \leftarrow \text{Simulate}(\boldsymbol{\theta}_{\text{child}})$\;
+    Compute descriptor $\mathbf{b}_{\text{child}} \leftarrow \text{ExtractMetrics}(\mathbf{X}_{\text{child}})$\;
+    Compute quality score $q_{\text{child}} \leftarrow \text{QualityFilter}(\mathbf{X}_{\text{child}})$\;
+    \If{$q_{\text{child}} > 0$}{
+        $\mathcal{A} \leftarrow \mathcal{A} \cup \{ (\boldsymbol{\theta}_{\text{child}}, \mathbf{b}_{\text{child}}, q_{\text{child}}) \}$\;
+    }
+}
+\Return{$\mathcal{A}$}\;
+\end{algorithm}
+
+\subsubsection{Farthest-Point Sampling Archive Maintenance}
+When scaling discovery runs across thousands of trials, downsampling the elite archive while preserving maximum behavioral diversity is essential. We apply Farthest-Point Sampling (FPS) in the normalized behavioral space. Given an archive $\mathcal{A}$ and a target subset size $M$, FPS iteratively selects candidate points that maximize the minimum Euclidean distance to all previously selected elites:
+\begin{equation}
+\mathbf{x}_{k+1} = \arg\max_{\mathbf{x} \in \mathcal{A} \setminus \mathcal{S}_k} \min_{\mathbf{s} \in \mathcal{S}_k} \|\mathbf{b}(\mathbf{x}) - \mathbf{b}(\mathbf{s})\|_2
+\label{eq:fps_sampling}
+\end{equation}
+This promotes uniform behavioral coverage across $[\Motility, \EvoActivity, \Complexity]$ without clustering around dense attractor regions.
+
+\subsection{Autonomous Closed-Loop Pipeline}
+\label{subsec:discovery_ai_scientist}
+
+Inspired by automated exploration architectures \parencite{michel2025exploring, kumar2025asal}, the discovery engine is orchestrated in an autonomous loop:
+\begin{enumerate}
+    \item \textbf{Generational Batched Exploration:} Rollouts are simulated in vectorized parallel batches via compiled JAX graphs.
+    \item \textbf{Multimodal Trajectory Inspection:} For every candidate surviving the morphological filter, dual-panel composite filmstrips ($t = 0\%, 20\%, 40\%, 60\%, 80\%, 100\%$) and cumulative motion heatmaps ($\sum |\Delta A|$) are automatically generated.
+    \item \textbf{Adaptive Parameter Bound Refinement:} Generational statistics guide the dynamic contraction of mutation scales around active, high-performing evolutionary corridors.
+\end{enumerate}
+
+\subsection{Methodological Diagnostics: Seed Sensitivity and Solidity Trade-offs}
+\label{subsec:discovery_theoretical_diagnostics}
+
+Long-horizon search campaigns highlighted two practical methodological considerations in continuous cellular automata exploration:
+
+\subsubsection{Stochastic Seed Sensitivity and Parent Selection Bias}
+In continuous simulations, rollouts are initialized from stochastic multi-blob Gaussian configurations with random spatial phase offsets. 
+
+During single-instance evaluations, an evolutionary candidate may register a high motility score ($\Motility > 50\text{ px}$) purely because its initial random seed generated an asymmetric density gradient, inducing transient directional flow. When this candidate is selected as an elite parent, subsequent offspring evaluated on new pseudo-random seeds often fail if the underlying genome $(\boldsymbol{\mu}, \boldsymbol{\sigma}, \mathbf{w})$ corresponds to a stationary breather. 
+
+The search algorithm risks becoming biased toward false-positive parents. To mitigate this effect, our framework incorporates \textit{Multi-Seed Ensemble Gating}, evaluating candidate parameter vectors across $N \ge 3$ distinct random seeds before admission to the permanent elite archive.
+
+\subsubsection{Solidity-Motility Trade-off}
+To filter diffuse fluid debris and unconstrained mass explosions, quality functions enforce strict solidity thresholds ($\CoreRatio \ge 0.50$). 
+
+However, this constraint introduces an inherent bias toward static crystalline structures. Motionless crystal breathers easily maintain solid core ratios of $\CoreRatio \approx 0.99$ without mass dissipation. In contrast, active fluid gliders dynamically shed microscopic fluid ripples and undergo shape deformation during locomotion, yielding lower core ratios ($\CoreRatio \approx 0.60\text{--}0.75$). 
+
+Unconstrained optimization on raw scalar quality scores can inadvertently select for static crystal lattices over active, swimming solitary waves. Balancing this trade-off requires decoupling behavioral novelty from scalar fitness, grounding exploration in hydrodynamic parameter regimes ($\vscale \approx 5.2\text{--}6.5$, $\adiff \approx 0.05\text{--}0.07$) that preserve fluid locomotion.

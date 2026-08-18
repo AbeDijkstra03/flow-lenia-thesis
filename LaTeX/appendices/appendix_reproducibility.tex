@@ -1,0 +1,64 @@
+\section{Reproducibility, Software Stack, and CLI Guide}
+\label{sec:appendix_reproducibility}
+
+\subsection{Software Dependencies and System Architecture}
+\label{subsec:app_software_stack}
+
+All code was developed in Python 3.11 using the \texttt{uv} packaging tool. The core computational engine relies strictly on functional, vectorized operations compiled via Google JAX and XLA:
+
+\begin{itemize}
+    \item \textbf{Core Libraries:} \texttt{jax >= 0.4.30}, \texttt{jaxlib >= 0.4.30}, \texttt{flax >= 0.8.0}, \texttt{numpy >= 1.26.0}, \texttt{scipy >= 1.12.0}.
+    \item \textbf{Visualization and Analysis:} \texttt{matplotlib >= 3.8.0}, \texttt{seaborn >= 0.13.0}, \texttt{imageio >= 2.33.0}.
+    \item \textbf{Hardware Acceleration:} NVIDIA CUDA 12.4 with cuDNN 9.1 support, compiled for high-throughput FP32 floating-point tensor arithmetic.
+\end{itemize}
+
+\subsection{Deterministic Seed Protocol}
+\label{subsec:app_seed_protocol}
+
+To ensure complete computational determinism, all pseudo-random number generation utilizes JAX functional PRNG keys (\texttt{jax.random.PRNGKey}). Every experiment reported in this thesis is evaluated across three canonical random seeds:
+\begin{equation}
+\text{PRNG Seeds} \in \{42, \, 101, \, 2024\}
+\label{eq:app_seeds}
+\end{equation}
+
+\subsection{Command-Line Interface (CLI) Execution Guide}
+\label{subsec:app_cli_guide}
+
+Every figure, table, and data artifact in this thesis can be reproduced directly using the unified CLI orchestrator (\texttt{run\_experiment.py}) provided in the project repository:
+
+\begin{lstlisting}[language=bash, caption={CLI Commands for Full Experimental Reproduction.}]
+# 1. Execute automated test suite (verifies physics and mass conservation)
+uv run python -m unittest discover tests -v
+
+# 2. Run Canonical Orbium Physics Verification Benchmark (Chapter 1)
+uv run python run_experiment.py --mode orbium --steps 3000 --seeds 42
+
+# 3. Run Genome-Mixing Rule Ablations (Chapter 2)
+uv run python run_experiment.py --mode gene_mutation --steps 3600 --seeds 42 101 2024
+uv run python run_experiment.py --mode negotiation --beta 3.0 --steps 3600 --seeds 42 101 2024
+
+# 4. Execute Curiosity-Driven IMGEP Discovery vs Random Search (Chapter 3)
+uv run python run_experiment.py --mode imgep --trials 50 --steps 2000 --seeds 42 101 2024
+uv run python run_experiment.py --mode agentic_loop --generations 5
+
+# 5. Execute Chemotactic Cohesion-Fission Phase Transition Sweep
+uv run python run_experiment.py --mode chemotaxis_calibration --seeds 42 101 2024
+
+# 6. Execute Soft-Bodied Barrier Constriction Aperture Sweep (Chapter 4)
+uv run python run_experiment.py --mode barrier_constriction --widths 8 16 24 32 48 64 --seeds 42 101 2024
+
+# 7. Run Dynamic Resource Depletion & Niche Construction (Chapter 4)
+uv run python run_experiment.py --mode depletion --grid_size 256 --steps 3600 --seeds 42 101 2024
+
+# 8. Run the Grand Synthesis Colosseum Ecosystem (Chapter 5)
+uv run python run_experiment.py --mode epic --grid_size 384 --steps 22500 --patches 8 --seeds 42 101 2024
+uv run python run_experiment.py --mode scaleup --scale_grid_size 512 --scale_steps 3600 --seeds 42 101 2024
+
+# 9. Run Supplementary Acts (Predator-Prey, Transport, TSP, Bridge)
+uv run python run_experiment.py --mode predator_prey --steps 4500 --seeds 42 101 2024
+uv run python run_experiment.py --mode topological_transport --scenario all --seeds 42 101 2024
+uv run python run_experiment.py --mode tsp --steps 4500 --seeds 42 101 2024
+uv run python run_experiment.py --mode collective_bridge --steps 4500 --seeds 42 101 2024
+\end{lstlisting}
+
+All generated trajectories, CSV metric summaries, and composite filmstrip visualizations are automatically archived to structured directories under \texttt{results/} and \texttt{results/supplementary/} for transparent empirical verification.

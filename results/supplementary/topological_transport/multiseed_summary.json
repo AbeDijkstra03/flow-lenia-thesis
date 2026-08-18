@@ -1,0 +1,161 @@
+{
+  "seed_42": {
+    "maze": {
+      "scenario": "continuous_maze",
+      "seed": 42,
+      "success_reach_goal": false,
+      "initial_mass": 422.96073896586086,
+      "final_mass": 375.8906555175781,
+      "final_goal_mass": 84.92410278320312,
+      "mass_preservation_ratio": 0.8887128777667255,
+      "max_dead_end_1_mass": 14.849184036254883,
+      "final_dead_end_1_mass": 2.6904930515036488e-43,
+      "dead_end_1_evacuated": true,
+      "steps": 3600
+    },
+    "dynamic_reroute": {
+      "scenario": "dynamic_rerouting",
+      "seed": 42,
+      "switch_step": 600,
+      "rerouting_success": true,
+      "initial_mass": 422.96073896586086,
+      "final_mass": 398.3338623046875,
+      "final_goal_mass": 170.8411865234375,
+      "mass_preservation_ratio": 0.9417750292123949,
+      "max_north_mass": 29.79192543029785,
+      "final_north_mass": 1.9365944776968972e-42,
+      "steps": 3600
+    },
+    "tokyo_rail": {
+      "scenario": "tokyo_rail",
+      "seed": 42,
+      "all_cities_connected": true,
+      "city_final_masses": {
+        "City_NW": 261.2318420410156,
+        "City_NE": 219.1800079345703,
+        "City_SE": 177.103759765625,
+        "City_SW": 233.06362915039062
+      },
+      "initial_mass": 1313.2967018591758,
+      "final_mass": 1074.7861328125,
+      "mass_preservation_ratio": 0.8183879022027462,
+      "steps": 3600
+    },
+    "swarm_channeling": {
+      "scenario": "swarm_channeling",
+      "seed": 42,
+      "successful_fusion": true,
+      "initial_mass": 846.7697975431961,
+      "final_mass": 771.4884033203125,
+      "final_east_mass": 771.4884033203125,
+      "mass_preservation_ratio": 0.9110957966965582,
+      "steps": 3600
+    }
+  },
+  "seed_101": {
+    "maze": {
+      "scenario": "continuous_maze",
+      "seed": 101,
+      "success_reach_goal": false,
+      "initial_mass": 423.1733372795685,
+      "final_mass": 344.2698059082031,
+      "final_goal_mass": 0.001107099000364542,
+      "mass_preservation_ratio": 0.8135432352927912,
+      "max_dead_end_1_mass": 31.32872200012207,
+      "final_dead_end_1_mass": 6.3618950280346695e-43,
+      "dead_end_1_evacuated": true,
+      "steps": 3600
+    },
+    "dynamic_reroute": {
+      "scenario": "dynamic_rerouting",
+      "seed": 101,
+      "switch_step": 600,
+      "rerouting_success": true,
+      "initial_mass": 423.1733372795685,
+      "final_mass": 375.4989929199219,
+      "final_goal_mass": 101.0571060180664,
+      "mass_preservation_ratio": 0.8873408597171988,
+      "max_north_mass": 42.97007751464844,
+      "final_north_mass": 1.1378543530317515e-42,
+      "steps": 3600
+    },
+    "tokyo_rail": {
+      "scenario": "tokyo_rail",
+      "seed": 101,
+      "all_cities_connected": true,
+      "city_final_masses": {
+        "City_NW": 291.89154052734375,
+        "City_NE": 250.45004272460938,
+        "City_SE": 281.2583312988281,
+        "City_SW": 188.05426025390625
+      },
+      "initial_mass": 1313.2967018591758,
+      "final_mass": 1099.8243408203125,
+      "mass_preservation_ratio": 0.8374530593543451,
+      "steps": 3600
+    },
+    "swarm_channeling": {
+      "scenario": "swarm_channeling",
+      "seed": 101,
+      "successful_fusion": true,
+      "initial_mass": 844.8318022983685,
+      "final_mass": 786.813720703125,
+      "final_east_mass": 734.7825927734375,
+      "mass_preservation_ratio": 0.93132587877644,
+      "steps": 3600
+    }
+  },
+  "seed_2024": {
+    "maze": {
+      "scenario": "continuous_maze",
+      "seed": 2024,
+      "success_reach_goal": false,
+      "initial_mass": 424.41469102498115,
+      "final_mass": 312.83514404296875,
+      "final_goal_mass": 109.26018524169922,
+      "mass_preservation_ratio": 0.7370978211901346,
+      "max_dead_end_1_mass": 0.28039979934692383,
+      "final_dead_end_1_mass": 2.8306228979361305e-43,
+      "dead_end_1_evacuated": false,
+      "steps": 3600
+    },
+    "dynamic_reroute": {
+      "scenario": "dynamic_rerouting",
+      "seed": 2024,
+      "switch_step": 600,
+      "rerouting_success": true,
+      "initial_mass": 424.41469102498115,
+      "final_mass": 398.82574462890625,
+      "final_goal_mass": 200.68032836914062,
+      "mass_preservation_ratio": 0.9397076799022355,
+      "max_north_mass": 44.226173400878906,
+      "final_north_mass": 8.57594660166788e-43,
+      "steps": 3600
+    },
+    "tokyo_rail": {
+      "scenario": "tokyo_rail",
+      "seed": 2024,
+      "all_cities_connected": true,
+      "city_final_masses": {
+        "City_NW": 249.12139892578125,
+        "City_NE": 261.0372314453125,
+        "City_SE": 77.72113037109375,
+        "City_SW": 269.7347412109375
+      },
+      "initial_mass": 1313.2967018591758,
+      "final_mass": 1035.30322265625,
+      "mass_preservation_ratio": 0.7883239340986192,
+      "steps": 3600
+    },
+    "swarm_channeling": {
+      "scenario": "swarm_channeling",
+      "seed": 2024,
+      "successful_fusion": true,
+      "initial_mass": 846.1242305397371,
+      "final_mass": 801.14892578125,
+      "final_east_mass": 801.1488647460938,
+      "mass_preservation_ratio": 0.9468455066707331,
+      "steps": 3600
+    }
+  }
+}

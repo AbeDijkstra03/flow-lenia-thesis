@@ -1,0 +1,32 @@
+{
+  "seed_42": {
+    "scenario": "collective_bridge_building",
+    "seed": 42,
+    "bridge_span_percent": 100.0,
+    "biomass_nest_percent": 0.0,
+    "biomass_bridge_percent": 4.687963976296826e-27,
+    "biomass_oasis_percent": 99.99999716936641,
+    "steps": 4500,
+    "mass_preservation_ratio": 0.9999989867210388
+  },
+  "seed_101": {
+    "scenario": "collective_bridge_building",
+    "seed": 101,
+    "bridge_span_percent": 100.0,
+    "biomass_nest_percent": 0.0,
+    "biomass_bridge_percent": 1.6412905075508667e-26,
+    "biomass_oasis_percent": 99.99999433329378,
+    "steps": 4500,
+    "mass_preservation_ratio": 0.9999978542327881
+  },
+  "seed_2024": {
+    "scenario": "collective_bridge_building",
+    "seed": 2024,
+    "bridge_span_percent": 100.0,
+    "biomass_nest_percent": 0.0,
+    "biomass_bridge_percent": 4.947743886673372e-27,
+    "biomass_oasis_percent": 99.99999150288839,
+    "steps": 4500,
+    "mass_preservation_ratio": 0.9999948740005493
+  }
+}

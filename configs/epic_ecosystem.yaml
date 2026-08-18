@@ -1,0 +1,27 @@
+# Chapter 5B: Epic Long-Duration Ecosystem Simulation (Central Obstacle)
+experiment:
+  name: "epic_ecosystem"
+  output_dir: "results/epic_ecosystem"
+  seed: 42
+
+simulation:
+  grid_size: 384
+  steps: 22500
+  sample_interval: 3
+  fps: 20
+  dt: 0.05
+
+physics:
+  v_scale: 5.4
+  alpha_diffusion: 0.055
+  n_kernels: 9
+  kernel_radii_range: [6.0, 15.0]
+  obstacle_radius: 28.0
+
+biology:
+  n_patches: 8
+  mu_range: [0.13, 0.22]
+  sigma_range: [0.011, 0.024]
+  mixing_rule: "gene_wise"
+  enable_mutation: true
+  mutation_interval: 50

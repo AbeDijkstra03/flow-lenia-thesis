@@ -1,0 +1,28 @@
+# Dynamic Resource Depletion & Foraging Configuration
+experiment:
+  name: "resource_depletion_ecosystem"
+  env: "open"
+  seed: 42
+
+simulation:
+  grid_size: 384
+  steps: 4000
+  sample_interval: 20
+  dt: 0.05
+
+environment_params:
+  enable_depletion: true
+  depletion_rate: 0.04
+  regeneration_rate: 0.01
+  occupancy_threshold: 0.10
+
+physics:
+  v_scale: 5.0
+  alpha_diffusion: 0.05
+  beta: 2.0
+  n_kernels: 9
+
+biology:
+  n_patches: 6
+  mixing_rule: "gene_wise"
+  enable_mutation: true

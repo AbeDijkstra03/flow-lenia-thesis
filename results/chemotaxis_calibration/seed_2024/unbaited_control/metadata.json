@@ -1,0 +1,36 @@
+{
+  "prefix": "unbaited_control",
+  "config": {
+    "condition": "unbaited_control",
+    "description": "Stationary Baseline",
+    "chemotaxis_chi": 0.0,
+    "alpha_diffusion": 0.065,
+    "sigma": 0.013,
+    "v_scale": 8.5,
+    "seed": 2024,
+    "com_dx": 1.6095979701814898,
+    "steps": 3600
+  },
+  "metrics": {
+    "ea_raw": 0.0,
+    "complexity_raw": 1852.0,
+    "entropy_raw": 5.354930067062378,
+    "com_displacement": 2.2334339187884242,
+    "corridor_coverage": 0.0,
+    "ea_norm": 0.0,
+    "complexity_norm": 0.02825927734375,
+    "entropy_norm": 0.33468312919139404,
+    "com_norm": 0.006169047926981795,
+    "total_mass": 870.9881591896875,
+    "watertight_score": 0.0,
+    "watertight_valid": 0.0,
+    "solid_core_ratio": 0.970857313830848,
+    "mass_preservation_ratio": 0.9999955151715441,
+    "grid_size": 256,
+    "horizon": 3600
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

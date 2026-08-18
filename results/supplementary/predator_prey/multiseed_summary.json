@@ -1,0 +1,41 @@
+{
+  "seed_42": {
+    "scenario": "predator_prey_trophic_ecosystem",
+    "seed": 42,
+    "prey_biomass_min": 1078.9476318359375,
+    "prey_biomass_max": 2411.7314453125,
+    "pred_biomass_min": 535.629150390625,
+    "pred_biomass_max": 1777.03759765625,
+    "pred_swelling_factor": 3.317664027776769,
+    "prey_swelling_factor": 2.2352627243419314,
+    "trophic_cycles_detected": 63,
+    "steps": 4500,
+    "fps": 25
+  },
+  "seed_101": {
+    "scenario": "predator_prey_trophic_ecosystem",
+    "seed": 101,
+    "prey_biomass_min": 1061.8150634765625,
+    "prey_biomass_max": 2161.04052734375,
+    "pred_biomass_min": 530.1712036132812,
+    "pred_biomass_max": 1776.864501953125,
+    "pred_swelling_factor": 3.3514918507989946,
+    "prey_swelling_factor": 2.0352324819312813,
+    "trophic_cycles_detected": 59,
+    "steps": 4500,
+    "fps": 25
+  },
+  "seed_2024": {
+    "scenario": "predator_prey_trophic_ecosystem",
+    "seed": 2024,
+    "prey_biomass_min": 1071.3963623046875,
+    "prey_biomass_max": 2120.697265625,
+    "pred_biomass_min": 532.5646362304688,
+    "pred_biomass_max": 1777.1004638671875,
+    "pred_swelling_factor": 3.336872765486094,
+    "prey_swelling_factor": 1.9793769331728785,
+    "trophic_cycles_detected": 58,
+    "steps": 4500,
+    "fps": 25
+  }
+}

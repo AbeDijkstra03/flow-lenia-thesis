@@ -1,0 +1,173 @@
+\section{The Continuous Physics Engine and Transport Mechanics}
+\label{sec:model_and_physics}
+
+\subsection{Mathematical Foundations and Theoretical Provenance}
+\label{subsec:model_provenance}
+
+The mathematical formulation of the simulation engine builds directly upon established models in the continuous cellular automata and artificial life literature. Specifically:
+\begin{itemize}
+    \item The continuous field representation, multi-shell annular kernels, and Gaussian growth mappings are adopted from the foundational \textit{Lenia} framework developed by \textcite{chan2019lenia, chan2020lenia}.
+    \item The mass-conservative advection formulation governed by the fluid continuity equation is adopted from \textit{Flow Lenia} as formulated by \textcite{plantec2025flowlenia}.
+    \item The semi-Lagrangian bilinear flux reintegration tracking algorithm originates from \textcite{moroz2020reintegration} and was incorporated into continuous cellular automata by \textcite{plantec2025flowlenia}.
+    \item The multi-species collision operators (stochastic Gumbel-Max flux sampling and Softmax growth negotiation) are adopted from \textcite{plantec2025flowlenia} and \textcite{michel2025exploring}.
+\end{itemize}
+Our engineering contribution consists of re-implementing and integrating these mathematical components into a unified, vectorized functional pipeline in JAX compiled via XLA, enabling hardware-accelerated exploration and spatial assays.
+
+\subsection{Continuous Lattice and Parameter Representation}
+\label{subsec:model_lattice_parameters}
+
+Following \textcite{plantec2025flowlenia}, the simulation environment is formulated as a two-dimensional continuous toroidal lattice $\Torus = [0, H) \times [0, W)$ with periodic boundary conditions, discretized onto a regular grid of resolution $H \times W$. The physical state of the system at time $t$ is represented by a scalar mass density field:
+\begin{equation}
+A(\mathbf{x}, t) \in [0.0, 1.0], \quad \mathbf{x} = (y, x) \in \Torus
+\label{eq:mass_density_field}
+\end{equation}
+where $A(\mathbf{x}, t)$ denotes the continuous concentration of fluid matter at coordinate $\mathbf{x}$.
+
+To support localized morphological differentiation and evolutionary adaptation, each lattice site $\mathbf{x}$ carries a localized parameter genome defining its physiological transition dynamics:
+\begin{equation}
+\boldsymbol{\theta}(\mathbf{x}, t) = \Big( \boldsymbol{\mu}(\mathbf{x}, t), \, \boldsymbol{\sigma}(\mathbf{x}, t), \, \mathbf{w}(\mathbf{x}, t) \Big)
+\label{eq:parameter_genome}
+\end{equation}
+where $K = 9$ represents the number of concentric neighborhood kernels. The vectors $\boldsymbol{\mu}, \boldsymbol{\sigma}, \mathbf{w} \in \Real^K$ specify the optimal growth centers, tolerance widths, and linear combination weights for each respective kernel channel.
+
+\subsection{Multi-Shell Concentric Ring Kernels}
+\label{subsec:model_multishell_kernels}
+
+Continuous cellular automata operating with single isotropic Gaussian kernels typically collapse into static, circular droplets. To enable complex, asymmetric solitary waves capable of autonomous locomotion, internal respiration, and division, continuous neighborhood filters are formulated as multi-shell concentric Gaussian ring kernels \parencite{chan2019lenia, plantec2025flowlenia}.
+
+For each kernel index $k \in \{0, 1, \dots, K-1\}$, the radial profile $K_k(r)$ as a function of Euclidean distance $r = \|\mathbf{x}\|_2$ is defined as a linear superposition of $M = 3$ concentric Gaussian shells \parencite{plantec2025flowlenia}:
+\begin{equation}
+K_k(r) = \sum_{m=1}^{M} b_m \cdot \exp\left( -\frac{\left(r - r_m \cdot R_k\right)^2}{2 \left(w_{\text{width}} \cdot R_k\right)^2} \right)
+\label{eq:multishell_kernel_formula}
+\end{equation}
+where:
+\begin{itemize}
+    \item $R_k \in [6.0, 15.0]\text{ pixels}$ specifies the outer spatial radius of kernel $k$.
+    \item $\mathbf{b} = [1.0, 0.50, 0.33]$ defines the relative peak amplitude weights across concentric shells.
+    \item $\mathbf{r}_{\text{peaks}} = [0.50, 0.25, 0.75]$ specifies the normalized radial peak positions.
+    \item $w_{\text{width}} = 0.12$ defines the normalized Gaussian standard deviation of each ring.
+\end{itemize}
+
+Each kernel matrix is normalized to unit integral over the continuous domain to ensure spatial scale invariance:
+\begin{equation}
+\iint_{\Real^2} K_k(\mathbf{x}) \, d\mathbf{x} = 1.0
+\label{eq:kernel_normalization}
+\end{equation}
+
+\subsection{Spectral Circular Convolutions in the Frequency Domain}
+\label{subsec:model_spectral_convolutions}
+
+Evaluating local neighborhood potentials directly in the spatial domain incurs a computational complexity of $\mathcal{O}(N^2 \cdot W_k^2)$, where $N \times N$ represents grid resolution and $W_k$ denotes kernel width. For multi-kernel configurations ($K = 9$), direct spatial matrix convolution becomes a memory bandwidth bottleneck on SIMD accelerators.
+
+To maximize parallel throughput, continuous convolutions are evaluated in the spectral domain \parencite{chan2023towards}. By the discrete convolution theorem on a periodic torus, spatial convolution is equivalent to pointwise Hadamard multiplication of Fourier transforms:
+\begin{equation}
+U_k(\mathbf{x}, t) = (A *_{\text{circ}} K_k)(\mathbf{x}, t) = \mathcal{F}^{-1}\left( \mathcal{F}(A(\mathbf{x}, t)) \odot \widehat{K}_k \right)
+\label{eq:fourier_convolution}
+\end{equation}
+where $\mathcal{F}$ and $\mathcal{F}^{-1}$ denote the two-dimensional forward and inverse Real Fast Fourier Transforms (RFFT2 / IRFFT2), and $\widehat{K}_k = \mathcal{F}(K_k)$ represents the precomputed frequency-domain kernel tensor cached in device memory. This formulation reduces computational complexity to $\mathcal{O}(N^2 \log N)$, making execution time largely independent of spatial kernel support.
+
+\subsection{Continuous Growth Mappings and Stability Bounds}
+\label{subsec:model_growth_mappings}
+
+The computed neighborhood potentials $U_k(\mathbf{x}, t)$ are mapped to local growth tendencies via unimodal Gaussian growth functions \parencite{chan2019lenia, plantec2025flowlenia}:
+\begin{equation}
+G_k(U_k) = 2 \cdot \exp\left( -\frac{(U_k - \mu_k)^2}{2\sigma_k^2} \right) - 1.0
+\label{eq:gaussian_growth_mapping}
+\end{equation}
+where $\mu_k \in [0.13, 0.22]$ defines the optimal neighborhood density center and $\sigma_k \in [0.011, 0.024]$ specifies the growth tolerance window. The mapping produces values bounded on $[-1.0, 1.0]$: positive values ($G_k > 0$) generate attractive potential wells promoting mass accumulation, whereas negative values ($G_k < 0$) act as repulsive barriers.
+
+The aggregate growth potential field $G(U)(\mathbf{x})$ across all $K$ channels is computed via normalized linear combination \parencite{plantec2025flowlenia}:
+\begin{equation}
+G(U)(\mathbf{x}) = \frac{\sum_{k=0}^{K-1} w_k(\mathbf{x}) \cdot G_k(U_k(\mathbf{x}))}{\sum_{k=0}^{K-1} w_k(\mathbf{x})}
+\label{eq:total_growth_field}
+\end{equation}
+
+\paragraph{Negative Growth Bounds:} In continuous fluid dynamics, high-density cores risk numerical collapse into static singularities (droplet melting). To prevent this instability, negative growth is strictly enforced in regions of severe overpopulation \parencite{plantec2025flowlenia}:
+\begin{equation}
+G(U)(\mathbf{x}) < 0 \quad \forall \, U_k(\mathbf{x}) > \mu_k + 1.2\sigma_k
+\label{eq:negative_growth_bound}
+\end{equation}
+This condition creates an outward repulsive pressure in dense soliton nuclei, preserving fluid elasticity.
+
+\subsection{Flux Advection and Velocity Vector Fields}
+\label{subsec:model_flux_advection}
+
+Mass transport in Flow Lenia is governed by the physical continuity equation \parencite{plantec2025flowlenia}:
+\begin{equation}
+\frac{\partial A}{\partial t} + \nabla \cdot (A \mathbf{v}) = 0
+\label{eq:continuity_advection}
+\end{equation}
+
+Following \textcite{plantec2025flowlenia}, the unconstrained directional flux field $\mathbf{F}(\mathbf{x}) = (F_y, F_x)$ is determined by the spatial gradients of the biological growth potential and the mass density:
+\begin{equation}
+\mathbf{F}(\mathbf{x}) = \vscale \cdot \Big( (1 - \adiff) \nabla G(U)(\mathbf{x}) - \adiff \nabla A(\mathbf{x}) \Big)
+\label{eq:unconstrained_flux}
+\end{equation}
+where $\vscale \in [4.2, 6.5]$ denotes the global velocity scaling parameter, and $\adiff \in [0.04, 0.08]$ represents the entropic mass diffusion coefficient. The positive growth gradient $\nabla G(U)$ propels fluid mass toward optimal growth zones, while the density gradient $-\nabla A$ exerts a regularizing pressure that prevents shockwave discontinuities.
+
+Spatial derivatives are computed using two-dimensional Sobel operators with periodic toroidal boundary rolls:
+\begin{align}
+\nabla_x f(y, x) &= \frac{1}{8} \Big[ (f_{y-1, x+1} + 2f_{y, x+1} + f_{y+1, x+1}) - (f_{y-1, x-1} + 2f_{y, x-1} + f_{y+1, x-1}) \Big] \label{eq:sobel_x} \\
+\nabla_y f(y, x) &= \frac{1}{8} \Big[ (f_{y+1, x-1} + 2f_{y+1, x} + f_{y+1, x+1}) - (f_{y-1, x-1} + 2f_{y-1, x} + f_{y-1, x+1}) \Big] \label{eq:sobel_y}
+\end{align}
+
+When an environmental obstacle mask $\EnvMask(\mathbf{x}) \in \{0.0, 1.0\}$ is present, fluxes into impermeable boundaries are zeroed ($\mathbf{F}(\mathbf{x}) \leftarrow \mathbf{F}(\mathbf{x}) \cdot \EnvMask(\mathbf{x})$), strictly enforcing zero-flux Neumann boundary conditions.
+
+\subsection{Semi-Lagrangian Bilinear Reintegration Tracking}
+\label{subsec:model_moroz_advection}
+
+In discrete approximations of fluid advection, standard four-way orthogonal flux clipping introduces artificial numerical drag proportional to $(1 - |v_x| - |v_y|)$. This artificial viscous damping rapidly dissipates kinetic energy, causing moving gliders to freeze into stationary rings.
+
+To eliminate artificial coordinate drag while preserving conservative transport, our framework implements the semi-Lagrangian Bilinear Reintegration Tracking scheme proposed by \textcite{moroz2020reintegration} and adapted for continuous cellular automata by \textcite{plantec2025flowlenia}.
+
+Given a bounded local displacement vector $\mathbf{v}(\mathbf{x}) = (v_y, v_x) \in [-1.0, 1.0]^2$, directional transport fractions along orthogonal axes are decomposed:
+\begin{align}
+f_{x,+} &= \max(0, v_x), & f_{x,-} &= \max(0, -v_x), & f_{x,0} &= 1 - f_{x,+} - f_{x,-} \label{eq:fractions_x} \\
+f_{y,+} &= \max(0, v_y), & f_{y,-} &= \max(0, -v_y), & f_{y,0} &= 1 - f_{y,+} - f_{y,-} \label{eq:fractions_y}
+\end{align}
+
+Each source lattice site $(y, x)$ distributes its mass $A(y, x)$ across its nine local spatial neighbors via exact outer tensor products \parencite{moroz2020reintegration}:
+\begin{equation}
+\begin{alignedat}{3}
+m_{0,0} &= A \cdot f_{y,0} f_{x,0}, &\quad m_{0,R} &= A \cdot f_{y,0} f_{x,+}, &\quad m_{0,L} &= A \cdot f_{y,0} f_{x,-} \\
+m_{D,0} &= A \cdot f_{y,+} f_{x,0}, &\quad m_{U,0} &= A \cdot f_{y,-} f_{x,0}, & & \\
+m_{DR} &= A \cdot f_{y,+} f_{x,+}, &\quad m_{DL} &= A \cdot f_{y,+} f_{x,-}, &\quad m_{UR} &= A \cdot f_{y,-} f_{x,+}, &\quad m_{UL} = A \cdot f_{y,-} f_{x,-}
+\end{alignedat}
+\label{eq:bilinear_splatting}
+\end{equation}
+
+Incoming mass contributions are accumulated at target cells using periodic torus roll operations:
+\begin{equation}
+\begin{split}
+A(\mathbf{x}, t + \Delta t) &= m_{0,0} + \text{roll}(m_{0,R}, +1, x) + \text{roll}(m_{0,L}, -1, x) \\
+&\quad + \text{roll}(m_{D,0}, +1, y) + \text{roll}(m_{U,0}, -1, y) \\
+&\quad + \text{roll}(m_{DR}, (+1, +1), (y, x)) + \text{roll}(m_{DL}, (+1, -1), (y, x)) \\
+&\quad + \text{roll}(m_{UR}, (-1, +1), (y, x)) + \text{roll}(m_{UL}, (-1, -1), (y, x))
+\end{split}
+\label{eq:mass_accumulation_roll}
+\end{equation}
+
+Because $\sum_{i,j} m_{i,j}(\mathbf{x}) \equiv A(\mathbf{x}, t)$ holds identically for each cell prior to spatial redistribution (as $\sum f_x = 1$ and $\sum f_y = 1$), this semi-Lagrangian transport scheme is algebraically mass-conservative in exact arithmetic. In standard 32-bit floating-point arithmetic without external source or sink terms, observed relative mass drift remains bounded within numerical round-off limits ($\sim 10^{-7}$).
+
+\subsection{Genome Mixing and Collision Mechanics}
+\label{subsec:model_genome_mixing}
+
+In multi-organism ecologies, spatial collisions between distinct lineages present a fundamental challenge. Under naive linear interpolation, overlapping parameter fields $(\boldsymbol{\mu}, \boldsymbol{\sigma}, \mathbf{w})$ rapidly blend into homogeneous numerical averages, resulting in total loss of genotypic identity and evolutionary sterility \parencite{plantec2025flowlenia, michel2025exploring}.
+
+To preserve discrete genomic identities across spatial collisions, two complementary genome-mixing operators are implemented:
+
+\subsubsection{Stochastic Gene-Wise Sampling via Gumbel-Max}
+As formulated by \textcite{plantec2025flowlenia}, parameters at each spatial location are sampled categorically from incoming directional mass fluxes using perturbed Gumbel-Max selection:
+\begin{equation}
+s^*(\mathbf{x}) = \arg\max_{s \in \{0, \dots, S_{\text{flux}}-1\}} \Big( \log(\text{Flux}_s(\mathbf{x}) + 10^{-6}) + g_s \Big), \quad g_s \sim \text{Gumbel}(0, 1)
+\label{eq:gumbel_max_mixing}
+\end{equation}
+where $\text{Flux}_s(\mathbf{x})$ denotes the incoming fluid mass contribution from directional neighbor $s$. By assigning the child genome $\boldsymbol{\theta}(\mathbf{x}, t + \Delta t) \leftarrow \boldsymbol{\theta}_{s^*}(\mathbf{x}, t)$ categorically rather than arithmetically averaging parameter values, lineages maintain sharp genetic boundaries during spatial collisions.
+
+\subsubsection{Growth Negotiation via Softmax Competition}
+Following \textcite{plantec2025flowlenia}, when multi-species fluid masses overlap, local physiological dominance is determined by competitive growth negotiation:
+\begin{equation}
+w_{\text{eff}, s}(\mathbf{x}) = \frac{\exp\Big(\beta \cdot G_s(U(\mathbf{x}))\Big) \cdot A_s(\mathbf{x})}{\sum_{j=1}^{S} \exp\Big(\beta \cdot G_j(U(\mathbf{x}))\Big) \cdot A_j(\mathbf{x})}
+\label{eq:softmax_negotiation}
+\end{equation}
+where $\beta \ge 0$ represents territorial growth aggressiveness. Lineages that generate superior local growth potential exponentially suppress competing parameter fields, establishing dynamic territorial boundaries across the continuous medium.

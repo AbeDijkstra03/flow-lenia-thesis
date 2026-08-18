@@ -1,0 +1,114 @@
+% ==============================================================================
+% PREAMBLE: Packages, Mathematical Macros, and Styling Definitions
+% ==============================================================================
+
+% --- Typography & Spacing Fixes (parskip/inputenc are already in the .cls) ---
+\usepackage{microtype}
+\setlength{\headheight}{32pt}
+
+
+% --- Bibliography Configuration ---
+\usepackage[
+    style=authoryear-comp,
+    sorting=nyt,
+    maxcitenames=2,
+    mincitenames=1,
+    maxbibnames=8,
+    backend=biber,
+    uniquelist=false,
+    uniquename=false
+]{biblatex}
+\addbibresource{references.bib}
+
+% --- Advanced Mathematics ---
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% --- Tables & Arrays ---
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{colortbl}
+\usepackage{array}
+
+% --- Figures & Subfigures ---
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+
+% --- PGFPlots (voor de T(W) transmissiekromme) ---
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% --- Algorithms & Pseudocode ---
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+% --- Code Snippets & Serialization ---
+\usepackage{listings}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0.13,0.13,0.60}
+\definecolor{codegreen}{rgb}{0.0,0.5,0.0}
+\definecolor{backcolor}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolor},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{orange!80!black},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!30}
+}
+\lstset{style=mystyle}
+
+% --- Clever References (Must be loaded last) ---
+\usepackage[capitalize,noabbrev]{cleveref}
+
+% ==============================================================================
+% MATHEMATICAL & PHYSICAL DOMAIN MACROS
+% ==============================================================================
+
+% State spaces & lattice
+\newcommand{\Torus}{\mathbb{T}^2}
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\MassField}{A(\mathbf{x}, t)}
+
+% Kernels & Potentials
+\newcommand{\Kernel}{K_k}
+\newcommand{\Potential}{U_k}
+\newcommand{\Growth}{G_k(U_k)}
+\newcommand{\GrowthTotal}{G(U)}
+\newcommand{\EffectiveGrowth}{G_{\text{coupled}}}
+
+% Velocities & Fluxes
+\newcommand{\Velocity}{\mathbf{v}}
+\newcommand{\Flux}{\mathbf{F}}
+\newcommand{\vscale}{v_{\text{scale}}}
+\newcommand{\adiff}{\alpha_{\text{diff}}}
+\newcommand{\EnvMask}{M_{\text{env}}}
+
+% 3D Metric Space
+\newcommand{\MetricSpace}{\mathcal{B}}
+\newcommand{\Motility}{v_{\text{CoM}}}
+\newcommand{\EvoActivity}{\text{EA}}
+\newcommand{\Complexity}{\mathcal{C}_{\text{gzip}}}
+\newcommand{\Entropy}{H}
+\newcommand{\CoreRatio}{R_{\text{core}}}
+\newcommand{\MassRatio}{R_{\text{mass}}}
+\newcommand{\GridCover}{C_{\text{grid}}}
+\newcommand{\QualityScore}{\text{Score}_{\text{watertight}}}
+\newcommand{\Transmission}{T(W_{\text{passage}})}

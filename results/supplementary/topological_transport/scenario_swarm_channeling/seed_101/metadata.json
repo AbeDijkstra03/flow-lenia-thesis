@@ -1,0 +1,26 @@
+{
+  "prefix": "",
+  "config": {
+    "scenario": "swarm_channeling",
+    "grid_size": 256,
+    "steps": 3600,
+    "sample_interval": 3,
+    "seed": 101,
+    "chi": 0.28,
+    "alpha_diffusion": 0.04
+  },
+  "metrics": {
+    "scenario": "swarm_channeling",
+    "seed": 101,
+    "successful_fusion": true,
+    "initial_mass": 844.8318022983685,
+    "final_mass": 786.813720703125,
+    "final_east_mass": 734.7825927734375,
+    "mass_preservation_ratio": 0.93132587877644,
+    "steps": 3600
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

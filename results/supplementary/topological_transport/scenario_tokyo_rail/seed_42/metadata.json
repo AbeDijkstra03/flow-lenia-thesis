@@ -1,0 +1,31 @@
+{
+  "prefix": "",
+  "config": {
+    "scenario": "tokyo_rail",
+    "grid_size": 256,
+    "steps": 3600,
+    "sample_interval": 3,
+    "seed": 42,
+    "chi": 0.26,
+    "alpha_diffusion": 0.038
+  },
+  "metrics": {
+    "scenario": "tokyo_rail",
+    "seed": 42,
+    "all_cities_connected": true,
+    "city_final_masses": {
+      "City_NW": 261.2318420410156,
+      "City_NE": 219.1800079345703,
+      "City_SE": 177.103759765625,
+      "City_SW": 233.06362915039062
+    },
+    "initial_mass": 1313.2967018591758,
+    "final_mass": 1074.7861328125,
+    "mass_preservation_ratio": 0.8183879022027462,
+    "steps": 3600
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

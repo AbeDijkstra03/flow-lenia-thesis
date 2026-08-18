@@ -1,0 +1,21 @@
+{
+  "prefix": "orbium_verification",
+  "config": {
+    "grid_size": 256,
+    "steps": 200,
+    "organism": "Orbium unicaudatus",
+    "radius": 13.0,
+    "mu": 0.15,
+    "sigma": 0.015
+  },
+  "metrics": {
+    "initial_mass": 76.86274719238281,
+    "final_mass": 76.86275482177734,
+    "relative_mass_error": 9.925997715332093e-08,
+    "physics_engine": "JAX Moroz (2020) Bilinear Reintegration"
+  },
+  "video_file": "rollout.mp4",
+  "filmstrip_file": "trajectory_filmstrip.png",
+  "heatmap_file": "motion_heatmap.png",
+  "data_file": "data.npz"
+}

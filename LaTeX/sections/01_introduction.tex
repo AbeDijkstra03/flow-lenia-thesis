@@ -1,0 +1,90 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{The Epistemological Landscape of Artificial Life}
+\label{subsec:intro_alife_landscape}
+
+The foundational objective of Artificial Life (ALife) is to decouple the fundamental organizational principles of living systems from their specific biochemical, carbon-based substrates \parencite{taylor2016open}. By formulating computational environments in which self-organization, reproduction, and adaptation emerge spontaneously from basic mathematical transition rules, researchers seek to determine whether biological macroscopic order is a universal, substrate-independent phenomenon \parencite{schrodinger1944what, ruiz2004universal}. Over past decades, computational paradigms within the domain have undergone profound structural transformations, transitioning from discrete, symbol-manipulating models to continuous field equations.
+
+In the foundational era of ALife, discrete Agent-Based Models (ABMs) such as \textit{Tierra} \parencite{ray1992approach} and \textit{Avida} \parencite{adami1994evolutionary}, alongside classical discrete Cellular Automata (CAs) rooted in Conway's \textit{Game of Life} \parencite{gardner1970game}, dominated the field. In ABMs, digital organisms were conceptualized as explicit software programs or self-replicating machine-code instruction strings executing inside shared virtual memory spaces. Organisms competed directly for central processing unit (CPU) instruction cycles and memory addresses. Although ABMs demonstrated co-evolutionary arms races and the spontaneous emergence of parasitic code strains, their structural mechanics remained constrained. Interactions were fundamentally non-spatial or restricted to simplified topological lattices, relying heavily on sequential conditional branching ($if\text{--}else$ evaluations) and discrete state transitions. This programmatic discreteness created a profound dichotomy with biological reality: natural organisms are not isolated pieces of sequentially executed code, but rather continuous, soft, and spatially integrated physical systems embedded in dynamic, unbroken fluid environments.
+
+To address this conceptual divide, continuous field representations have gained significant traction through Continuous Cellular Automata (CCAs), pioneered by systems such as \textit{Lenia} \parencite{chan2019lenia, chan2020lenia}. In continuous cellular systems, state spaces, spatial coordinates, and temporal progressions are generalized from discrete values ($\{0, 1\}$) to real-valued floating-point fields $A(\mathbf{x}, t) \in [0.0, 1.0]$. Lifeforms within continuous formulations manifest not as hardcoded procedural agents, but as localized, dynamic solitary wave solutions (solitons). These wave packets maintain spatial cohesion and complex locomotion through continuous neighborhood convolutions and nonlinear growth functions. Because continuous state updates are mathematically equivalent to spatial matrix convolutions, they execute with high parallel efficiency on modern Single Instruction, Multiple Data (SIMD) hardware accelerators, such as Graphics Processing Units (GPUs).
+
+\subsection{The Simulation Gap in Open-Ended Evolution}
+\label{subsec:intro_simulation_gap}
+
+Despite significant computational scaling, computational models of evolutionary systems encounter a persistent theoretical barrier known as the \textit{simulation gap} \parencite{taylor2016open}. While natural biological evolution generates a seemingly boundless hierarchy of morphological complexity, ecological specialization, and functional innovation (Open-Ended Evolution, OEE), computational simulations almost invariably suffer from premature convergence. Digital ecologies routinely stagnate into static attractors, simple periodic oscillators, or total systemic dissolution.
+
+In continuous cellular automata, this stagnation is driven primarily by extreme parameter sensitivity and mathematical fragility. In natural biology, organisms possess robust homeostatic buffers and cellular membranes that actively regulate internal biochemical states against external disturbances. In contrast, standard continuous cellular automata operate in an unforgiving parameter landscape. Over 99.9\% of the continuous parameter space represents an evolutionary desert: a minute perturbation in growth thresholds causes instantaneous numerical collapse into a uniform vacuum state or explosive expansion into unconstrained global chaos.
+
+Consequently, automated search algorithms (such as Quality-Diversity or evolutionary algorithms) encounter a landscape characterized by steep mathematical discontinuities rather than smooth gradients. When objective functions or quality metrics are applied naively to continuous fields, algorithms fall into the \textit{metric trap} \parencite{lehman2011novelty}. Simple scalar proxies, such as mass preservation, are easily exploited by inert crystalline structures or trivial edge-vibrating oscillators that maximize numerical stability while completely devoid of morphological or functional dynamism.
+
+\subsection{Flow Lenia and Mass-Conservative Fluid Mechanics}
+\label{subsec:intro_flow_lenia}
+
+A major structural deficiency in classical continuous models such as Lenia is the absence of physical conservation laws. In standard Lenia, mass is generated and annihilated freely at each coordinate based on local growth functions. If global parameters deviate even slightly from ideal equilibrium, virtual creatures rapidly evaporate into the background or explode exponentially across the lattice.
+
+\textit{Flow Lenia} \parencite{plantec2025flowlenia} addresses this instability by embedding continuous cellular automata within the physical principles of computational fluid dynamics. Instead of allowing instantaneous local mass generation, Flow Lenia enforces mass conservation governed by the physical continuity equation:
+\begin{equation}
+\frac{\partial A}{\partial t} + \nabla \cdot (A \mathbf{v}) = 0
+\label{eq:intro_continuity}
+\end{equation}
+where $A(\mathbf{x}, t)$ represents the continuous physical mass density, and $\mathbf{v}$ denotes a continuous velocity vector field computed from the spatial gradients of local biological growth potentials and density distributions. Under this formulation, matter can only flow smoothly between adjacent spatial coordinates.
+
+By combining fluid advection with conservative semi-Lagrangian transport schemes \parencite{moroz2020reintegration, plantec2025flowlenia}, Flow Lenia is algebraically mass-conservative; in our floating-point benchmark runs, global mass is preserved at machine-precision limits with zero artificial coordinate damping. This reduces structural dissipation and provides a mathematically grounded physical substrate where emergent solitons behave as viscous, elastomeric droplets possessing internal surface tension and soft-bodied elasticity.
+
+\subsection{Spatial Heterogeneity and Niche Construction}
+\label{subsec:intro_spatial_heterogeneity}
+
+While mass-conserving fluid mechanics provide structural stability, homogeneous environments offer no selective friction to drive adaptive divergence. In a uniform, isotropic space, a solitary glider encounters zero environmental resistance; it requires no sensory feedback, no shape deformation, and no metabolic resource harvesting to persist indefinitely.
+
+In natural ecosystems, structural complexity is driven by environmental heterogeneity, physical barriers, and reciprocal niche construction. Organisms must navigate complex spatial topographies, squeeze through narrow passages, and constantly migrate as local resource pools are consumed. Introducing structured spatial friction into continuous cellular automata transforms the evolutionary dynamic:
+
+\begin{enumerate}
+    \item \textbf{Geometric Barrier Constrictions:} Hard, impassable boundary walls force soft-bodied fluid solitons to undergo elastomeric deformation, establishing mechanical regimes between coherent passage and physical blocking.
+    \item \textbf{Dynamic Resource Depletion (Niche Construction):} Coupling local growth potentials to a finite, depletable scalar resource field creates a negative feedback loop: stationary organisms exhaust their local substrate, forcing continuous locomotion, cyclic foraging trajectories, and collective territorial division.
+    \item \textbf{Directional Chemotaxis:} Coupling velocity fields to external nutrient gradients provides an active directional drive, enabling systematic investigation of soft-bodied biomechanics, surface tension, and amoeboid fission.
+\end{enumerate}
+
+\subsection{Research Question and Scope}
+\label{subsec:intro_research_questions}
+
+This thesis investigates the computational, physical, and evolutionary dynamics of GPU-accelerated Flow Lenia under structured environmental friction. The primary research question is formulated as follows:
+
+\begin{quote}
+\textbf{Central Research Question:} \textit{To what extent does structured spatial heterogeneity drive phenotypic adaptation, structural plasticity, and behavioral divergence in continuous mass-conserving cellular automata?}
+\end{quote}
+
+To answer this question systematically, the investigation is structured around three specific sub-questions:
+
+\begin{itemize}
+    \item \textbf{Sub-Question 1 (Computational Mechanics \& Curiosity Search):} How does intrinsic goal exploration (IMGEP) operating over a multidimensional metric space $\mathcal{B} = [\Motility, \EvoActivity, \Complexity]$ perform in discovering diverse, stable fluid solitons compared to unguided random baselines, and what computational failure modes arise during autonomous multi-generation discovery?
+    \item \textbf{Sub-Question 2 (Soft Biomechanics \& Aperture Transmission):} How do the physical parameters of surface tension and growth tolerance govern the elastomeric transmission coefficient $T(W)$ when continuous solitons are forced through narrow geometric apertures?
+    \item \textbf{Sub-Question 3 (Dynamic Niche Construction \& Macro Ecology):} In what ways does dynamic, localized resource exhaustion eliminate static equilibria, and how do multi-species gene-mixing dynamics scale across long-duration ecological horizons?
+\end{itemize}
+
+\subsection{Pragmatic and Methodological Demarcation}
+\label{subsec:intro_demarcation}
+
+To maintain scientific integrity, it is essential to establish a clear epistemological demarcation regarding the scope of this research:
+
+\begin{itemize}
+    \item \textbf{No Claims of Biological Equivalence:} This work does not claim to simulate authentic living biology or create synthetic organisms. Continuous cellular automata are abstract mathematical models governed by partial differential equations; they lack metabolic energy accounting, genetic transcription machinery, and physical lipid membranes.
+    \item \textbf{Demarcation of Problem-Solving Agency:} When continuous solitons navigate geometric labyrinths or solve routing problems, the navigational intelligence resides in the external potential fields (such as geodesic distance diffusion), whereas Flow Lenia provides the continuous soft-matter physical substrate. Making this distinction explicit prevents misleading claims of emergent cognitive pathfinding.
+    \item \textbf{Focus on Physical Limits and Failure Modes:} The primary scientific contribution of this thesis lies in mapping the mathematical boundaries, failure modes, and hardware constraints of continuous artificial life frameworks. Identifying why continuous systems stagnate, diagnosing stochastic seed sensitivity, and quantifying physical transmission dynamics provides a grounded benchmark for future research.
+\end{itemize}
+
+\subsection{Thesis Outline}
+\label{subsec:intro_outline}
+
+The remainder of this thesis is structured as follows:
+\begin{itemize}
+    \item \textbf{\Cref{sec:theoretical_background}} reviews the theoretical foundations of artificial life, continuous cellular automata, mass conservation laws, and intrinsically motivated curiosity algorithms.
+    \item \textbf{\Cref{sec:model_and_physics}} formalizes the mathematical framework of Flow Lenia, detailing multi-shell Fourier convolutions, semi-Lagrangian bilinear reintegration advection, and multi-species gene-mixing operators, with explicit attribution to foundational literature.
+    \item \textbf{\Cref{sec:automated_discovery}} presents the Intrinsically Motivated Goal Exploration Process (IMGEP), defines the 3D behavioral metric space, details the sequential five-stage morphological quality filter, and analyzes seed sensitivity and solidity-motility trade-offs.
+    \item \textbf{\Cref{sec:experimental_setup}} outlines the experimental protocols, including physical verification benchmarks, chemotaxis assays, aperture constriction sweeps, and macro-scale ecological environments.
+    \item \textbf{\Cref{sec:results}} presents empirical quantitative and qualitative findings across all core experimental setups.
+    \item \textbf{\Cref{sec:discussion}} provides an epistemological critique of continuous cellular automata, analyzing the metric trap, the parameter desert, and missing physical constraints.
+    \item \textbf{\Cref{sec:conclusion}} summarizes the primary findings and outlines directions for future research in hybrid computational architectures.
+    \item \textbf{Appendices} provide documentation for supplementary exploratory modules (predator-prey trophic dynamics, topological transport networks, autonomous traveling salesperson optimization, and collective bridge construction), complete hyperparameter tables, and reproducibility guidelines.
+\end{itemize}
