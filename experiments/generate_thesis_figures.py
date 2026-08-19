@@ -22,7 +22,18 @@ plt.rcParams['figure.titlesize'] = 12
 plt.rcParams['figure.dpi'] = 300
 
 OUTPUT_DIR = "figures"
+LATEX_IMG_DIR = "LaTeX/images"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+os.makedirs(LATEX_IMG_DIR, exist_ok=True)
+
+def save_figure(fig, filename):
+    """Save figure to both OUTPUT_DIR and LATEX_IMG_DIR with publication quality."""
+    out_path = os.path.join(OUTPUT_DIR, filename)
+    fig.savefig(out_path, dpi=300, bbox_inches='tight')
+    latex_path = os.path.join(LATEX_IMG_DIR, filename)
+    fig.savefig(latex_path, dpi=300, bbox_inches='tight')
+    plt.close(fig)
+    print(f"Saved: {out_path} and {latex_path}")
 
 def load_img(path):
     """Load image using PIL and convert to RGB array."""
@@ -133,37 +144,35 @@ def make_fig_imgep():
     
     cum_max_scores = np.maximum.accumulate(scores_sorted)
     
-    fig = plt.figure(figsize=(11, 4.8), facecolor='white')
+    fig = plt.figure(figsize=(11.8, 4.8), facecolor='white')
+    gs = gridspec.GridSpec(1, 2, width_ratios=[1.15, 1.0], wspace=0.40)
     
-    ax_3d = fig.add_subplot(1, 2, 1, projection='3d')
+    ax_3d = fig.add_subplot(gs[0], projection='3d')
     ax_3d.scatter(random_metrics[:, 0], random_metrics[:, 1], random_metrics[:, 2], 
                   color='#888888', alpha=0.6, s=35, label='Uniform Random Search', marker='o')
     ax_3d.scatter(imgep_metrics[:, 0], imgep_metrics[:, 1], imgep_metrics[:, 2], 
                   color='#d9381e', alpha=0.9, s=50, label='IMGEP Goal Exploration', marker='^')
     
-    ax_3d.set_xlabel(r'Motility ($v_{\mathrm{CoM}}$)', labelpad=6)
-    ax_3d.set_ylabel('Evol. Activity (EA)', labelpad=6)
-    ax_3d.set_zlabel('Complexity ($H$)', labelpad=6)
-    ax_3d.set_title(r"(a) 3D Behavioral Metric Space Coverage", fontsize=10.5, pad=8)
-    ax_3d.legend(loc='upper left', fontsize=8, framealpha=0.8)
-    ax_3d.view_init(elev=24, azim=-48)
+    ax_3d.set_xlabel(r'Motility ($v_{\mathrm{CoM}}$)', labelpad=7)
+    ax_3d.set_ylabel(r'Evol. Activity ($\mathrm{EA}$)', labelpad=7)
+    ax_3d.set_zlabel(r'Complexity ($H$)', labelpad=7)
+    ax_3d.set_title(r"(a) 3D Behavioral Metric Space Coverage", fontsize=10.5, pad=10)
+    ax_3d.legend(loc='upper left', fontsize=8, framealpha=0.85)
+    ax_3d.view_init(elev=22, azim=-48)
     
-    ax_curve = fig.add_subplot(1, 2, 2)
+    ax_curve = fig.add_subplot(gs[1])
     ax_curve.plot(gens_sorted, scores_sorted, 'o', color='#3366cc', alpha=0.35, markersize=4, label='Elite Candidate Instances')
     ax_curve.plot(gens_sorted, cum_max_scores, color='#d9381e', linewidth=2.5, label='Cumulative Top Score (+392%)')
     
     ax_curve.axhline(cum_max_scores[0], color='#888888', linestyle='--', linewidth=1.2, label=f'Gen 0 Baseline ({cum_max_scores[0]:.1f})')
     ax_curve.set_xlim(0, max(gens_sorted) + 2)
-    ax_curve.set_xlabel('Autonomous AI Scientist Generation ($g$)')
-    ax_curve.set_ylabel('Watertight Quality Score')
-    ax_curve.set_title(r"(b) 138-Generation Discovery Optimization Curve", fontsize=10.5, pad=8)
+    ax_curve.set_xlabel(r'Autonomous AI Scientist Generation ($g$)', labelpad=6)
+    ax_curve.set_ylabel(r'Watertight Quality Score', labelpad=6)
+    ax_curve.set_title(r"(b) 138-Generation Discovery Optimization Curve", fontsize=10.5, pad=10)
     ax_curve.grid(True, linestyle=':', alpha=0.6)
     ax_curve.legend(loc='lower right', fontsize=8, framealpha=0.9)
     
-    out_path = os.path.join(OUTPUT_DIR, "fig_imgep_metric_space.png")
-    plt.savefig(out_path, dpi=300, bbox_inches='tight')
-    plt.close()
-    print(f"Saved: {out_path}")
+    save_figure(fig, "fig_imgep_metric_space.png")
 
 # ==============================================================================
 # Figure 4: fig_chemotaxis_phase_transition.png
